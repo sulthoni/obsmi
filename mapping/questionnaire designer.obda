@@ -1,0 +1,171 @@
+[PrefixDeclaration]
+:		https://w3id.org/sdp/core#
+cc:		https://creativecommons.org/ns/
+dc:		http://purl.org/dc/elements/1.1/
+gn:		http://www.geonames.org/ontology#
+dct:		http://purl.org/dc/terms/
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+cspa:		http://rdf.unece.org/models/cspa#
+dcat:		http://www.w3.org/TR/vocab-dcat/
+foaf:		http://xmlns.com/foaf/0.1/
+gsim:		http://rdf.unece.org/models/gsim#
+obda:		https://w3id.org/obda/vocabulary#
+prov:		http://www.w3.org/ns/prov#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+skos:		http://www.w3.org/2004/02/skos/core#
+xkos:		http://rdf-vocabulary.ddialliance.org/xkos#
+gamso:		http://rdf.unece.org/models/gamso#
+gsbpm:		http://rdf.unece.org/models/gsbpm#
+icspa:		http://id.unece.org/models/cspa/services/
+id-ps:		https://www.bps.go.id/survey/population-census#
+colsys:		https://bps.go.id/metadata/collection-system/
+igamso:		http://id.unece.org/models/gamso/
+igsbpm:		http://id.unece.org/models/gsbpm/
+kshrts:		https://www.ksh.hu/survey/retail-trade-statistics#
+gsim-sum:	https://w3id.org/italia/onto/gsim-sum#
+
+[MappingDeclaration] @collection [[
+mappingId	TriplesMap_questionnaire
+target		colsys:questionnaire/{id} a gsim:Questionnaire ; gsim-sum:hasName-IA "Questionnaire {name}"^^xsd:string ; gsim-sum:hasId-IA {id}^^xsd:string ; :createdAt-IA {created_time}^^xsd:dateTime ; :updatedAt-IA {updated_time}^^xsd:dateTime ; :hasVersion-IA {version}^^xsd:string ; gsim-sum:hasDescription-IA {description}^^xsd:string ; rdfs:label "Questionnaire {name}"^^xsd:string . 
+source		SELECT *
+			FROM designer.template
+
+mappingId	TriplesMap_question_blocks_question_questionnaire
+target		colsys:instance-question-block/{s_id} a gsim-sum:InstanceQuestionBlock ; :includesIQB-IQ colsys:instance-question/{c_id} ; gsim-sum:hasName-IA "Instance Question Block - {s_name}"^^xsd:string ; rdfs:label "Instance Question Block - {s_name}"^^xsd:string . colsys:instance-question/{c_id} a gsim-sum:InstanceQuestion ; gsim-sum:hasName-IA "Instance question - {c_label}"^^xsd:string ; rdfs:label "Instance question - {c_label}"^^xsd:string . colsys:questionnaire/{t_id} :includesQ-IQB colsys:instance-question-block/{s_id} . 
+source		SELECT
+			t.id t_id,
+			t.name t_name,
+			t.description t_description,
+			t.version t_version,
+			t.created_time t_created_time,
+			t.updated_time t_updated_time,
+			t.is_deleted t_is_deleted,
+			t.status t_status,
+			t.created_by t_created_by,
+			t.updated_by t_updated_by,
+			t.status_approval t_status_approval,
+			t.user_id t_user_id,
+			t.work_unit_id t_work_unit_id,
+			t.data_key t_data_key,
+			t.acronym t_acronym,
+			t.validation_description t_validation_description,
+			t.validation_data_key t_validation_data_key,
+			t.validation_version t_validation_version,
+			t.language t_language,
+			t.release_submission_version t_release_submission_version,
+			t.release_submission_change_log t_release_submission_change_log,
+			t.release_submission_user_id t_release_submission_user_id,
+			t.release_submission_date t_release_submission_date,
+			t.release_submission_validation_version t_release_submission_validation_version,
+			t.force_submit_enabling_condition t_force_submit_enabling_condition,
+			t.force_submit_expression t_force_submit_expression,
+			t.force_submit_message t_force_submit_message,
+			t.form_engine_id t_form_engine_id,
+			t.theme_color t_theme_color,
+			s.id s_id,
+			s.name s_name,
+			s.enabling_condition s_enabling_condition,
+			s.created_time s_created_time,
+			s.updated_time s_updated_time,
+			s.created_by s_created_by,
+			s.updated_by s_updated_by,
+			s.template_id s_template_id,
+			s.position s_position,
+			s.is_deleted s_is_deleted,
+			s.type s_type,
+			s.data_key s_data_key,
+			s.description s_description,
+			s.component_enable s_component_enable,
+			c.id c_id,
+			c.label c_label,
+			c.position c_position,
+			c.created_time c_created_time,
+			c.updated_time c_updated_time,
+			c.question_type_id c_question_type_id,
+			c.variable_id c_variable_id,
+			c.created_by c_created_by,
+			c.updated_by c_updated_by,
+			c.is_deleted c_is_deleted,
+			c.section_id c_section_id,
+			c.parent_id c_parent_id,
+			c.data_key c_data_key,
+			c.execute_validation_on_server c_execute_validation_on_server,
+			c.is_identifier c_is_identifier,
+			c.expression c_expression,
+			c.ds_table_name c_ds_table_name,
+			c.ds_value c_ds_value,
+			c.ds_desc c_ds_desc,
+			c.lookup_data_id c_lookup_data_id,
+			c.ds_version c_ds_version,
+			c.custom_data c_custom_data,
+			c.is_prelist c_is_prelist,
+			c.enable_on_cati c_enable_on_cati,
+			c.label_cati_en c_label_cati_en,
+			c.label_cati_ar c_label_cati_ar,
+			c.label_cati_jp c_label_cati_jp,
+			c.label_cati_id c_label_cati_id,
+			c.label_cati_md c_label_cati_md,
+			c.label_cati_kr c_label_cati_kr,
+			c.is_multilanguage c_is_multilanguage,
+			c.rows c_rows,
+			c.options c_options,
+			c.range c_range,
+			c.range_min c_range_min,
+			c.range_max c_range_max,
+			c.range_step c_range_step,
+			c.description c_description,
+			c.answer c_answer,
+			c.source_question c_source_question,
+			c.currency c_currency,
+			c.separator_format c_separator_format,
+			c.is_decimal c_is_decimal,
+			c.masking_type c_masking_type,
+			c.render c_render,
+			c.render_type c_render_type,
+			c.component_var c_component_var,
+			c.enable_condition c_enable_condition,
+			c.component_enable c_component_enable,
+			c.title_modal_delete c_title_modal_delete,
+			c.content_modal_delete c_content_modal_delete,
+			c.hint c_hint,
+			c.enable_remark c_enable_remark,
+			c.cols c_cols,
+			c.source_option c_source_option,
+			c.type_option c_type_option,
+			c.client c_client,
+			c.roster_type c_roster_type,
+			c.source_select c_source_select,
+			c.col_name c_col_name,
+			c.preset_master c_preset_master,
+			c.masking_format c_masking_format,
+			c.disable_input c_disable_input,
+			c.disable_initial c_disable_initial,
+			c.component_validation c_component_validation,
+			c.length_input_min c_length_input_min,
+			c.length_input_max c_length_input_max,
+			c.title_modal_confirmation c_title_modal_confirmation,
+			c.content_modal_confirmation c_content_modal_confirmation,
+			c.version c_version,
+			c.required c_required,
+			c.encrypted c_encrypted,
+			c.size_input_min c_size_input_min,
+			c.size_input_max c_size_input_max,
+			c.decimal_length c_decimal_length,
+			c.is_capital c_is_capital,
+			c.accept c_accept,
+			c.tabular c_tabular,
+			c.input_mode c_input_mode,
+			c.is_editable c_is_editable,
+			c.svg_icon c_svg_icon,
+			c.min_accuracy c_min_accuracy,
+			c.ds_full_desc c_ds_full_desc,
+			c.is_editable_list c_is_editable_list,
+			c.disable_paste c_disable_paste
+			FROM
+			designer.template t JOIN designer.[section] s ON t.id = s.template_id
+			JOIN designer.component c ON s.id = c.section_id
+]]
+

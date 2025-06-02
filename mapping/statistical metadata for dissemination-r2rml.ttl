@@ -1,0 +1,710 @@
+@prefix : <https://w3id.org/sdp/core#> .
+@prefix cc: <https://creativecommons.org/ns/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix gn: <http://www.geonames.org/ontology#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cspa: <http://rdf.unece.org/models/cspa#> .
+@prefix dcat: <http://www.w3.org/TR/vocab-dcat/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix gsim: <http://rdf.unece.org/models/gsim#> .
+@prefix obda: <https://w3id.org/obda/vocabulary#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xkos: <http://rdf-vocabulary.ddialliance.org/xkos#> .
+@prefix gamso: <http://rdf.unece.org/models/gamso#> .
+@prefix gsbpm: <http://rdf.unece.org/models/gsbpm#> .
+@prefix icspa: <http://id.unece.org/models/cspa/services/> .
+@prefix id-ps: <https://www.bps.go.id/survey/population-census#> .
+@prefix igamso: <http://id.unece.org/models/gamso/> .
+@prefix igsbpm: <http://id.unece.org/models/gsbpm/> .
+@prefix kshrts: <https://www.ksh.hu/survey/retail-trade-statistics#> .
+@prefix gsim-sum: <https://w3id.org/italia/onto/gsim-sum#> .
+@prefix sirusa: <https://bps.go.id/metadata/sirusa/> .
+@base <https://w3id.org/sdp/core#> .
+
+<#SirusaView>  rr:sqlQuery """
+    SELECT 
+      mk.id mk_id,
+      mk.judul_kegiatan mk_judul_kegiatan,
+      mk.tahun_kegiatan mk_tahun_kegiatan,
+      mk.jenis_statistik mk_jenis_statistik,
+      mk.cara_pengumpulan_data mk_cara_pengumpulan_data,
+      mk.pj_jabatan mk_pj_jabatan,
+      mk.tujuan_kegiatan mk_tujuan_kegiatan,
+      mk.status mk_status,
+      mk.produsen_data_name mk_produsen_data_name,
+      mk.produsen_data_province_code mk_produsen_data_province_code,
+      mk.produsen_data_city_code mk_produsen_data_city_code,
+      mi.id mi_id,
+      mi.id_mskeg mi_id_mskeg,
+      mi.nama mi_nama,
+      mi.konsep mi_konsep,
+      mi.definisi mi_definisi,
+      mi.status mi_status,
+      mv.id mv_id,
+      mv.id_mskeg mv_id_mskeg,
+      mv.nama mv_nama,
+      mv.konsep mv_konsep,
+      mv.definisi mv_definisi
+    FROM
+      master_kegiatans mk INNER JOIN 
+      master_indikators mi on mk.id = mi.id_mskeg INNER JOIN
+      metadata_variabels mv on mk.id = mv.id_mskeg 
+    """.
+
+<#TriplesMap_statistical_program>
+  rr:logicalTable <#SirusaView>;
+    
+  rr:subjectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/statistical-program/{mk_judul_kegiatan}" ;
+      rr:class :StatisticalProgram
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:column "mk_judul_kegiatan" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:column "mk_judul_kegiatan" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :hasSP-SPC ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/statistical-program-cycle/{mk_judul_kegiatan}/{mk_tahun_kegiatan}" ;
+      rr:class :StatisticalProgramCycle
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :classifiedAsSP-SC ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/statistical-classification/{mk_jenis_statistik}" ;
+      rr:class gsim-sum:StatisticalClassification
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :useExchangeInstrumentSP-EI ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/exchange-instrument/{mk_cara_pengumpulan_data}" ;
+      rr:class gsim:ExchangeInstrumen
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :ownedBySP-Ow ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/owner/{mk_pj_jabatan}" ;
+      rr:class gsim:Owner
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :hasObjective-SP ;
+    rr:objectMap [
+      rr:column "mk_tujuan_kegiatan" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasStatus-SP ;
+    rr:objectMap [
+      rr:column "mk_status" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasId-IA ;
+    rr:objectMap [
+      rr:column "mk_id" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate :heldBySP-O ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/organizations/{mk_produsen_data_name}" ;
+      rr:class gsim:Organisations
+    ]
+  ] .
+
+<#TriplesMap_statistical_program_cicle>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/statistical-program-cycle/{mk_judul_kegiatan}/{mk_tahun_kegiatan}" ;
+    rr:class :StatisticalProgramCycle
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "{mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "{mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+    
+  rr:predicateObjectMap [
+    rr:predicate :includesSPC-BP ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/business-process/{mk_judul_kegiatan}/{mk_tahun_kegiatan}" ;
+      rr:class :BusinessProcess
+    ]
+  ] .
+
+<#TriplesMap_business_procress>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/business-process/{mk_judul_kegiatan}/{mk_tahun_kegiatan}" ;
+    rr:class :BusinessProcess
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Proses Bisnis {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Proses Bisnis {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :hasBP-PS ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/process-step/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-variable-description" ;
+      rr:class :ProcessStep
+    ]
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate :hasBP-PS ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/process-step/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-output" ;
+      rr:class :ProcessStep
+    ]
+  ] .
+
+<#TriplesMap_process_step_2.2>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/process-step/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-variable-description" ;
+    rr:class :ProcessStep
+  ] ;
+
+    rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Process Step - Design Variable Description - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Process Step - Design Variable Description - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :createsPS-PO ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/core-output/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-variable-description" ;
+      rr:class :CoreOutput
+    ]
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate :hasPS-PI ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/core-input/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-variable-description" ;
+      rr:class :CoreInput
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :classifiedAs-PS ;
+    rr:objectMap [
+      rr:template "http://id.unece.org/models/gsbpm/2.2" ;
+      rr:class gsbpm:SubProcess
+    ]
+  ] .
+
+<#TriplesMap_process_step_2.1>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/process-step/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-output" ;
+    rr:class :ProcessStep
+  ] ;
+
+    rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Process Step - Design Output - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Process Step - Design Design Output - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :createsPS-PO ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/core-output/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-output" ;
+      rr:class :CoreOutput
+    ]
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate :hasPS-PI ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/core-input/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-output" ;
+      rr:class :CoreInput
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :classifiedAs-PS ;
+    rr:objectMap [
+      rr:template "http://id.unece.org/models/gsbpm/2.1" ;
+      rr:class gsbpm:SubProcess
+    ]
+  ] .
+
+<#TriplesMap_process_input_2.2>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/core-input/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-variable-description" ;
+    rr:class :CoreInput
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Core Input - Design Variable Description - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Core Input - Design Variable Description - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :refersToCI-IA ;
+    rr:objectMap [
+      rr:parentTriplesMap <#TriplesMap_concept_for_conceptual_variable> ;
+      # rr:template "https://bps.go.id/metadata/sirusa/concept-for-variable/{mv_konsep}" ;
+      # rr:class gsim-sum:Concept
+    ]
+  ] .
+
+<#TriplesMap_process_input_2.1>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/core-input/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-output" ;
+    rr:class :CoreInput
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Core Input - Design Output - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Core Input - Design Output - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :refersToCI-IA ;
+    rr:objectMap [
+      rr:parentTriplesMap <#TriplesMap_concept_for_product> ;
+      # rr:template "https://bps.go.id/metadata/sirusa/concept-for-product/{mi_konsep}" ;
+      # rr:class gsim-sum:Concept      
+    ]
+  ] .
+
+<#TriplesMap_process_output_2.2>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/core-output/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-variable-description" ;
+    rr:class :CoreOutput
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Core Output - Design Variable Description - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Core Output - Design Variable Description - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :refersToCO-IA ;
+    rr:objectMap [
+      rr:parentTriplesMap <#TriplesMap_conceptual_variable> ;
+      # rr:template "https://bps.go.id/metadata/sirusa/conseptual-variable/{mv_nama}" ;
+      # rr:class :ConceptualVariable
+    ]
+  ] .
+
+<#TriplesMap_process_output_2.1>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/core-output/{mk_judul_kegiatan}/{mk_tahun_kegiatan}/design-output" ;
+    rr:class :CoreOutput
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Core Output - Design Output - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Core Output - Design Output - {mk_judul_kegiatan} periode {mk_tahun_kegiatan}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :refersToCO-IA ;
+    rr:objectMap [
+      rr:parentTriplesMap <#TriplesMap_product> ;
+      # rr:template "https://bps.go.id/metadata/sirusa/product/{mi_nama}" ;
+      # rr:class gsim:Product
+    ]
+  ] .
+
+<#TriplesMap_statistical_classification>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/statistical-classification/{mk_jenis_statistik}" ;
+    rr:class gsim-sum:StatisticalClassification
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:column "mk_jenis_statistik" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:column "mk_jenis_statistik" ;
+      rr:datatype xsd:string
+    ]
+  ] .
+
+<#TriplesMap_exchange_instrument>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/exchange-instrument/{mk_cara_pengumpulan_data}" ;
+    rr:class gsim:ExchangeInstrumen
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:column "mk_cara_pengumpulan_data" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:column "mk_cara_pengumpulan_data" ;
+      rr:datatype xsd:string
+    ]
+  ] .
+
+<#TriplesMap_owner>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/owner/{mk_pj_jabatan}" ;
+    rr:class gsim:Owner
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:column "mk_pj_jabatan" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:column "mk_pj_jabatan" ;
+      rr:datatype xsd:string
+    ]
+  ] .
+
+<#TriplesMap_organizations>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/organizations/{mk_produsen_data_name}" ;
+    rr:class gsim:Organisations
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:column "mk_produsen_data_name" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:column "mk_produsen_data_name" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate :hasProvinceCode ;
+    rr:objectMap [
+      rr:column "mk_produsen_data_province_code" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate :hasCityCode ;
+    rr:objectMap [
+      rr:column "mk_produsen_data_city_code" ;
+      rr:datatype xsd:string
+    ]
+  ] .
+
+<#TriplesMap_product>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/product/{mi_nama}" ;
+    rr:class gsim:Product
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Product - {mi_nama}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Product - {mi_nama}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :hasDefinition-P ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/product/{mi_nama}/definition/{mi_definisi}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:isDefinedBy ;
+    rr:objectMap [
+      rr:template "https://bps.go.id/metadata/sirusa/product/{mi_nama}/definition/{mi_definisi}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :hasStatus-P ;
+    rr:objectMap [
+      rr:column "mi_status" ;
+      rr:datatype xsd:string
+    ]
+  ] .
+
+  # rr:predicateObjectMap [
+  #   rr:predicate :usesConceptP-C ;
+  #   rr:objectMap [
+  #     rr:template "https://bps.go.id/metadata/sirusa/concept/{mi_konsep}" ;
+  #     rr:class gsim-sum:Concept
+  #   ]
+  # ] .
+
+<#TriplesMap_concept_for_product>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/concept/{mi_konsep}" ;
+    rr:class gsim-sum:Concept
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Conceptual - {mi_konsep}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Conceptual - {mi_konsep}" ;
+      rr:termType rr:Literal
+    ]
+  ] .
+
+<#TriplesMap_conceptual_variable>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/conseptual-variable/{mv_nama}" ;
+    rr:class :ConceptualVariable
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Conceptual Variable - {mv_nama}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Conceptual Variable - {mv_nama}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:isDefinedBy ;
+    rr:objectMap [
+      rr:column "mv_definisi" ;
+      rr:datatype xsd:string
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate :hasDefinition-C ;
+    rr:objectMap [
+      rr:column "mv_definisi" ;
+      rr:datatype xsd:string
+    ]
+  ] .
+  
+  # rr:predicateObjectMap [
+  #   rr:predicate :usesConceptCV-C ;
+  #   rr:objectMap [
+  #     rr:template "https://bps.go.id/metadata/sirusa/concept/{mv_konsep}" ;
+  #     rr:class gsim-sum:Concept
+  #   ]
+  # ] .
+
+<#TriplesMap_concept_for_conceptual_variable>
+  rr:logicalTable <#SirusaView>;
+
+  rr:subjectMap [
+    rr:template "https://bps.go.id/metadata/sirusa/concept/{mv_konsep}" ;
+    rr:class gsim-sum:Concept
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate gsim-sum:hasName-IA ;
+    rr:objectMap [
+      rr:template "Concept - {mv_konsep}" ;
+      rr:termType rr:Literal
+    ]
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [
+      rr:template "Concept - {mv_konsep}" ;
+      rr:termType rr:Literal
+    ]
+  ] .

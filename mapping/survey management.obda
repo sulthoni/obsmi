@@ -1,0 +1,139 @@
+[PrefixDeclaration]
+:		https://w3id.org/sdp/core#
+cc:		https://creativecommons.org/ns/
+dc:		http://purl.org/dc/elements/1.1/
+gn:		http://www.geonames.org/ontology#
+dct:		http://purl.org/dc/terms/
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+cspa:		http://rdf.unece.org/models/cspa#
+dcat:		http://www.w3.org/TR/vocab-dcat/
+foaf:		http://xmlns.com/foaf/0.1/
+gsim:		http://rdf.unece.org/models/gsim#
+obda:		https://w3id.org/obda/vocabulary#
+prov:		http://www.w3.org/ns/prov#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+skos:		http://www.w3.org/2004/02/skos/core#
+xkos:		http://rdf-vocabulary.ddialliance.org/xkos#
+gamso:		http://rdf.unece.org/models/gamso#
+gsbpm:		http://rdf.unece.org/models/gsbpm#
+icspa:		http://id.unece.org/models/cspa/services/
+id-ps:		https://www.bps.go.id/survey/population-census#
+colsys:		https://bps.go.id/metadata/collection-system/
+igamso:		http://id.unece.org/models/gamso/
+igsbpm:		http://id.unece.org/models/gsbpm/
+kshrts:		https://www.ksh.hu/survey/retail-trade-statistics#
+gsim-sum:	https://w3id.org/italia/onto/gsim-sum#
+
+[MappingDeclaration] @collection [[
+mappingId	TriplesMap_statistical_program_and_statistical_program_cycle
+target		colsys:statistical-program/{s_id} a :StatisticalProgram ; :hasSP-SPC colsys:statistical-program-cycle/{s_id}/{sp_id} ; rdfs:label {s_name}^^xsd:string ; gsim-sum:hasDescription-IA {s_description}^^xsd:string ; gsim-sum:hasName-IA {s_name}^^xsd:string ; gsim-sum:hasId-IA {s_id}^^xsd:string . colsys:statistical-program-cycle/{s_id}/{sp_id} a :StatisticalProgramCycle ; rdfs:label {sp_name}^^xsd:string ; gsim-sum:hasName-IA {sp_name}^^xsd:string ; :hasDateStarted-SPC {sp_start_date}^^xsd:date ; :hasDateEnded-SPC {sp_end_date}^^xsd:date ; :createdAt-IA {sp_created_at}^^xsd:dateTime ; :updatedAt-IA {sp_updated_at}^^xsd:dateTime ; :includesSPC-BP colsys:business-process/{s_id}/{sp_id} . colsys:business-process/{s_id}/{sp_id} a :BusinessProcess ; :hasBP-PS colsys:process-step/{s_id}/{sp_id}/build-collection-instrument ; rdfs:label "Bisnis Proses {s_name} periode {sp_name}"^^xsd:string . colsys:process-step/{s_id}/{sp_id}/build-collection-instrument a :ProcessStep ; :classifiedAs-PS igsbpm:3.1 ; :hasPS-PI colsys:core-input/{s_id}/{sp_id}/build-collection-instrument ; :createsPS-PO colsys:core-output/{s_id}/{sp_id}/build-collection-instrument ; rdfs:label "Process Step - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; gsim-sum:hasName-IA "Process Step - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; :hasStartTime-PS {s_created_at}^^xsd:dateTime . colsys:core-input/{s_id}/{sp_id}/build-collection-instrument a :CoreInput ; rdfs:label "Core Input - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; gsim-sum:hasName-IA "Core Input - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string . colsys:core-output/{s_id}/{sp_id}/build-collection-instrument a :CoreOutput ; rdfs:label "Core Output - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; gsim-sum:hasName-IA "Core Output - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string . 
+source		Select
+			s.id s_id,
+			s.unit s_unit,
+			s.name s_name,
+			s.description s_description,
+			s.program_id s_program_id,
+			s.user_id s_user_id,
+			s.is_active s_is_active,
+			s.panel_type s_panel_type,
+			s.area_type s_area_type,
+			s.update_listing_type s_update_listing_type,
+			s.can_add_sample s_can_add_sample,
+			s.is_multi_pencacah s_is_multi_pencacah,
+			s.geo_live_tracking s_geo_live_tracking,
+			s.geo_radius s_geo_radius,
+			s.geo_accuracy s_geo_accuracy,
+			s.survey_sample_method_id s_survey_sample_method_id,
+			s.survey_step_type_id s_survey_step_type_id,
+			s.survey_parent_id s_survey_parent_id,
+			s.cawi_token_auto_generated s_cawi_token_auto_generated,
+			s.html s_html,
+			s.html_email s_html_email,
+			s.image_service_type s_image_service_type,
+			s.image_service_url s_image_service_url,
+			s.created_at s_created_at,
+			s.updated_at s_updated_at,
+			s.region_group_id s_region_group_id,
+			s.survey_type s_survey_type,
+			s.background_record s_background_record,
+			s.smallest_region_type s_smallest_region_type,
+			s.ocawi_alias s_ocawi_alias,
+			s.cawi_authentication_link s_cawi_authentication_link,
+			s.papi_validation_type s_papi_validation_type,
+			s.collection_method s_collection_method,
+			s.path_offline_pdf_template s_path_offline_pdf_template,
+			s.type_role s_type_role,
+			s.show_cawi_receipt s_show_cawi_receipt,
+			s.cawi_max_access s_cawi_max_access,
+			s.html_received s_html_received,
+			s.form_gear_version s_form_gear_version,
+			s.html_rejection_email s_html_rejection_email,
+			s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
+			sp.id sp_id,
+			sp.name sp_name,
+			sp.survey_id sp_survey_id,
+			sp.start_date sp_start_date,
+			sp.end_date sp_end_date,
+			sp.created_at sp_created_at,
+			sp.updated_at sp_updated_at,
+			sp.is_active sp_is_active,
+			sp.sample_method_id sp_sample_method_id
+			FROM
+			survey.surveys s INNER JOIN survey.survey_periods sp
+			ON s.id = sp.survey_id
+
+mappingId	TriplesMap_coreoutput_questionnaire
+target		colsys:questionnaire/{questionnaire_id} a gsim:Questionnaire ; gsim-sum:hasName-IA {questionnaire_name}^^xsd:string ; gsim-sum:hasId-IA {questionnaire_id}^^xsd:string ; :createdAt-IA {created_at}^^xsd:dateTime ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :hasVersion-IA {questionnaire_version}^^xsd:string ; rdfs:label {questionnaire_name}^^xsd:string . colsys:core-output/{survey_id}/{survey_periode_id}/build-collection-instrument :refersToCO-IA colsys:questionnaire/{questionnaire_id} . 
+source		SELECT DISTINCT
+			st.survey_id survey_id,
+			sp.id survey_periode_id,
+			st.template_id questionnaire_id,
+			st.survey_template_name questionnaire_name,
+			st.template_version questionnaire_version,
+			st.validation_version validation_version,
+			st.created_at created_at,
+			st.updated_at updated_at
+			FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+
+mappingId	TriplesMap_coreinput_role
+target		colsys:role/{sr_id} a gsim:Role ; gsim-sum:hasName-IA "Role - {sr_description}"^^xsd:string ; rdfs:label "Role - {sr_description}"^^xsd:string . colsys:agent-in-role/{spru_id} a gsim-sum:AgentInRole ; gsim-sum:hasName-IA "Agent in Role - {sr_description}"^^xsd:string ; rdfs:label "Agent in Role - {sr_description}"^^xsd:string . colsys:individual/{spru_user_id} a gsim:Individual ; gsim-sum:hasName-IA "Individual - {sr_description}"^^xsd:string ; rdfs:label "Individual - {sr_description}"^^xsd:string . colsys:core-input/{s_id}/{sp_id}/build-collection-instrument :refersToCI-IA colsys:role/{sr_id} , colsys:individual/{spru_user_id} . colsys:core-output/{s_id}/{sp_id}/build-collection-instrument :refersToCO-IA colsys:agent-in-role/{spru_id} . 
+source		SELECT
+			sr.id sr_id,
+			sr.sequence sr_sequence,
+			sr.description sr_description,
+			sr.survey_role_group_id sr_survey_role_group_id,
+			sr.is_approving sr_is_approving,
+			sr.smallest_area_order sr_smallest_area_order,
+			sr.can_draw_sample sr_can_draw_sample,
+			sr.created_at sr_created_at,
+			sr.updated_at sr_updated_at,
+			sr.survey_id sr_survey_id,
+			sr.is_pencacah sr_is_pencacah,
+			sr.can_edit sr_can_edit,
+			sr.can_change_mode sr_can_change_mode,
+			sr.admin_ticket sr_admin_ticket,
+			sr.can_access_ticket sr_can_access_ticket,
+			sr.can_delete_sample sr_can_delete_sample,
+			sr.can_transfer_sample sr_can_transfer_sample,
+			spru.id spru_id,
+			spru.user_id spru_user_id,
+			spru.survey_role_id spru_survey_role_id,
+			spru.survey_period_id spru_survey_period_id,
+			spru.created_at spru_created_at,
+			spru.updated_at spru_updated_at,
+			spru.region_id spru_region_id,
+			sp.id sp_id,
+			s.id s_id
+			FROM survey.survey_period_role_users spru JOIN survey.survey_roles sr ON spru.survey_role_id = sr.id
+			JOIN survey.survey_periods sp ON sp.id = spru.survey_period_id
+			JOIN survey.surveys s ON s.id = sp.survey_id
+
+mappingId	TriplesMap_individual
+target		colsys:individual/{id} a gsim:Individual ; gsim-sum:hasName-IA "Individual - {username}"^^xsd:string ; rdfs:label "Individual - {username}"^^xsd:string . 
+source		SELECT *
+			FROM dbo.users
+]]
+
