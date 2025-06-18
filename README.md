@@ -4,11 +4,39 @@
 
 [Description](#description)  
 [Design](#design)  
+[Setup Environment](#setup)
 [Evaluation](#evaluation)
 
 ## Description
 
+Ontology-Based Statistical Metadata Integration (OBSMI) is a framework that leverages semantic web technologies to harmonize statistical metadata across multiple supporting systems in accordance with international standards. Built upon the Statistical Data Production Ontology (SDPO), OBSMI adopts a hybrid Ontology-Based Data Integration (OBDI) approach that combines a shared vocabulary with local semantic flexibility, making it particularly suitable for addressing the complex needs of National Statistical Offices (NSOs).
+
 ## Design
+
+![alt text](/images/OBSMI%20design.png)
+
+The components of the OBSMI framework consist of the following:
+
+- Existing ontologies, documents, data models, and process models serve as inputs and foundations for constructing the Shared Vocabulary.
+- Shared Vocabulary (Statistical Data Production Ontology), the core component of the OBSMI framework. It refers to a global ontology encompassing a domain's fundamental concepts. The Statistical Data Production Ontology (SDPO) serves as a foundation for developing local statistical ontologies. As a result, local statistical ontologies can be semantically and structurally aligned by relying on a common foundational ontology.
+- Satistical metadata sources refer to the repository of statistical metadata from supporting software or systems of the statistical data production process. These sources may be structured (e.g., relational databases, tabular files), semi-structured (e.g., XML, JSON), or exposed as endpoints (e.g., REST APIs, SPARQL endpoints).
+- The result of Data Source Analysis contains the analysis of the schema and structure of the data sources, as well as the identification of column and table mappings from the data sources to the shared vocabulary.
+- Local statistical ontologies, which represent the context and semantic meaning of each statistical metadata source. Local statistical ontologies can include more specific and detailed concepts compared to the SDPO, allowing for richer and more granular ontology structures.
+- Wrappers or connectors, components designed to facilitate data access from the respective data sources. Each wrapper or connector is unique and tailored to the specific type and technology of the underlying statistical metadata source.
+- Triplestores for Statistical Knowledge Graph, which store statistical metadata in RDF format according to each local statistical ontology and statistical metadata source. A triplestore is necessary when entity resolution is required, as the results of the resolution process must be stored for further querying and integration. However, the triplestore can be omitted if no such resolution is needed, allowing direct data access from the source using a format consistent with the local ontology. The triplestores also serve as SPARQL endpoint, an interface that enables querying of statistical metadata already transformed into RDF and stored in a triplestore
+
+The OBSMI framework consists of six main processes as follows:
+
+1. Development of Shared Vocabulary for Statistical Metadata
+2. Data Source Analysis and Construction of Local Statistical Ontology
+3. Mapping Creation of Statistical Knowledge Graph
+4. Statistical Knowledge Graph Population
+5. Entity Resolution on Statistical Knowledge Graph Instances
+6. Federated Querying over Distributed Statistical KG
+
+## Setup Environment
+
+The evaluation environment was set up using Apache Jena Fuseki. The [docker](https://github.com/sulthoni/obsmi/tree/main/docker) folder includes the datasets and step-by-step instructions for building the Docker container.
 
 ## Evaluation
 
@@ -337,9 +365,67 @@ Result
 
 #### CQ6. Can the processes in statistical data production be audited?
 
+_Activity logs are only available for the Build Collection Instruments process. Therefore, in this evaluation, logs are presented solely for that process._
+
+```SQL
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX gsim-sum: <https://w3id.org/italia/onto/gsim-sum#>
+PREFIX gsim: <http://rdf.unece.org/models/gsim#>
+PREFIX colsys: <https://bps.go.id/metadata/collection-system/>
+PREFIX : <https://w3id.org/sdp/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT DISTINCT ?StatisticalProgramName ?StatisticalProgramCycleName ?BusinessProcess ?ProcessStepName ?MetadataOutput ?LogData WHERE {
+  {
+    # From dataset Statistical metadata for dissemination
+    SERVICE <http://127.0.0.1:3030/sirusa/sparql> {
+      ?StatisticalProgram a :StatisticalProgram ; gsim-sum:hasName-IA ?StatisticalProgramName .
+      ?StatisticalProgram :hasSP-SPC ?StatisticalProgramCycle .
+      ?StatisticalProgramCycle gsim-sum:hasName-IA ?StatisticalProgramCycleName .
+      ?StatisticalProgramCycle :includesSPC-BP ?BusinessProcess .
+      ?BusinessProcess :hasBP-PS ?ProcessStep .
+      ?ProcessStep rdfs:label ?ProcessStepName .
+      ?ProcessStep :createsPS-PO ?ProcessExecutionLog .
+      ?ProcessExecutionLog :refersToCO-IA ?MetadataOutput.
+      ?MetadataOutput a :ProcessExecutionLog .
+      ?MetadataOutput gsim-sum:hasExecutionLog ?LogData .
+      FILTER(?StatisticalProgram IN (<https://bps.go.id/metadata/sirusa/statistical-program/Survei%20Angkatan%20Kerja%20Nasional%20%28SAKERNAS%29>)) .
+      BIND("Sistem Rujukan Statistik" as ?ApplicationPackage) .
+    }
+  }
+  UNION
+  {
+    #From dataset Survey management
+      ?StatisticalProgram_CollectionSystem a :StatisticalProgram ; gsim-sum:hasName-IA ?StatisticalProgramName .
+      ?StatisticalProgram :hasSP-SPC ?StatisticalProgramCycle .
+      ?StatisticalProgramCycle gsim-sum:hasName-IA ?StatisticalProgramCycleName .
+      ?StatisticalProgramCycle :includesSPC-BP ?BusinessProcess .
+      ?BusinessProcess :hasBP-PS ?ProcessStep .
+      ?ProcessStep rdfs:label ?ProcessStepName .
+      ?ProcessStep :createsPS-PO ?ProcessExecutionLog .
+      ?ProcessExecutionLog :refersToCO-IA ?MetadataOutput.
+      ?MetadataOutput a :ProcessExecutionLog .
+      ?MetadataOutput gsim-sum:hasExecutionLog ?LogData .
+
+      #Filter by owl:sameAs
+      ?StatisticalProgram owl:sameAs ?StatisticalProgram_CollectionSystem .
+  }
+
+}
+LIMIT 100
+```
+
+Result
+|StatisticalProgramName |StatisticalProgramCycleName|BusinessProcess |ProcessStepName |MetadataOutput |LogData |
+|-----------------------------|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|SAKERNAS 2024 FEB - PENDATAAN|Februari 2024 |https://bps.go.id/metadata/collection-system/business-process/903c27f9-3f93-41e0-9333-f261f43582db/07d004dc-9c61-448d-a1b7-b275b60fac5d|Process Step - Build Collection Instrument - SAKERNAS 2024 FEB - PENDATAAN periode Februari 2024|https://bps.go.id/metadata/collection-system/process-execution-log/903c27f9-3f93-41e0-9333-f261f43582db/07d004dc-9c61-448d-a1b7-b275b60fac5d|{"s_id":"903c27f9-3f93-41e0-9333-f261f43582db","sp_id":"07d004dc-9c61-448d-a1b7-b275b60fac5d","s_panel_type":false,"s_area_type":false,"s_update_listing_type":false,"s_can_add_sample":false,"s_is_multi_pencacah":false,"s_geo_live_tracking":false,"s_geo_radius":0,"s_geo_accuracy":50,"s_created_at":"2024-01-27T06:04:15.4486850","s_updated_at":"2024-02-06T10:29:38.0291640","note":"- Kuesioner CAPI sudah dibuat dan diujicoba - Role petugas sudah dibuat - Rule validasi perlu dipertajam"}|
+
 #### CQ7. Is the design or planned process always consistent with the actual process execution?
 
-To answer this question, it is necessary to compare the concepts and definitions from the planning phase with their implementation in the questionnaire. In this example, the comparison involves the planning phase results obtained from CQ2 and CQ3, which are then compared with the implementation results obtained through the following SPARQL query.
+_To answer this question, it is necessary to compare the concepts and definitions from the planning phase with their implementation in the questionnaire. In this example, the comparison involves the planning phase results obtained from CQ2 and CQ3, which are then compared with the implementation results obtained through the following SPARQL query._
 
 ```SQL
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -402,3 +488,60 @@ Result (Part of Results)
 |SAKERNAS 2024 FEB - PENDATAAN |Questionnaire SAKERNAS FEB 2024 - PENDATAAN_uc_final |Instance Question Block - V.2. MAGANG, DISABILITAS, DAN KONSEP BEKERJA (5TH+)|Instance question - <span class="font-normal">11.c. Sudah berapa lama <b>$NAME$</b> sementara tidak bekerja? </span>|
 |SAKERNAS 2024 FEB - PENDATAAN |Questionnaire SAKERNAS FEB 2024 - PENDATAAN_uc_final |Instance Question Block - V.2. MAGANG, DISABILITAS, DAN KONSEP BEKERJA (5TH+)|Instance question - <span class="font-normal">11.d. Apakah ada jaminan <b>$NAME$</b> kembali bekerja pada unit usaha/tempat kerja sekarang? </span>|
 |SAKERNAS 2024 FEB - PENDATAAN |Questionnaire SAKERNAS FEB 2024 - PENDATAAN_uc_final |Instance Question Block - V.2. MAGANG, DISABILITAS, DAN KONSEP BEKERJA (5TH+)|Instance question - <span class="font-normal">6.i. Memperoleh sertifikat:</span> |
+
+#### CQ8. What applications can be used to assist processes in statistical data production?
+
+_The name of the application associated with each process is inferred based on the application linked to the corresponding dataset. Since this information is not explicitly available within the dataset, it was manually added to the SPARQL query based on the known source of the data._
+
+```SQL
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX gsim-sum: <https://w3id.org/italia/onto/gsim-sum#>
+PREFIX gsim: <http://rdf.unece.org/models/gsim#>
+PREFIX colsys: <https://bps.go.id/metadata/collection-system/>
+PREFIX : <https://w3id.org/sdp/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT DISTINCT ?StatisticalProgramName ?StatisticalProgramCycleName ?BusinessProcess ?ProcessStepName ?GSBPM_code ?ApplicationPackage WHERE {
+  {
+    # From dataset Statistical metadata for dissemination
+    SERVICE <http://127.0.0.1:3030/sirusa/sparql> {
+      ?StatisticalProgram a :StatisticalProgram ; gsim-sum:hasName-IA ?StatisticalProgramName .
+      ?StatisticalProgram :hasSP-SPC ?StatisticalProgramCycle .
+      ?StatisticalProgramCycle gsim-sum:hasName-IA ?StatisticalProgramCycleName .
+      ?StatisticalProgramCycle :includesSPC-BP ?BusinessProcess .
+      ?BusinessProcess :hasBP-PS ?ProcessStep .
+      ?ProcessStep rdfs:label ?ProcessStepName .
+      ?ProcessStep :classifiedAs-PS ?GSBPM_code .
+      FILTER(?StatisticalProgram IN (<https://bps.go.id/metadata/sirusa/statistical-program/Survei%20Angkatan%20Kerja%20Nasional%20%28SAKERNAS%29>)) .
+      BIND("Sistem Rujukan Statistik" as ?ApplicationPackage) .
+    }
+  }
+  UNION
+  {
+    #From dataset Survey management
+      ?StatisticalProgram_CollectionSystem a :StatisticalProgram ; gsim-sum:hasName-IA ?StatisticalProgramName .
+      ?StatisticalProgram :hasSP-SPC ?StatisticalProgramCycle .
+      ?StatisticalProgramCycle gsim-sum:hasName-IA ?StatisticalProgramCycleName .
+      ?StatisticalProgramCycle :includesSPC-BP ?BusinessProcess .
+      ?BusinessProcess :hasBP-PS ?ProcessStep .
+      ?ProcessStep rdfs:label ?ProcessStepName .
+      ?ProcessStep :classifiedAs-PS ?GSBPM_code .
+      BIND("Collection System" as ?ApplicationPackage) .
+
+      #Filter by owl:sameAs
+      ?StatisticalProgram owl:sameAs ?StatisticalProgram_CollectionSystem .
+  }
+
+}
+LIMIT 100
+```
+
+Result
+|StatisticalProgramName |StatisticalProgramCycleName |BusinessProcess |ProcessStepName |GSBPM_code |ApplicationPackage |
+|-----------------------------------------|------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|------------------------------------|------------------------|
+|Survei Angkatan Kerja Nasional (SAKERNAS)|Survei Angkatan Kerja Nasional (SAKERNAS) periode 2024|https://bps.go.id/metadata/sirusa/business-process/Survei%20Angkatan%20Kerja%20Nasional%20%28SAKERNAS%29/2024 |Process Step - Design Variable Description - Survei Angkatan Kerja Nasional (SAKERNAS) periode 2024|http://id.unece.org/models/gsbpm/2.2|Sistem Rujukan Statistik|
+|Survei Angkatan Kerja Nasional (SAKERNAS)|Survei Angkatan Kerja Nasional (SAKERNAS) periode 2024|https://bps.go.id/metadata/sirusa/business-process/Survei%20Angkatan%20Kerja%20Nasional%20%28SAKERNAS%29/2024 |Process Step - Design Design Output - Survei Angkatan Kerja Nasional (SAKERNAS) periode 2024 |http://id.unece.org/models/gsbpm/2.1|Sistem Rujukan Statistik|
+|SAKERNAS 2024 FEB - PENDATAAN |Februari 2024 |https://bps.go.id/metadata/collection-system/business-process/903c27f9-3f93-41e0-9333-f261f43582db/07d004dc-9c61-448d-a1b7-b275b60fac5d|Process Step - Build Collection Instrument - SAKERNAS 2024 FEB - PENDATAAN periode Februari 2024 |http://id.unece.org/models/gsbpm/3.1|Collection System |

@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  fuseki:
+    build: .
+    container_name: jena-fuseki-tdb2
+    ports:
+      - "3030:3030"
+    volumes:
+      # Mount your TTL configuration files
+      - ./config:/fuseki-base/configuration
+      # Mount TDB2 data directory for persistence
+      - ./tdb2-dataset:/fuseki-base/databases/tdb2-dataset
+      # Mount logs directory
+      - ./logs:/fuseki-base/logs
+    environment:
+      - JAVA_OPTIONS=-Xmx2g -Xms1g
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3030/$/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
