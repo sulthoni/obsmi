@@ -1,4 +1,5 @@
 [PrefixDeclaration]
+rr:		http://www.w3.org/ns/r2rml#
 :		https://w3id.org/sdp/core#
 cc:		https://creativecommons.org/ns/
 dc:		http://purl.org/dc/elements/1.1/
@@ -25,116 +26,1480 @@ colsys:		https://bps.go.id/metadata/collection-system/
 igamso:		http://id.unece.org/models/gamso/
 igsbpm:		http://id.unece.org/models/gsbpm/
 kshrts:		https://www.ksh.hu/survey/retail-trade-statistics#
+rml:		http://semweb.mmlab.be/ns/rml#
+ql:		http://semweb.mmlab.be/ns/ql#
 gsim-sum:	https://w3id.org/italia/onto/gsim-sum#
 
 [MappingDeclaration] @collection [[
-mappingId	TriplesMap_statistical_program_and_statistical_program_cycle
-target		colsys:statistical-program/{s_id} a :StatisticalProgram ; :hasSP-SPC colsys:statistical-program-cycle/{s_id}/{sp_id} ; rdfs:label {s_name}^^xsd:string ; gsim-sum:hasDescription-IA {s_description}^^xsd:string ; gsim-sum:hasName-IA {s_name}^^xsd:string ; gsim-sum:hasId-IA {s_id}^^xsd:string . colsys:statistical-program-cycle/{s_id}/{sp_id} a :StatisticalProgramCycle ; rdfs:label {sp_name}^^xsd:string ; gsim-sum:hasName-IA {sp_name}^^xsd:string ; :hasDateStarted-SPC {sp_start_date}^^xsd:date ; :hasDateEnded-SPC {sp_end_date}^^xsd:date ; :createdAt-IA {sp_created_at}^^xsd:dateTime ; :updatedAt-IA {sp_updated_at}^^xsd:dateTime ; :includesSPC-BP colsys:business-process/{s_id}/{sp_id} . colsys:business-process/{s_id}/{sp_id} a :BusinessProcess ; :hasBP-PS colsys:process-step/{s_id}/{sp_id}/build-collection-instrument ; rdfs:label "Bisnis Proses {s_name} periode {sp_name}"^^xsd:string . colsys:process-step/{s_id}/{sp_id}/build-collection-instrument a :ProcessStep ; :classifiedAs-PS igsbpm:3.1 ; :hasPS-PI colsys:core-input/{s_id}/{sp_id}/build-collection-instrument ; :createsPS-PO colsys:core-output/{s_id}/{sp_id}/build-collection-instrument , colsys:core-output/{s_id}/{sp_id}/process-execution-log ; rdfs:label "Process Step - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; gsim-sum:hasName-IA "Process Step - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; :hasStartTime-PS {s_created_at}^^xsd:dateTime . colsys:core-input/{s_id}/{sp_id}/build-collection-instrument a :CoreInput ; rdfs:label "Core Input - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; gsim-sum:hasName-IA "Core Input - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string . colsys:core-output/{s_id}/{sp_id}/build-collection-instrument a :CoreOutput ; rdfs:label "Core Output - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; gsim-sum:hasName-IA "Core Output - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string . colsys:core-output/{s_id}/{sp_id}/process-execution-log a :CoreOutput ; rdfs:label "Core Output - Process Execution Log"^^xsd:string ; gsim-sum:hasName-IA "Core Output - Process Execution Log"^^xsd:string ; :refersToCO-IA colsys:process-execution-log/{s_id}/{sp_id} . colsys:process-execution-log/{s_id}/{sp_id} a :ProcessExecutionLog ; gsim-sum:hasExecutionLog {sp_log}^^xsd:string . 
-source		Select
-			s.id s_id,
-			s.unit s_unit,
-			s.name s_name,
-			s.description s_description,
-			s.program_id s_program_id,
-			s.user_id s_user_id,
-			s.is_active s_is_active,
-			s.panel_type s_panel_type,
-			s.area_type s_area_type,
-			s.update_listing_type s_update_listing_type,
-			s.can_add_sample s_can_add_sample,
-			s.is_multi_pencacah s_is_multi_pencacah,
-			s.geo_live_tracking s_geo_live_tracking,
-			s.geo_radius s_geo_radius,
-			s.geo_accuracy s_geo_accuracy,
-			s.survey_sample_method_id s_survey_sample_method_id,
-			s.survey_step_type_id s_survey_step_type_id,
-			s.survey_parent_id s_survey_parent_id,
-			s.cawi_token_auto_generated s_cawi_token_auto_generated,
-			s.html s_html,
-			s.html_email s_html_email,
-			s.image_service_type s_image_service_type,
-			s.image_service_url s_image_service_url,
-			s.created_at s_created_at,
-			s.updated_at s_updated_at,
-			s.region_group_id s_region_group_id,
-			s.survey_type s_survey_type,
-			s.background_record s_background_record,
-			s.smallest_region_type s_smallest_region_type,
-			s.ocawi_alias s_ocawi_alias,
-			s.cawi_authentication_link s_cawi_authentication_link,
-			s.papi_validation_type s_papi_validation_type,
-			s.collection_method s_collection_method,
-			s.path_offline_pdf_template s_path_offline_pdf_template,
-			s.type_role s_type_role,
-			s.show_cawi_receipt s_show_cawi_receipt,
-			s.cawi_max_access s_cawi_max_access,
-			s.html_received s_html_received,
-			s.form_gear_version s_form_gear_version,
-			s.html_rejection_email s_html_rejection_email,
-			s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
-			sp.id sp_id,
-			sp.name sp_name,
-			sp.survey_id sp_survey_id,
-			sp.start_date sp_start_date,
-			sp.end_date sp_end_date,
-			sp.created_at sp_created_at,
-			sp.updated_at sp_updated_at,
-			sp.is_active sp_is_active,
-			sp.sample_method_id sp_sample_method_id,
-			sp.log sp_log
-			FROM
-			survey.surveys s INNER JOIN survey.survey_periods sp
-			ON s.id = sp.survey_id
-
-mappingId	TriplesMap_coreoutput_questionnaire
-target		colsys:questionnaire/{questionnaire_id} a gsim:Questionnaire ; gsim-sum:hasName-IA {questionnaire_name}^^xsd:string ; gsim-sum:hasId-IA {questionnaire_id}^^xsd:string ; :createdAt-IA {created_at}^^xsd:dateTime ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :hasVersion-IA {questionnaire_version}^^xsd:string ; rdfs:label {questionnaire_name}^^xsd:string . colsys:core-output/{survey_id}/{survey_periode_id}/build-collection-instrument :refersToCO-IA colsys:questionnaire/{questionnaire_id} . 
-source		SELECT DISTINCT
-			st.survey_id survey_id,
-			sp.id survey_periode_id,
-			st.template_id questionnaire_id,
-			st.survey_template_name questionnaire_name,
-			st.template_version questionnaire_version,
-			st.validation_version validation_version,
-			st.created_at created_at,
-			st.updated_at updated_at
-			FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
-
-mappingId	TriplesMap_coreinput_role
-target		colsys:role/{sr_id} a gsim:Role ; gsim-sum:hasName-IA "Role - {sr_description}"^^xsd:string ; rdfs:label "Role - {sr_description}"^^xsd:string . colsys:agent-in-role/{spru_id} a gsim-sum:AgentInRole ; gsim-sum:hasName-IA "Agent in Role - {sr_description}"^^xsd:string ; rdfs:label "Agent in Role - {sr_description}"^^xsd:string . colsys:individual/{spru_user_id} a gsim:Individual ; gsim-sum:hasName-IA "Individual - {sr_description}"^^xsd:string ; rdfs:label "Individual - {sr_description}"^^xsd:string . colsys:core-input/{s_id}/{sp_id}/build-collection-instrument :refersToCI-IA colsys:role/{sr_id} , colsys:individual/{spru_user_id} . colsys:core-output/{s_id}/{sp_id}/build-collection-instrument :refersToCO-IA colsys:agent-in-role/{spru_id} . 
+mappingId	mapping-2071114218
+target		colsys:datastructure/finalise-data-files/{et_id} a gsim-sum:DataStructure ; gsim-sum:hasName-IA "Data Structure - Finalise Data Files - Template ID: {et_template_id} - Version: {et_template_version} - Validation Version: {et_validation_version}"^^xsd:string . 
 source		SELECT
-			sr.id sr_id,
-			sr.sequence sr_sequence,
-			sr.description sr_description,
-			sr.survey_role_group_id sr_survey_role_group_id,
-			sr.is_approving sr_is_approving,
-			sr.smallest_area_order sr_smallest_area_order,
-			sr.can_draw_sample sr_can_draw_sample,
-			sr.created_at sr_created_at,
-			sr.updated_at sr_updated_at,
-			sr.survey_id sr_survey_id,
-			sr.is_pencacah sr_is_pencacah,
-			sr.can_edit sr_can_edit,
-			sr.can_change_mode sr_can_change_mode,
-			sr.admin_ticket sr_admin_ticket,
-			sr.can_access_ticket sr_can_access_ticket,
-			sr.can_delete_sample sr_can_delete_sample,
-			sr.can_transfer_sample sr_can_transfer_sample,
-			spru.id spru_id,
-			spru.user_id spru_user_id,
-			spru.survey_role_id spru_survey_role_id,
-			spru.survey_period_id spru_survey_period_id,
-			spru.created_at spru_created_at,
-			spru.updated_at spru_updated_at,
-			spru.region_id spru_region_id,
-			sp.id sp_id,
-			s.id s_id
-			FROM survey.survey_period_role_users spru JOIN survey.survey_roles sr ON spru.survey_role_id = sr.id
-			JOIN survey.survey_periods sp ON sp.id = spru.survey_period_id
-			JOIN survey.surveys s ON s.id = sp.survey_id
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      data_extraction.extraction_template et  
+			      JOIN data_extraction.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN data_extraction.extraction_column ec ON etab.id = ec.extraction_table_id
 
-mappingId	TriplesMap_individual
-target		colsys:individual/{id} a gsim:Individual ; gsim-sum:hasName-IA "Individual - {username}"^^xsd:string ; rdfs:label "Individual - {username}"^^xsd:string . 
-source		SELECT *
-			FROM dbo.users
+mappingId	mapping--982708374
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/role/{id}> a gsim:Role ; rdfs:label "Role - {name}"^^xsd:string . 
+source		SELECT * FROM dbo.roles
+
+mappingId	mapping--1024629244
+target		colsys:process-step/{s_id}/{sp_id}/create-sample-frame-and-select-sample a :ProcessStep ; :hasPS-PI colsys:parameter-input/{s_id}/{sp_id}/create-sample-frame-and-select-sample/{sic_id} , colsys:process-support-input/{s_id}/{sp_id}/create-sample-frame-and-select-sample/{ssf_id} , colsys:parameter-input/{s_id}/{sp_id}/create-sample-frame-and-select-sample/{sisrl_id} , colsys:parameter-input/{s_id}/{sp_id}/create-sample-frame-and-select-sample/{simc_id} . 
+source		SELECT 
+			      s.id s_id,
+			      s.name s_name,
+			      s.description s_description,
+			      s.survey_sample_method_id s_survey_sample_method_id,
+			      sp.id sp_id,
+			      sm.id sm_id,
+			      sm.name sm_name,
+			      sm.sample_input_script_id sm_sample_input_script_id,
+			      sm.sample_stratify_level_id sm_sample_stratify_level_id,
+			      sm.r_method sm_r_method,
+			      sm.total_output sm_total_output,
+			      sm.user_id sm_user_id,
+			      sm.is_active sm_is_active,
+			      sm.created_at sm_created_at,
+			      sm.updated_at sm_updated_at,
+			      sis.id sis_id,
+			      sis.name sis_name,
+			      sis.query_input sis_query_input,
+			      sis.testing_input_survey_id sis_testing_input_survey_id,
+			      sis.testing_input_survey_period_id sis_testing_input_survey_period_id,
+			      ssf.id ssf_id,
+			      ssf.name ssf_name,
+			      ssf.file_path ssf_file_path,
+			      ssf.created_at ssf_created_at,
+			      ssf.updated_at ssf_updated_at,
+			      sic.id sic_id,
+			      sic.field sic_field,
+			      sic.entity sic_entity,
+			      sic.alias sic_alias,
+			      sic.description sic_description,
+			      sic.order_input_column sic_order_input_column,
+			      ssl.id ssl_id,
+			      ssl.name ssl_name,
+			      ssl.info ssl_info,
+			      sisrl.id sisrl_id,
+			      sisrl.roster_name sisrl_roster_name,
+			      sisrl.roster_level sisrl_roaster_level,
+			      simc.id simc_id,
+			      simc.field simc_field,
+			      simc.entity simc_entity,
+			      simc.alias simc_alias,
+			      simc.description simc_description,
+			      simc.order_input_master simc_order_input_master
+			    FROM 
+			      survey.surveys s JOIN survey.survey_periods sp ON s.id = sp.survey_id 
+			      JOIN sample.sample_methods sm ON s.survey_sample_method_id = sm.id 
+			      JOIN sample.sample_input_scripts sis ON sis.id = sm.sample_input_script_id 
+			      JOIN sample.sample_input_columns sic ON sic.sample_input_script_id = sic.id 
+			      JOIN sample.sample_support_files ssf ON sm.id = ssf.sample_method_id 
+			      JOIN sample.sample_input_script_roster_levels sisrl ON sisrl.sample_input_script_id = sic.id 
+			      JOIN sample.sample_stratify_levels ssl ON ssl.id = sm.sample_stratify_level_id 
+			      JOIN sample.sample_input_master_columns simc ON simc.id = sic.sample_input_master_column_id
+
+mappingId	mapping--25777248
+target		colsys:data-structure-component/finalise-data-files/table/{etab_id} a gsim-sum:DataStructureComponent ; gsim-sum:hasDescription-IA "Roster Level: {etab_roster_level}"^^xsd:string ; gsim-sum:hasName-IA "Data Structure Component - Finalise Data Files - Table Name: {etab_name}"^^xsd:string . 
+source		SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      data_extraction.extraction_template et  
+			      JOIN data_extraction.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN data_extraction.extraction_column ec ON etab.id = ec.extraction_table_id
+
+mappingId	mapping--1595855915
+target		colsys:subject-field/finalise-data-file/{spett_id} a gsim-sum:SubjectField ; gsim-sum:hasName-IA "Subject Field - Finalise Data Files - Topic: {spett_topic}"^^xsd:string . 
+source		SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      spett.id spett_id,
+			      spett.survey_period_id spett_survey_period_id,
+			      spett.template_id spett_template_id,
+			      spett.extraction_table_id spett_extraction_table_id,
+			      spett.extraction_output_table_id spett_extraction_output_table_id,
+			      spett.topic spett_topic,
+			      spett.created_by spett_created_by,
+			      spett.created_at spett_created_at,
+			      spett.is_active spett_is_active,
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN data_extraction.survey_period_extraction_table_topics spett ON eot.id = spett.extraction_output_table_id 
+			      JOIN data_extraction.extraction_template et ON spet.extraction_template_id  = et.id 
+			      LEFT JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+
+mappingId	mapping--1130590908
+target		colsys:core-output/{s_id}/{sp_id}/build-collection-instrument :refersToCO-IA colsys:agent-in-role/simitra-ics/{msi_id} . 
+source		SELECT s.id s_id, sp.id sp_id, msi.id msi_id 
+			        FROM survey.mapping_simitra_ics msi 
+			        JOIN survey.surveys s ON msi.survey_id = s.id 
+			        JOIN survey.survey_periods sp ON sp.survey_id = s.id
+
+mappingId	mapping--728866809
+target		colsys:process-execution-log/role-user-upload-log/{id} a :ProcessExecutionLog ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :createdAt-IA {created_at}^^xsd:dateTime ; rdfs:label "Process Execution Log - user region {user_region_id} - file name {file_name} - status {status} - message {message}"^^xsd:string ; gsim-sum:hasName-IA "Process Execution Log - user region {user_region_id} - file name {file_name} - status {status} - message {message}"^^xsd:string . 
+source		SELECT * FROM survey.log_upload_excel_survey_period_role_user
+
+mappingId	mapping-1504616172
+target		colsys:individual/{user_id} a gsim:Individual ; :hasTokenCode-I {token}^^xsd:string . 
+source		SELECT * FROM dbo.user_tokens
+
+mappingId	mapping-2134798928
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/service-definition/{sd_id}> a cspa:ServiceDefinition . 
+source		SELECT
+			        'ICS' AS pkg_id,
+			        'service-definition-1' AS sd_id
+
+mappingId	mapping--351010139
+target		colsys:core-output/{s_id}/{sp_id}/create-sample-frame-and-select-sample a :CoreOutput ; :refersToCO-IA colsys:data-structure/sample-output-columns/{somc_id} , colsys:dataset/sample-output/{som_id} . 
+source		SELECT 
+			      s.id s_id,
+			      s.name s_name,
+			      s.description s_description,
+			      s.survey_sample_method_id s_survey_sample_method_id,
+			      sp.id sp_id,
+			      sm.id sm_id,
+			      sm.name sm_name,
+			      sm.sample_input_script_id sm_sample_input_script_id,
+			      sm.sample_stratify_level_id sm_sample_stratify_level_id,
+			      sm.r_method sm_r_method,
+			      sm.total_output sm_total_output,
+			      sm.user_id sm_user_id,
+			      sm.is_active sm_is_active,
+			      sm.created_at sm_created_at,
+			      sm.updated_at sm_updated_at,
+			      som.id som_id,
+			      som.name som_name,
+			      som.order_output_map som_order_output_map,
+			      somp.id somp_id,
+			      somp.source_survey_period_id somp_source_survey_period_id,
+			      somp.target_survey_period_id somp_target_survey_period_id,
+			      soc.id soc_id,
+			      soc.field soc_field,
+			      soc.entity soc_entity,
+			      soc.alias soc_alias,
+			      soc.data_output_column soc_data_output_column,
+			      soc.order_output_column soc_order_output_column,
+			      somc.id somc_id,
+			      somc.field somc_field,
+			      somc.entity somc_entity,
+			      somc.alias somc_alias,
+			      somc.order_output_main_column somc_order_output_main_column
+			    FROM 
+			      survey.surveys s JOIN survey.survey_periods sp ON s.id = sp.survey_id 
+			      JOIN sample.sample_methods sm ON s.survey_sample_method_id = sm.id
+			      JOIN sample.sample_output_maps som ON sm.id = som.sample_method_id 
+			      JOIN sample.sample_output_columns soc ON soc.sample_output_map_id = som.id 
+			      JOIN sample.sample_output_map_periods somp ON somp.sample_output_map_id = som.id 
+			      JOIN sample.sample_output_main_columns somc ON somc.id = soc.sample_output_main_column_id
+
+mappingId	mapping--252823709
+target		colsys:core-output/{s_id}/{sp_id}/build-collection-instrument a :CoreOutput ; gsim-sum:hasName-IA "Core Output - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; rdfs:label "Core Output - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string . 
+source		Select
+			          s.id s_id,
+			          s.unit s_unit,
+			          s.name s_name,
+			          s.description s_description,
+			          s.program_id s_program_id,
+			          s.user_id s_user_id,
+			          s.is_active s_is_active,
+			          s.panel_type s_panel_type,
+			          s.area_type s_area_type,
+			          s.update_listing_type s_update_listing_type,
+			          s.can_add_sample s_can_add_sample,
+			          s.is_multi_pencacah s_is_multi_pencacah,
+			          s.geo_live_tracking s_geo_live_tracking,
+			          s.geo_radius s_geo_radius,
+			          s.geo_accuracy s_geo_accuracy,
+			          s.survey_sample_method_id s_survey_sample_method_id,
+			          s.survey_step_type_id s_survey_step_type_id,
+			          s.survey_parent_id s_survey_parent_id,
+			          s.cawi_token_auto_generated s_cawi_token_auto_generated,
+			          s.html s_html,
+			          s.html_email s_html_email,
+			          s.image_service_type s_image_service_type,
+			          s.image_service_url s_image_service_url,
+			          s.created_at s_created_at,
+			          s.updated_at s_updated_at,
+			          s.region_group_id s_region_group_id,
+			          s.survey_type s_survey_type,
+			          s.background_record s_background_record,
+			          s.smallest_region_type s_smallest_region_type,
+			          s.ocawi_alias s_ocawi_alias,
+			          s.cawi_authentication_link s_cawi_authentication_link,
+			          s.papi_validation_type s_papi_validation_type,
+			          s.collection_method s_collection_method,
+			          s.path_offline_pdf_template s_path_offline_pdf_template,
+			          s.type_role s_type_role,
+			          s.show_cawi_receipt s_show_cawi_receipt,
+			          s.cawi_max_access s_cawi_max_access,
+			          s.html_received s_html_received,
+			          s.form_gear_version s_form_gear_version,
+			          s.html_rejection_email s_html_rejection_email,
+			          s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
+			          sp.id sp_id,
+			          sp.name sp_name,
+			          sp.survey_id sp_survey_id,
+			          sp.start_date sp_start_date,
+			          sp.end_date sp_end_date,
+			          sp.created_at sp_created_at,
+			          sp.updated_at sp_updated_at,
+			          sp.is_active sp_is_active,
+			          sp.sample_method_id sp_sample_method_id,
+			          sp.log sp_log
+			          FROM
+			          survey.surveys s INNER JOIN survey.survey_periods sp
+			          ON s.id = sp.survey_id
+
+mappingId	mapping--1968282659
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/business-function/{bf_id}> a cspa:BusinessFunction ; cspa:outcomes "Statistical data collection process is carried out effectively and efficiently using various modes of data collection."^^xsd:string ; cspa:description "Collection system for survey data collection with multiple modes of data collection (CAPI, CATI, CAWI, Paper-based)"^^xsd:string . 
+source		SELECT
+			          'ICS' AS pkg_id,
+			          'business-function-1' AS bf_id
+
+mappingId	mapping--586950634
+target		colsys:statistical-program-cycle/{s_id}/{sp_id} a :StatisticalProgramCycle ; :updatedAt-IA {sp_updated_at}^^xsd:dateTime ; :createdAt-IA {sp_created_at}^^xsd:dateTime ; :hasDateEnded-SPC {sp_end_date}^^xsd:date ; :hasDateStarted-SPC {sp_start_date}^^xsd:date ; rdfs:label {sp_name}^^xsd:string ; :includesSPC-BP colsys:business-process/{s_id}/{sp_id} ; gsim-sum:hasName-IA {sp_name}^^xsd:string . 
+source		Select
+			          s.id s_id,
+			          s.unit s_unit,
+			          s.name s_name,
+			          s.description s_description,
+			          s.program_id s_program_id,
+			          s.user_id s_user_id,
+			          s.is_active s_is_active,
+			          s.panel_type s_panel_type,
+			          s.area_type s_area_type,
+			          s.update_listing_type s_update_listing_type,
+			          s.can_add_sample s_can_add_sample,
+			          s.is_multi_pencacah s_is_multi_pencacah,
+			          s.geo_live_tracking s_geo_live_tracking,
+			          s.geo_radius s_geo_radius,
+			          s.geo_accuracy s_geo_accuracy,
+			          s.survey_sample_method_id s_survey_sample_method_id,
+			          s.survey_step_type_id s_survey_step_type_id,
+			          s.survey_parent_id s_survey_parent_id,
+			          s.cawi_token_auto_generated s_cawi_token_auto_generated,
+			          s.html s_html,
+			          s.html_email s_html_email,
+			          s.image_service_type s_image_service_type,
+			          s.image_service_url s_image_service_url,
+			          s.created_at s_created_at,
+			          s.updated_at s_updated_at,
+			          s.region_group_id s_region_group_id,
+			          s.survey_type s_survey_type,
+			          s.background_record s_background_record,
+			          s.smallest_region_type s_smallest_region_type,
+			          s.ocawi_alias s_ocawi_alias,
+			          s.cawi_authentication_link s_cawi_authentication_link,
+			          s.papi_validation_type s_papi_validation_type,
+			          s.collection_method s_collection_method,
+			          s.path_offline_pdf_template s_path_offline_pdf_template,
+			          s.type_role s_type_role,
+			          s.show_cawi_receipt s_show_cawi_receipt,
+			          s.cawi_max_access s_cawi_max_access,
+			          s.html_received s_html_received,
+			          s.form_gear_version s_form_gear_version,
+			          s.html_rejection_email s_html_rejection_email,
+			          s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
+			          sp.id sp_id,
+			          sp.name sp_name,
+			          sp.survey_id sp_survey_id,
+			          sp.start_date sp_start_date,
+			          sp.end_date sp_end_date,
+			          sp.created_at sp_created_at,
+			          sp.updated_at sp_updated_at,
+			          sp.is_active sp_is_active,
+			          sp.sample_method_id sp_sample_method_id,
+			          sp.log sp_log
+			          FROM
+			          survey.surveys s INNER JOIN survey.survey_periods sp
+			          ON s.id = sp.survey_id
+
+mappingId	mapping-1531965927
+target		<https://bps.go.id/metadata/subject-field/{id}> a gsim-sum:SubjectField ; :hasContextOfSP-SF colsys:statistical-program/{s_id} ; gsim-sum:hasName-IA {name}^^xsd:string ; gsim-sum:hasDescription-IA {description}^^xsd:string ; gsim-sum:hasId-IA {id}^^xsd:string ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :createdAt-IA {created_at}^^xsd:dateTime ; rdfs:label {name}^^xsd:string . 
+source		SELECT p.id id, p.name name, p.description description, p.created_at created_at, p.updated_at updated_at, s.id s_id
+			        FROM survey.programs p 
+			        JOIN survey.surveys s ON p.id = s.program_id
+
+mappingId	mapping--1056759523
+target		colsys:data-structure-component/finalise-data-files/column/{ec_id} a gsim-sum:DataStructureComponent ; gsim-sum:hasName-IA "Data Structure Component - Finalise Data Files - Column Name: {ec_name}"^^xsd:string ; gsim-sum:hasDescription-IA "Data Type: {ec_data_type}. From Template: {ec_from_template}. Is Primary Key: {ec_pk}."^^xsd:string . 
+source		SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      data_extraction.extraction_template et  
+			      JOIN data_extraction.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN data_extraction.extraction_column ec ON etab.id = ec.extraction_table_id
+
+mappingId	mapping-582912031
+target		colsys:process-step/{s_id}/{sp_id}/finalise-data-files/{eot_id} a :ProcessStep . 
+source		SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL
+
+mappingId	mapping--1888864671
+target		colsys:process-step/{s_id}/{sp_id}/finalise-data-files/{eot_id} a :ProcessStep ; :classifiedAs-PS igsbpm:5.8 ; gsim-sum:hasName-IA "Process Step - Finalise Data Files - {eot_name}"^^xsd:string ; :hasStartTime-PS {spet_created_at}^^xsd:dateTime . 
+source		SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL
+
+mappingId	mapping--1513199731
+target		colsys:register/{id} a gsim:Register ; :hasListed-R {done_listing}^^xsd:integer ; rdfs:label "Register -  id:{region_id} - group_id:{region_group_id} - smallest region code {smallest_region_full_code}"^^xsd:string ; gsim-sum:hasName-IA "Register - {region_id} - smallest region code {smallest_region_full_code}"^^xsd:string ; :hasSampled-R {done_tarik_sample}^^xsd:integer . 
+source		SELECT * FROM survey.assignment_regions
+
+mappingId	mapping--133209068
+target		colsys:business-process/{s_id}/{sp_id} a :BusinessProcess ; :hasBP-PS colsys:process-step/{s_id}/{sp_id}/create-sample-frame-and-select-sample , colsys:process-step/{s_id}/{sp_id}/build-collection-instrument , colsys:process-step/{s_id}/{sp_id}/finalise-data-files ; rdfs:label "Bisnis Proses {s_name} periode {sp_name}"^^xsd:string ; gsim-sum:hasName-IA "Bisnis Proses {s_name} periode {sp_name}"^^xsd:string . 
+source		Select
+			          s.id s_id,
+			          s.unit s_unit,
+			          s.name s_name,
+			          s.description s_description,
+			          s.program_id s_program_id,
+			          s.user_id s_user_id,
+			          s.is_active s_is_active,
+			          s.panel_type s_panel_type,
+			          s.area_type s_area_type,
+			          s.update_listing_type s_update_listing_type,
+			          s.can_add_sample s_can_add_sample,
+			          s.is_multi_pencacah s_is_multi_pencacah,
+			          s.geo_live_tracking s_geo_live_tracking,
+			          s.geo_radius s_geo_radius,
+			          s.geo_accuracy s_geo_accuracy,
+			          s.survey_sample_method_id s_survey_sample_method_id,
+			          s.survey_step_type_id s_survey_step_type_id,
+			          s.survey_parent_id s_survey_parent_id,
+			          s.cawi_token_auto_generated s_cawi_token_auto_generated,
+			          s.html s_html,
+			          s.html_email s_html_email,
+			          s.image_service_type s_image_service_type,
+			          s.image_service_url s_image_service_url,
+			          s.created_at s_created_at,
+			          s.updated_at s_updated_at,
+			          s.region_group_id s_region_group_id,
+			          s.survey_type s_survey_type,
+			          s.background_record s_background_record,
+			          s.smallest_region_type s_smallest_region_type,
+			          s.ocawi_alias s_ocawi_alias,
+			          s.cawi_authentication_link s_cawi_authentication_link,
+			          s.papi_validation_type s_papi_validation_type,
+			          s.collection_method s_collection_method,
+			          s.path_offline_pdf_template s_path_offline_pdf_template,
+			          s.type_role s_type_role,
+			          s.show_cawi_receipt s_show_cawi_receipt,
+			          s.cawi_max_access s_cawi_max_access,
+			          s.html_received s_html_received,
+			          s.form_gear_version s_form_gear_version,
+			          s.html_rejection_email s_html_rejection_email,
+			          s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
+			          sp.id sp_id,
+			          sp.name sp_name,
+			          sp.survey_id sp_survey_id,
+			          sp.start_date sp_start_date,
+			          sp.end_date sp_end_date,
+			          sp.created_at sp_created_at,
+			          sp.updated_at sp_updated_at,
+			          sp.is_active sp_is_active,
+			          sp.sample_method_id sp_sample_method_id,
+			          sp.log sp_log
+			          FROM
+			          survey.surveys s INNER JOIN survey.survey_periods sp
+			          ON s.id = sp.survey_id
+
+mappingId	mapping--231652671
+target		colsys:statistical-program/{survey_id} a :StatisticalProgram ; :wasUsingCodeListSP-CL colsys:codelist/{lookup_id}/version/{version} . 
+source		SELECT * FROM survey.survey_glossaries
+
+mappingId	mapping-1889126339
+target		colsys:process-design/{s_id}/{sp_id}/create-sample-frame-and-select-sample a :ProcessDesign ; :implementsPD-PM colsys:process-method/create-sample-frame-and-select-sample/{sm_id} ; :specifiesPD-PS colsys:process-step/{s_id}/{sp_id}/create-sample-frame-and-select-sample ; gsim-sum:hasName-IA "Process Design - Create Sample Frame and Select Sample - {sm_name}"^^xsd:string . 
+source		SELECT 
+			        s.id s_id,
+			        s.name s_name,
+			        s.description s_description,
+			        s.survey_sample_method_id s_survey_sample_method_id,
+			        sp.id sp_id,
+			        sm.id sm_id,
+			        sm.name sm_name,
+			        sm.sample_input_script_id sm_sample_input_script_id,
+			        sm.sample_stratify_level_id sm_sample_stratify_level_id,
+			        sm.r_method sm_r_method,
+			        sm.total_output sm_total_output,
+			        sm.user_id sm_user_id,
+			        sm.is_active sm_is_active,
+			        sm.created_at sm_created_at,
+			         sm.updated_at sm_updated_at
+			    FROM 
+			        survey.surveys s JOIN survey.survey_periods sp ON s.id = sp.survey_id 
+			        JOIN sample.sample_methods sm ON s.survey_sample_method_id = sm.id
+
+mappingId	mapping--474687498
+target		colsys:exchange-specification/{id} a gsim:ExchangeSpecification ; :isAssociatedWithStatisticalProgramES-SP colsys:statistical-program/{survey_id} ; gsim-sum:hasId-IA {id}^^xsd:string ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :createdAt-IA {created_at}^^xsd:dateTime ; gsim-sum:hasName-IA {mode}^^xsd:string . 
+source		SELECT * FROM survey.survey_mode
+
+mappingId	mapping-1760051328
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/agent-in-role/{id}> a gsim-sum:AgentInRole ; rdfs:label "Agent In Role - {user_id} - {role_id}"^^xsd:string . 
+source		SELECT
+			           'ICS' AS pkg_id, *
+			          FROM dbo.user_roles
+
+mappingId	mapping--1013654586
+target		colsys:core-output/{s_id}/{sp_id}/build-collection-instrument :refersToCO-IA colsys:agent-in-role/{spru_id} . 
+source		SELECT
+			          sr.id sr_id,
+			          sr.sequence sr_sequence,
+			          sr.description sr_description,
+			          sr.survey_role_group_id sr_survey_role_group_id,
+			          sr.is_approving sr_is_approving,
+			          sr.smallest_area_order sr_smallest_area_order,
+			          sr.can_draw_sample sr_can_draw_sample,
+			          sr.created_at sr_created_at,
+			          sr.updated_at sr_updated_at,
+			          sr.survey_id sr_survey_id,
+			          sr.is_pencacah sr_is_pencacah,
+			          sr.can_edit sr_can_edit,
+			          sr.can_change_mode sr_can_change_mode,
+			          sr.admin_ticket sr_admin_ticket,
+			          sr.can_access_ticket sr_can_access_ticket,
+			          sr.can_delete_sample sr_can_delete_sample,
+			          sr.can_transfer_sample sr_can_transfer_sample,
+			          spru.id spru_id,
+			          spru.user_id spru_user_id,
+			          spru.survey_role_id spru_survey_role_id,
+			          spru.survey_period_id spru_survey_period_id,
+			          spru.created_at spru_created_at,
+			          spru.updated_at spru_updated_at,
+			          spru.region_id spru_region_id,
+			          sp.id sp_id,
+			          s.id s_id
+			          FROM survey.survey_period_role_users spru JOIN survey.survey_roles sr ON spru.survey_role_id = sr.id
+			          JOIN survey.survey_periods sp ON sp.id = spru.survey_period_id
+			          JOIN survey.surveys s ON s.id = sp.survey_id
+
+mappingId	mapping--1684267285
+target		<{pkg_iri}> a cspa:Package ; rdfs:label "Integrated Collection System (ICS)"^^xsd:string ; cspa:label "Integrated Collection System (ICS)"^^xsd:string ; cspa:description "Collection system for survey data collection with multiple modes of data collection (CAPI, CATI, CAWI, Paper-based)"^^xsd:string . 
+source		SELECT
+			        'ICS' AS pkg_id,
+			        'https://bps.go.id/metadata/software/integrated-collection-system/ics' AS pkg_iri
+
+mappingId	mapping-329972896
+target		colsys:core-output/{s_id}/{sp_id}/finalise-data-files a :CoreOutput ; :refersToCO-IA colsys:subject-field/finalise-data-file/{spett_id} , colsys:datastructure/finalise-data-files/{et_id} ; gsim-sum:hasName-IA "Core Output - Finalise Data Files - {eot_name}"^^xsd:string ; rdfs:label "Core Output - Finalise Data Files - {eot_name}"^^xsd:string . 
+source		SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      spett.id spett_id,
+			      spett.survey_period_id spett_survey_period_id,
+			      spett.template_id spett_template_id,
+			      spett.extraction_table_id spett_extraction_table_id,
+			      spett.extraction_output_table_id spett_extraction_output_table_id,
+			      spett.topic spett_topic,
+			      spett.created_by spett_created_by,
+			      spett.created_at spett_created_at,
+			      spett.is_active spett_is_active,
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN data_extraction.survey_period_extraction_table_topics spett ON eot.id = spett.extraction_output_table_id 
+			      JOIN data_extraction.extraction_template et ON spet.extraction_template_id  = et.id 
+			      LEFT JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+
+mappingId	mapping-1568713956
+target		colsys:core-input/{s_id}/{sp_id}/finalise-data-files a :CoreInput ; :refersToCI-IA colsys:questionnaire/{spet_template_id} . 
+source		SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL
+
+mappingId	mapping--635319222
+target		colsys:process-execution-log/simitra-user-pull-log/{id} a :ProcessExecutionLog ; :createdAt-IA {created_at}^^xsd:dateTime ; rdfs:label "Process Execution Log - region level one {region_level_one} - region level two {region_level_two} - email {email} - message {message}"^^xsd:string ; gsim-sum:hasName-IA "Process Execution Log - region level one {region_level_one} - region level two {region_level_two} - email {email} - message {message}"^^xsd:string . 
+source		SELECT * FROM dbo.log_pull_user_simitra
+
+mappingId	mapping--556881801
+target		colsys:core-output/{s_id}/{sp_id}/build-collection-instrument :refersToCO-IA colsys:register/{ar_id} . 
+source		SELECT ar.id ar_id, sp.id sp_id, sp.survey_id s_id
+			      FROM survey.assignment_regions ar 
+			      JOIN survey.survey_periods sp ON ar.survey_period_id = sp.id
+
+mappingId	mapping-598388341
+target		colsys:role/{sr_id} a gsim:Role ; gsim-sum:hasName-IA "Role - {sr_description}"^^xsd:string ; :hasParentRole-R colsys:role/{sr_survey_role_group_id} ; rdfs:label "Role - {sr_description}"^^xsd:string . 
+source		SELECT
+			          sr.id sr_id,
+			          sr.sequence sr_sequence,
+			          sr.description sr_description,
+			          sr.survey_role_group_id sr_survey_role_group_id,
+			          sr.is_approving sr_is_approving,
+			          sr.smallest_area_order sr_smallest_area_order,
+			          sr.can_draw_sample sr_can_draw_sample,
+			          sr.created_at sr_created_at,
+			          sr.updated_at sr_updated_at,
+			          sr.survey_id sr_survey_id,
+			          sr.is_pencacah sr_is_pencacah,
+			          sr.can_edit sr_can_edit,
+			          sr.can_change_mode sr_can_change_mode,
+			          sr.admin_ticket sr_admin_ticket,
+			          sr.can_access_ticket sr_can_access_ticket,
+			          sr.can_delete_sample sr_can_delete_sample,
+			          sr.can_transfer_sample sr_can_transfer_sample,
+			          spru.id spru_id,
+			          spru.user_id spru_user_id,
+			          spru.survey_role_id spru_survey_role_id,
+			          spru.survey_period_id spru_survey_period_id,
+			          spru.created_at spru_created_at,
+			          spru.updated_at spru_updated_at,
+			          spru.region_id spru_region_id,
+			          sp.id sp_id,
+			          s.id s_id
+			          FROM survey.survey_period_role_users spru JOIN survey.survey_roles sr ON spru.survey_role_id = sr.id
+			          JOIN survey.survey_periods sp ON sp.id = spru.survey_period_id
+			          JOIN survey.surveys s ON s.id = sp.survey_id
+
+mappingId	mapping--1993409724
+target		colsys:agent-in-role/{spru_id} a gsim-sum:AgentInRole ; gsim-sum:hasName-IA "Agent in Role - {sr_description}"^^xsd:string ; rdfs:label "Agent in Role - {sr_description}"^^xsd:string . 
+source		SELECT
+			          sr.id sr_id,
+			          sr.sequence sr_sequence,
+			          sr.description sr_description,
+			          sr.survey_role_group_id sr_survey_role_group_id,
+			          sr.is_approving sr_is_approving,
+			          sr.smallest_area_order sr_smallest_area_order,
+			          sr.can_draw_sample sr_can_draw_sample,
+			          sr.created_at sr_created_at,
+			          sr.updated_at sr_updated_at,
+			          sr.survey_id sr_survey_id,
+			          sr.is_pencacah sr_is_pencacah,
+			          sr.can_edit sr_can_edit,
+			          sr.can_change_mode sr_can_change_mode,
+			          sr.admin_ticket sr_admin_ticket,
+			          sr.can_access_ticket sr_can_access_ticket,
+			          sr.can_delete_sample sr_can_delete_sample,
+			          sr.can_transfer_sample sr_can_transfer_sample,
+			          spru.id spru_id,
+			          spru.user_id spru_user_id,
+			          spru.survey_role_id spru_survey_role_id,
+			          spru.survey_period_id spru_survey_period_id,
+			          spru.created_at spru_created_at,
+			          spru.updated_at spru_updated_at,
+			          spru.region_id spru_region_id,
+			          sp.id sp_id,
+			          s.id s_id
+			          FROM survey.survey_period_role_users spru JOIN survey.survey_roles sr ON spru.survey_role_id = sr.id
+			          JOIN survey.survey_periods sp ON sp.id = spru.survey_period_id
+			          JOIN survey.surveys s ON s.id = sp.survey_id
+
+mappingId	mapping-694117263
+target		colsys:process-step/{s_id}/{sp_id}/build-collection-instrument :createsPS-PO colsys:process-execution-log/role-user-upload-log/{luespru_id} . 
+source		SELECT luespru.id luespru_id, sp.id sp_id, s.id s_id
+			        FROM survey.log_upload_excel_survey_period_role_user luespru 
+			        JOIN survey.survey_periods sp ON luespru.survey_period_id = sp.id 
+			        JOIN survey.surveys s ON sp.survey_id = s.id
+
+mappingId	mapping-1553021398
+target		colsys:code/smallest-region-code/{id} a gsim-sum:Code ; :createdAt-IA {created_at}^^xsd:dateTime ; :hasValue-IA {smallest_region_code}^^xsd:string ; gsim-sum:hasId-IA {id}^^xsd:string ; :updatedAt-IA {updated_at}^^xsd:dateTime . 
+source		SELECT * FROM survey.smallest_region_codes
+
+mappingId	mapping-1790022818
+target		colsys:agent-in-role-by-region/{id} a gsim-sum:AgentInRole ; rdfs:label "Agent in Role by Region - {region_id}"^^xsd:string ; gsim-sum:hasName-IA "Agent in Role by Region - {region_id}"^^xsd:string . 
+source		SELECT * FROM survey.survey_period_user_regions
+
+mappingId	mapping--420254632
+target		colsys:agent-in-role/{survey_period_role_user_id} a gsim-sum:AgentInRole ; :hasSmallestRegionCodeAIR-C colsys:code/smallest-region-code/{id} . 
+source		SELECT * FROM survey.smallest_region_codes
+
+mappingId	mapping-1305593347
+target		colsys:process-execution-log/{s_id}/{sp_id}/finalise-data-files/{spet_id} a :ProcessExecutionLog ; gsim-sum:hasName-IA "Process Execution Log - Finalise Data Files - Template ID: {spet_template_id} - Version: {spet_template_version} - Validation Version: {spet_validation_version}"^^xsd:string ; gsim-sum:hasDescription-IA "Count Added Table: {spet_count_added_table}. Count Deleted Table: {spet_count_deleted_table}. Count Added Column: {spet_count_added_column}. Count Deleted Column: {spet_count_deleted_column}. Count Changed Column: {spet_count_changed_column}"^^xsd:string . 
+source		SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL
+
+mappingId	mapping-1352653818
+target		colsys:process-step/{s_id}/{sp_id}/build-collection-instrument a :ProcessStep ; :usePS-CSPA <https://bps.go.id/metadata/software/integrated-collection-system/ics> ; :hasPS-PI colsys:core-input/{s_id}/{sp_id}/build-collection-instrument , colsys:process-support-input/{s_id}/{sp_id}/build-collection-instrument ; :classifiedAs-PS igsbpm:3.1 ; :wasAssociatedWithPS-A colsys:individual/{s_user_id} ; gsim-sum:hasName-IA "Process Step - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; rdfs:label "Process Step - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; :createsPS-PO colsys:core-output/{s_id}/{sp_id}/build-collection-instrument , colsys:process-execution-log/{s_id}/{sp_id}/build-collection-instrument ; :hasStartTime-PS {s_created_at}^^xsd:dateTime . 
+source		Select
+			          s.id s_id,
+			          s.unit s_unit,
+			          s.name s_name,
+			          s.description s_description,
+			          s.program_id s_program_id,
+			          s.user_id s_user_id,
+			          s.is_active s_is_active,
+			          s.panel_type s_panel_type,
+			          s.area_type s_area_type,
+			          s.update_listing_type s_update_listing_type,
+			          s.can_add_sample s_can_add_sample,
+			          s.is_multi_pencacah s_is_multi_pencacah,
+			          s.geo_live_tracking s_geo_live_tracking,
+			          s.geo_radius s_geo_radius,
+			          s.geo_accuracy s_geo_accuracy,
+			          s.survey_sample_method_id s_survey_sample_method_id,
+			          s.survey_step_type_id s_survey_step_type_id,
+			          s.survey_parent_id s_survey_parent_id,
+			          s.cawi_token_auto_generated s_cawi_token_auto_generated,
+			          s.html s_html,
+			          s.html_email s_html_email,
+			          s.image_service_type s_image_service_type,
+			          s.image_service_url s_image_service_url,
+			          s.created_at s_created_at,
+			          s.updated_at s_updated_at,
+			          s.region_group_id s_region_group_id,
+			          s.survey_type s_survey_type,
+			          s.background_record s_background_record,
+			          s.smallest_region_type s_smallest_region_type,
+			          s.ocawi_alias s_ocawi_alias,
+			          s.cawi_authentication_link s_cawi_authentication_link,
+			          s.papi_validation_type s_papi_validation_type,
+			          s.collection_method s_collection_method,
+			          s.path_offline_pdf_template s_path_offline_pdf_template,
+			          s.type_role s_type_role,
+			          s.show_cawi_receipt s_show_cawi_receipt,
+			          s.cawi_max_access s_cawi_max_access,
+			          s.html_received s_html_received,
+			          s.form_gear_version s_form_gear_version,
+			          s.html_rejection_email s_html_rejection_email,
+			          s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
+			          sp.id sp_id,
+			          sp.name sp_name,
+			          sp.survey_id sp_survey_id,
+			          sp.start_date sp_start_date,
+			          sp.end_date sp_end_date,
+			          sp.created_at sp_created_at,
+			          sp.updated_at sp_updated_at,
+			          sp.is_active sp_is_active,
+			          sp.sample_method_id sp_sample_method_id,
+			          sp.log sp_log
+			          FROM
+			          survey.surveys s INNER JOIN survey.survey_periods sp
+			          ON s.id = sp.survey_id
+
+mappingId	mapping--601985978
+target		colsys:statistical-program/{s_id} a :StatisticalProgram ; :hasSP-SPC colsys:statistical-program-cycle/{s_id}/{sp_id} ; gsim-sum:hasName-IA {s_name}^^xsd:string ; rdfs:label {s_name}^^xsd:string ; gsim-sum:hasId-IA {s_id}^^xsd:string ; gsim-sum:hasDescription-IA {s_description}^^xsd:string . 
+source		Select
+			          s.id s_id,
+			          s.unit s_unit,
+			          s.name s_name,
+			          s.description s_description,
+			          s.program_id s_program_id,
+			          s.user_id s_user_id,
+			          s.is_active s_is_active,
+			          s.panel_type s_panel_type,
+			          s.area_type s_area_type,
+			          s.update_listing_type s_update_listing_type,
+			          s.can_add_sample s_can_add_sample,
+			          s.is_multi_pencacah s_is_multi_pencacah,
+			          s.geo_live_tracking s_geo_live_tracking,
+			          s.geo_radius s_geo_radius,
+			          s.geo_accuracy s_geo_accuracy,
+			          s.survey_sample_method_id s_survey_sample_method_id,
+			          s.survey_step_type_id s_survey_step_type_id,
+			          s.survey_parent_id s_survey_parent_id,
+			          s.cawi_token_auto_generated s_cawi_token_auto_generated,
+			          s.html s_html,
+			          s.html_email s_html_email,
+			          s.image_service_type s_image_service_type,
+			          s.image_service_url s_image_service_url,
+			          s.created_at s_created_at,
+			          s.updated_at s_updated_at,
+			          s.region_group_id s_region_group_id,
+			          s.survey_type s_survey_type,
+			          s.background_record s_background_record,
+			          s.smallest_region_type s_smallest_region_type,
+			          s.ocawi_alias s_ocawi_alias,
+			          s.cawi_authentication_link s_cawi_authentication_link,
+			          s.papi_validation_type s_papi_validation_type,
+			          s.collection_method s_collection_method,
+			          s.path_offline_pdf_template s_path_offline_pdf_template,
+			          s.type_role s_type_role,
+			          s.show_cawi_receipt s_show_cawi_receipt,
+			          s.cawi_max_access s_cawi_max_access,
+			          s.html_received s_html_received,
+			          s.form_gear_version s_form_gear_version,
+			          s.html_rejection_email s_html_rejection_email,
+			          s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
+			          sp.id sp_id,
+			          sp.name sp_name,
+			          sp.survey_id sp_survey_id,
+			          sp.start_date sp_start_date,
+			          sp.end_date sp_end_date,
+			          sp.created_at sp_created_at,
+			          sp.updated_at sp_updated_at,
+			          sp.is_active sp_is_active,
+			          sp.sample_method_id sp_sample_method_id,
+			          sp.log sp_log
+			          FROM
+			          survey.surveys s INNER JOIN survey.survey_periods sp
+			          ON s.id = sp.survey_id
+
+mappingId	mapping-841283955
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/service-implementation/{si_id}> a cspa:ServiceImplementationDescription ; cspa:version "1"^^xsd:string . 
+source		SELECT
+			        'ICS' AS pkg_id,
+			        'service-implementation-1' AS si_id
+
+mappingId	mapping--309201169
+target		colsys:core-input/{s_id}/{sp_id}/build-collection-instrument :refersToCI-IA colsys:role/{sr_id} , colsys:individual/{spru_user_id} . 
+source		SELECT
+			          sr.id sr_id,
+			          sr.sequence sr_sequence,
+			          sr.description sr_description,
+			          sr.survey_role_group_id sr_survey_role_group_id,
+			          sr.is_approving sr_is_approving,
+			          sr.smallest_area_order sr_smallest_area_order,
+			          sr.can_draw_sample sr_can_draw_sample,
+			          sr.created_at sr_created_at,
+			          sr.updated_at sr_updated_at,
+			          sr.survey_id sr_survey_id,
+			          sr.is_pencacah sr_is_pencacah,
+			          sr.can_edit sr_can_edit,
+			          sr.can_change_mode sr_can_change_mode,
+			          sr.admin_ticket sr_admin_ticket,
+			          sr.can_access_ticket sr_can_access_ticket,
+			          sr.can_delete_sample sr_can_delete_sample,
+			          sr.can_transfer_sample sr_can_transfer_sample,
+			          spru.id spru_id,
+			          spru.user_id spru_user_id,
+			          spru.survey_role_id spru_survey_role_id,
+			          spru.survey_period_id spru_survey_period_id,
+			          spru.created_at spru_created_at,
+			          spru.updated_at spru_updated_at,
+			          spru.region_id spru_region_id,
+			          sp.id sp_id,
+			          s.id s_id
+			          FROM survey.survey_period_role_users spru JOIN survey.survey_roles sr ON spru.survey_role_id = sr.id
+			          JOIN survey.survey_periods sp ON sp.id = spru.survey_period_id
+			          JOIN survey.surveys s ON s.id = sp.survey_id
+
+mappingId	mapping-823750057
+target		colsys:role/{id} a gsim:Role ; rdfs:label "Role Group - {name}"^^xsd:string ; gsim-sum:hasName-IA "Role Group - {name}"^^xsd:string . 
+source		SELECT * FROM survey.survey_role_groups
+
+mappingId	mapping-846205400
+target		colsys:individual/{id} a gsim:Individual ; gsim-sum:hasName-IA "Individual - {username}"^^xsd:string ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :createdAt-IA {created_at}^^xsd:dateTime ; :email-I {email}^^xsd:string ; :fullname-I {fullname}^^xsd:string ; rdfs:label "Individual - {username}"^^xsd:string . 
+source		SELECT * FROM dbo.users
+
+mappingId	mapping-1309539349
+target		colsys:process-support-input/{s_id}/{sp_id}/build-collection-instrument a :ProcessSupportInput ; :refersToPSI-IA colsys:identifiable-artefact/email-attachment/{sea_id} . 
+source		SELECT s.id s_id, sp.id sp_id, sea.id sea_id 
+			        FROM survey.survey_email_attachments sea 
+			        JOIN survey.surveys s ON sea.survey_id = s.id 
+			        JOIN survey.survey_periods sp ON sp.survey_id = s.id
+
+mappingId	mapping-606283766
+target		colsys:identifiable-artefact/email-attachment/{id} a gsim-sum:IdentifiableArtefact ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :createdAt-IA {created_at}^^xsd:dateTime ; gsim-sum:hasValue-IA "Email Attachment - {file_path}"^^xsd:string ; gsim-sum:hasName-IA "Email Attachment - {name}"^^xsd:string ; gsim-sum:hasId-IA {id}^^xsd:string . 
+source		SELECT * FROM survey.survey_email_attachments
+
+mappingId	mapping--397877675
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/provenance/{p_id}> a cspa:Provenance . 
+source		SELECT
+			          'ICS' AS pkg_id,
+			          'provenance-1' AS p_id
+
+mappingId	mapping-959905069
+target		colsys:core-input/{s_id}/{sp_id}/build-collection-instrument a :CoreInput ; gsim-sum:hasName-IA "Core Input - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string ; rdfs:label "Core Input - Build Collection Instrument - {s_name} periode {sp_name}"^^xsd:string . 
+source		Select
+			          s.id s_id,
+			          s.unit s_unit,
+			          s.name s_name,
+			          s.description s_description,
+			          s.program_id s_program_id,
+			          s.user_id s_user_id,
+			          s.is_active s_is_active,
+			          s.panel_type s_panel_type,
+			          s.area_type s_area_type,
+			          s.update_listing_type s_update_listing_type,
+			          s.can_add_sample s_can_add_sample,
+			          s.is_multi_pencacah s_is_multi_pencacah,
+			          s.geo_live_tracking s_geo_live_tracking,
+			          s.geo_radius s_geo_radius,
+			          s.geo_accuracy s_geo_accuracy,
+			          s.survey_sample_method_id s_survey_sample_method_id,
+			          s.survey_step_type_id s_survey_step_type_id,
+			          s.survey_parent_id s_survey_parent_id,
+			          s.cawi_token_auto_generated s_cawi_token_auto_generated,
+			          s.html s_html,
+			          s.html_email s_html_email,
+			          s.image_service_type s_image_service_type,
+			          s.image_service_url s_image_service_url,
+			          s.created_at s_created_at,
+			          s.updated_at s_updated_at,
+			          s.region_group_id s_region_group_id,
+			          s.survey_type s_survey_type,
+			          s.background_record s_background_record,
+			          s.smallest_region_type s_smallest_region_type,
+			          s.ocawi_alias s_ocawi_alias,
+			          s.cawi_authentication_link s_cawi_authentication_link,
+			          s.papi_validation_type s_papi_validation_type,
+			          s.collection_method s_collection_method,
+			          s.path_offline_pdf_template s_path_offline_pdf_template,
+			          s.type_role s_type_role,
+			          s.show_cawi_receipt s_show_cawi_receipt,
+			          s.cawi_max_access s_cawi_max_access,
+			          s.html_received s_html_received,
+			          s.form_gear_version s_form_gear_version,
+			          s.html_rejection_email s_html_rejection_email,
+			          s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
+			          sp.id sp_id,
+			          sp.name sp_name,
+			          sp.survey_id sp_survey_id,
+			          sp.start_date sp_start_date,
+			          sp.end_date sp_end_date,
+			          sp.created_at sp_created_at,
+			          sp.updated_at sp_updated_at,
+			          sp.is_active sp_is_active,
+			          sp.sample_method_id sp_sample_method_id,
+			          sp.log sp_log
+			          FROM
+			          survey.surveys s INNER JOIN survey.survey_periods sp
+			          ON s.id = sp.survey_id
+
+mappingId	mapping--284603773
+target		colsys:agent-in-role/simitra-ics/{id} a gsim-sum:AgentInRole ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :createdAt-IA {created_at}^^xsd:dateTime ; rdfs:label "Agent in Role - {kd_survei_simitra} - ({id_keg_simitra}) {nama_keg_simitra} - ({id_pos_simitra}) {nama_pos_simitra}"^^xsd:string ; gsim-sum:hasName-IA "Agent in Role - {kd_survei_simitra} - ({id_keg_simitra}) {nama_keg_simitra} - ({id_pos_simitra}) {nama_pos_simitra}"^^xsd:string . 
+source		SELECT * FROM survey.mapping_simitra_ics
+
+mappingId	mapping-688515852
+target		colsys:core-input/{s_id}/{sp_id}/create-sample-frame-and-select-sample a :CoreInput ; :refersToCI-IA colsys:level/sample/{ssl_id} , colsys:rule/sample/{sic_id} . 
+source		SELECT 
+			      s.id s_id,
+			      s.name s_name,
+			      s.description s_description,
+			      s.survey_sample_method_id s_survey_sample_method_id,
+			      sp.id sp_id,
+			      sm.id sm_id,
+			      sm.name sm_name,
+			      sm.sample_input_script_id sm_sample_input_script_id,
+			      sm.sample_stratify_level_id sm_sample_stratify_level_id,
+			      sm.r_method sm_r_method,
+			      sm.total_output sm_total_output,
+			      sm.user_id sm_user_id,
+			      sm.is_active sm_is_active,
+			      sm.created_at sm_created_at,
+			      sm.updated_at sm_updated_at,
+			      sis.id sis_id,
+			      sis.name sis_name,
+			      sis.query_input sis_query_input,
+			      sis.testing_input_survey_id sis_testing_input_survey_id,
+			      sis.testing_input_survey_period_id sis_testing_input_survey_period_id,
+			      ssf.id ssf_id,
+			      ssf.name ssf_name,
+			      ssf.file_path ssf_file_path,
+			      ssf.created_at ssf_created_at,
+			      ssf.updated_at ssf_updated_at,
+			      sic.id sic_id,
+			      sic.field sic_field,
+			      sic.entity sic_entity,
+			      sic.alias sic_alias,
+			      sic.description sic_description,
+			      sic.order_input_column sic_order_input_column,
+			      ssl.id ssl_id,
+			      ssl.name ssl_name,
+			      ssl.info ssl_info,
+			      sisrl.id sisrl_id,
+			      sisrl.roster_name sisrl_roster_name,
+			      sisrl.roster_level sisrl_roaster_level,
+			      simc.id simc_id,
+			      simc.field simc_field,
+			      simc.entity simc_entity,
+			      simc.alias simc_alias,
+			      simc.description simc_description,
+			      simc.order_input_master simc_order_input_master
+			    FROM 
+			      survey.surveys s JOIN survey.survey_periods sp ON s.id = sp.survey_id 
+			      JOIN sample.sample_methods sm ON s.survey_sample_method_id = sm.id 
+			      JOIN sample.sample_input_scripts sis ON sis.id = sm.sample_input_script_id 
+			      JOIN sample.sample_input_columns sic ON sic.sample_input_script_id = sic.id 
+			      JOIN sample.sample_support_files ssf ON sm.id = ssf.sample_method_id 
+			      JOIN sample.sample_input_script_roster_levels sisrl ON sisrl.sample_input_script_id = sic.id 
+			      JOIN sample.sample_stratify_levels ssl ON ssl.id = sm.sample_stratify_level_id 
+			      JOIN sample.sample_input_master_columns simc ON simc.id = sic.sample_input_master_column_id
+
+mappingId	mapping--2109296008
+target		colsys:process-step/{s_id}/{sp_id}/create-sample-frame-and-select-sample a :ProcessStep ; :createsPS-PO colsys:core-output/{s_id}/{sp_id}/create-sample-frame-and-select-sample ; :classifiedAs-PS igsbpm:4.1 ; :hasPS-PI colsys:core-input/{s_id}/{sp_id}/create-sample-frame-and-select-sample ; gsim-sum:hasName-IA "Process Step - Create Sample Frame and Select Sample - {sm_name}"^^xsd:string ; :hasStartTime-PS {sm_created_at}^^xsd:dateTime . 
+source		SELECT 
+			        s.id s_id,
+			        s.name s_name,
+			        s.description s_description,
+			        s.survey_sample_method_id s_survey_sample_method_id,
+			        sp.id sp_id,
+			        sm.id sm_id,
+			        sm.name sm_name,
+			        sm.sample_input_script_id sm_sample_input_script_id,
+			        sm.sample_stratify_level_id sm_sample_stratify_level_id,
+			        sm.r_method sm_r_method,
+			        sm.total_output sm_total_output,
+			        sm.user_id sm_user_id,
+			        sm.is_active sm_is_active,
+			        sm.created_at sm_created_at,
+			         sm.updated_at sm_updated_at
+			    FROM 
+			        survey.surveys s JOIN survey.survey_periods sp ON s.id = sp.survey_id 
+			        JOIN sample.sample_methods sm ON s.survey_sample_method_id = sm.id
+
+mappingId	mapping-2011401799
+target		colsys:process-execution-log/{s_id}/{sp_id}/build-collection-instrument a :ProcessExecutionLog ; gsim-sum:hasExecutionLog {sp_log}^^xsd:string . 
+source		Select
+			          s.id s_id,
+			          s.unit s_unit,
+			          s.name s_name,
+			          s.description s_description,
+			          s.program_id s_program_id,
+			          s.user_id s_user_id,
+			          s.is_active s_is_active,
+			          s.panel_type s_panel_type,
+			          s.area_type s_area_type,
+			          s.update_listing_type s_update_listing_type,
+			          s.can_add_sample s_can_add_sample,
+			          s.is_multi_pencacah s_is_multi_pencacah,
+			          s.geo_live_tracking s_geo_live_tracking,
+			          s.geo_radius s_geo_radius,
+			          s.geo_accuracy s_geo_accuracy,
+			          s.survey_sample_method_id s_survey_sample_method_id,
+			          s.survey_step_type_id s_survey_step_type_id,
+			          s.survey_parent_id s_survey_parent_id,
+			          s.cawi_token_auto_generated s_cawi_token_auto_generated,
+			          s.html s_html,
+			          s.html_email s_html_email,
+			          s.image_service_type s_image_service_type,
+			          s.image_service_url s_image_service_url,
+			          s.created_at s_created_at,
+			          s.updated_at s_updated_at,
+			          s.region_group_id s_region_group_id,
+			          s.survey_type s_survey_type,
+			          s.background_record s_background_record,
+			          s.smallest_region_type s_smallest_region_type,
+			          s.ocawi_alias s_ocawi_alias,
+			          s.cawi_authentication_link s_cawi_authentication_link,
+			          s.papi_validation_type s_papi_validation_type,
+			          s.collection_method s_collection_method,
+			          s.path_offline_pdf_template s_path_offline_pdf_template,
+			          s.type_role s_type_role,
+			          s.show_cawi_receipt s_show_cawi_receipt,
+			          s.cawi_max_access s_cawi_max_access,
+			          s.html_received s_html_received,
+			          s.form_gear_version s_form_gear_version,
+			          s.html_rejection_email s_html_rejection_email,
+			          s.auto_assign_when_upload_sample s_auto_assign_when_upload_sample,
+			          sp.id sp_id,
+			          sp.name sp_name,
+			          sp.survey_id sp_survey_id,
+			          sp.start_date sp_start_date,
+			          sp.end_date sp_end_date,
+			          sp.created_at sp_created_at,
+			          sp.updated_at sp_updated_at,
+			          sp.is_active sp_is_active,
+			          sp.sample_method_id sp_sample_method_id,
+			          sp.log sp_log
+			          FROM
+			          survey.surveys s INNER JOIN survey.survey_periods sp
+			          ON s.id = sp.survey_id
+
+mappingId	mapping-354355347
+target		colsys:core-output/{s_id}/{sp_id}/build-collection-instrument :refersToCO-IA colsys:agent-in-role-by-region/{id} . 
+source		SELECT s.id s_id, sp.id sp_id, sr.id sr_id,spur.*
+			          FROM survey.survey_period_user_regions spur JOIN survey.survey_roles sr ON spur.survey_role_id = sr.id
+			          JOIN survey.survey_periods sp ON sp.id = spur.survey_period_id
+			          JOIN survey.surveys s ON s.id = sp.survey_id
+
+mappingId	mapping-812790717
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/organization/{o_id}> a cspa:Organization ; cspa:organizationName "Statistics Indonesia (BPS)"^^xsd:string . 
+source		SELECT
+			          'ICS' AS pkg_id,
+			          'organization-1' AS o_id
+
+mappingId	mapping--1459387068
+target		colsys:process-step/{s_id}/{sp_id}/build-collection-instrument :createsPS-PO colsys:process-execution-log/simitra-user-pull-log/{lpus_id} . 
+source		SELECT
+			        s.id s_id,
+			        sp.id sp_id,
+			        lpus.id lpus_id
+			      FROM survey.surveys s JOIN survey.survey_periods sp ON s.id = sp.survey_id
+			        JOIN dbo.log_pull_user_simitra lpus ON sp.id = lpus.survey_period_id
+
+mappingId	tm-join-1808695558
+target		colsys:datastructure/finalise-data-files/{CHILD_et_id} :hasDS-DSC colsys:data-structure-component/finalise-data-files/table/{PARENT_etab_id} . 
+source		SELECT CHILD.et_id AS CHILD_et_id, PARENT.etab_id AS PARENT_etab_id FROM (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      data_extraction.extraction_template et  
+			      JOIN data_extraction.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN data_extraction.extraction_column ec ON etab.id = ec.extraction_table_id) CHILD, (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      data_extraction.extraction_template et  
+			      JOIN data_extraction.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN data_extraction.extraction_column ec ON etab.id = ec.extraction_table_id) PARENT WHERE CHILD.et_id = PARENT.etab_extraction_template_id
+
+mappingId	tm-join-1758114230
+target		colsys:data-structure-component/finalise-data-files/table/{CHILD_etab_id} :hasDSC-DSC colsys:data-structure-component/finalise-data-files/column/{PARENT_ec_id} . 
+source		SELECT CHILD.etab_id AS CHILD_etab_id, PARENT.ec_id AS PARENT_ec_id FROM (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      data_extraction.extraction_template et  
+			      JOIN data_extraction.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN data_extraction.extraction_column ec ON etab.id = ec.extraction_table_id) CHILD, (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      data_extraction.extraction_template et  
+			      JOIN data_extraction.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN data_extraction.extraction_column ec ON etab.id = ec.extraction_table_id) PARENT WHERE CHILD.etab_id = PARENT.ec_extraction_table_id
+
+mappingId	tm-join--1125966962
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/service-definition/{CHILD_sd_id}> cspa:aimsAt <https://bps.go.id/metadata/software/integrated-collection-system/ics/business-function/{PARENT_bf_id}> . 
+source		SELECT CHILD.sd_id AS CHILD_sd_id, PARENT.bf_id AS PARENT_bf_id FROM (SELECT
+			        'ICS' AS pkg_id,
+			        'service-definition-1' AS sd_id) CHILD, (SELECT
+			          'ICS' AS pkg_id,
+			          'business-function-1' AS bf_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join-1790438836
+target		colsys:process-step/{CHILD_s_id}/{CHILD_sp_id}/finalise-data-files/{CHILD_eot_id} :createsPS-PO colsys:process-execution-log/{PARENT_s_id}/{PARENT_sp_id}/finalise-data-files/{PARENT_spet_id} . 
+source		SELECT CHILD.s_id AS CHILD_s_id, CHILD.sp_id AS CHILD_sp_id, CHILD.eot_id AS CHILD_eot_id, PARENT.s_id AS PARENT_s_id, PARENT.sp_id AS PARENT_sp_id, PARENT.spet_id AS PARENT_spet_id FROM (SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL) CHILD, (SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL) PARENT WHERE CHILD.eot_id = PARENT.spet_extraction_output_table_id
+
+mappingId	tm-join--56886825
+target		colsys:process-step/{CHILD_s_id}/{CHILD_sp_id}/finalise-data-files/{CHILD_eot_id} :createsPS-PO colsys:core-output/{PARENT_s_id}/{PARENT_sp_id}/finalise-data-files . 
+source		SELECT CHILD.s_id AS CHILD_s_id, CHILD.sp_id AS CHILD_sp_id, CHILD.eot_id AS CHILD_eot_id, PARENT.s_id AS PARENT_s_id, PARENT.sp_id AS PARENT_sp_id FROM (SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL) CHILD, (SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      spett.id spett_id,
+			      spett.survey_period_id spett_survey_period_id,
+			      spett.template_id spett_template_id,
+			      spett.extraction_table_id spett_extraction_table_id,
+			      spett.extraction_output_table_id spett_extraction_output_table_id,
+			      spett.topic spett_topic,
+			      spett.created_by spett_created_by,
+			      spett.created_at spett_created_at,
+			      spett.is_active spett_is_active,
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN data_extraction.survey_period_extraction_table_topics spett ON eot.id = spett.extraction_output_table_id 
+			      JOIN data_extraction.extraction_template et ON spet.extraction_template_id  = et.id 
+			      LEFT JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id) PARENT WHERE CHILD.eot_id = PARENT.spet_extraction_output_table_id
+
+mappingId	tm-join-1247256696
+target		colsys:process-step/{CHILD_s_id}/{CHILD_sp_id}/finalise-data-files/{CHILD_eot_id} :hasPS-PI colsys:core-input/{PARENT_s_id}/{PARENT_sp_id}/finalise-data-files . 
+source		SELECT CHILD.s_id AS CHILD_s_id, CHILD.sp_id AS CHILD_sp_id, CHILD.eot_id AS CHILD_eot_id, PARENT.s_id AS PARENT_s_id, PARENT.sp_id AS PARENT_sp_id FROM (SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL) CHILD, (SELECT
+			      eot.id eot_id,
+			      eot.name eot_name,
+			      spet.id spet_id,
+			      spet.survey_period_id spet_survey_period_id,
+			      spet.template_id spet_template_id,
+			      spet.template_version spet_template_version,
+			      spet.validation_version spet_validation_version,
+			      spet.extraction_template_id spet_extraction_template_id,
+			      spet.count_added_table spet_count_added_table,
+			      spet.count_deleted_table spet_count_deleted_table,
+			      spet.count_added_column spet_count_added_column,
+			      spet.count_deleted_column spet_count_deleted_column,
+			      spet.count_changed_column spet_count_changed_column,
+			      spet.extraction_output_table_id spet_extraction_output_table_id,
+			      spet.created_by spet_created_by,
+			      spet.created_at spet_created_at,
+			      spet.is_active spet_is_active,
+			      sp.survey_id s_id,
+			      sp.id sp_id
+			    FROM
+			      data_extraction.extraction_output_tables eot JOIN data_extraction.survey_period_extraction_templates spet ON eot.id = spet.extraction_output_table_id 
+			      JOIN survey.survey_periods sp ON spet.survey_period_id = sp.id
+			    WHERE spet.created_at IS NOT NULL) PARENT WHERE CHILD.eot_id = PARENT.spet_extraction_output_table_id
+
+mappingId	tm-join-1754216688
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/agent-in-role/{CHILD_id}> :fulfilsAIR-R <https://bps.go.id/metadata/software/integrated-collection-system/ics/role/{PARENT_id}> . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT
+			           'ICS' AS pkg_id, *
+			          FROM dbo.user_roles) CHILD, (SELECT * FROM dbo.roles) PARENT WHERE CHILD.role_id = PARENT.id
+
+mappingId	tm-join-1585840476
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/agent-in-role/{CHILD_id}> :isActivatedRoleOfCSPA-AIR <{PARENT_pkg_iri}> . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.pkg_iri AS PARENT_pkg_iri FROM (SELECT
+			           'ICS' AS pkg_id, *
+			          FROM dbo.user_roles) CHILD, (SELECT
+			        'ICS' AS pkg_id,
+			        'https://bps.go.id/metadata/software/integrated-collection-system/ics' AS pkg_iri) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join--363388907
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/agent-in-role/{CHILD_id}> :wasAssociatedWithAIR-A colsys:individual/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT
+			           'ICS' AS pkg_id, *
+			          FROM dbo.user_roles) CHILD, (SELECT * FROM dbo.users) PARENT WHERE CHILD.user_id = PARENT.id
+
+mappingId	tm-join--1743827253
+target		<{CHILD_pkg_iri}> cspa:hasPackageImplementation <https://bps.go.id/metadata/software/integrated-collection-system/ics/service-implementation/{PARENT_si_id}> . 
+source		SELECT CHILD.pkg_iri AS CHILD_pkg_iri, PARENT.si_id AS PARENT_si_id FROM (SELECT
+			        'ICS' AS pkg_id,
+			        'https://bps.go.id/metadata/software/integrated-collection-system/ics' AS pkg_iri) CHILD, (SELECT
+			        'ICS' AS pkg_id,
+			        'service-implementation-1' AS si_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join-836842425
+target		<{CHILD_pkg_iri}> cspa:hasPackageDefinition <https://bps.go.id/metadata/software/integrated-collection-system/ics/service-definition/{PARENT_sd_id}> . 
+source		SELECT CHILD.pkg_iri AS CHILD_pkg_iri, PARENT.sd_id AS PARENT_sd_id FROM (SELECT
+			        'ICS' AS pkg_id,
+			        'https://bps.go.id/metadata/software/integrated-collection-system/ics' AS pkg_iri) CHILD, (SELECT
+			        'ICS' AS pkg_id,
+			        'service-definition-1' AS sd_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join--1646854743
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/service-implementation/{CHILD_si_id}> cspa:comesFrom <https://bps.go.id/metadata/software/integrated-collection-system/ics/provenance/{PARENT_p_id}> . 
+source		SELECT CHILD.si_id AS CHILD_si_id, PARENT.p_id AS PARENT_p_id FROM (SELECT
+			        'ICS' AS pkg_id,
+			        'service-implementation-1' AS si_id) CHILD, (SELECT
+			          'ICS' AS pkg_id,
+			          'provenance-1' AS p_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join-1963713204
+target		<https://bps.go.id/metadata/software/integrated-collection-system/ics/provenance/{CHILD_p_id}> cspa:builderOrganization <https://bps.go.id/metadata/software/integrated-collection-system/ics/organization/{PARENT_o_id}> . 
+source		SELECT CHILD.p_id AS CHILD_p_id, PARENT.o_id AS PARENT_o_id FROM (SELECT
+			          'ICS' AS pkg_id,
+			          'provenance-1' AS p_id) CHILD, (SELECT
+			          'ICS' AS pkg_id,
+			          'organization-1' AS o_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
 ]]
 

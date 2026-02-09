@@ -1,4 +1,5 @@
 [PrefixDeclaration]
+rr:		http://www.w3.org/ns/r2rml#
 :		https://w3id.org/sdp/core#
 cc:		https://creativecommons.org/ns/
 dc:		http://purl.org/dc/elements/1.1/
@@ -28,144 +29,891 @@ kshrts:		https://www.ksh.hu/survey/retail-trade-statistics#
 gsim-sum:	https://w3id.org/italia/onto/gsim-sum#
 
 [MappingDeclaration] @collection [[
-mappingId	TriplesMap_questionnaire
-target		colsys:questionnaire/{id} a gsim:Questionnaire ; gsim-sum:hasName-IA "Questionnaire {name}"^^xsd:string ; gsim-sum:hasId-IA {id}^^xsd:string ; :createdAt-IA {created_time}^^xsd:dateTime ; :updatedAt-IA {updated_time}^^xsd:dateTime ; :hasVersion-IA {version}^^xsd:string ; gsim-sum:hasDescription-IA {description}^^xsd:string ; rdfs:label "Questionnaire {name}"^^xsd:string . 
-source		SELECT *
-			FROM designer.template
-
-mappingId	TriplesMap_question_blocks_question_questionnaire
-target		colsys:instance-question-block/{s_id} a gsim-sum:InstanceQuestionBlock ; :includesIQB-IQ colsys:instance-question/{c_id} ; gsim-sum:hasName-IA "Instance Question Block - {s_name}"^^xsd:string ; rdfs:label "Instance Question Block - {s_name}"^^xsd:string . colsys:instance-question/{c_id} a gsim-sum:InstanceQuestion ; gsim-sum:hasName-IA "Instance question - {c_label}"^^xsd:string ; rdfs:label "Instance question - {c_label}"^^xsd:string . colsys:questionnaire/{t_id} :includesQ-IQB colsys:instance-question-block/{s_id} . 
+mappingId	mapping--149314549
+target		colsys:questionnaire/{t_id} a gsim:Questionnaire . 
 source		SELECT
-			t.id t_id,
-			t.name t_name,
-			t.description t_description,
-			t.version t_version,
-			t.created_time t_created_time,
-			t.updated_time t_updated_time,
-			t.is_deleted t_is_deleted,
-			t.status t_status,
-			t.created_by t_created_by,
-			t.updated_by t_updated_by,
-			t.status_approval t_status_approval,
-			t.user_id t_user_id,
-			t.work_unit_id t_work_unit_id,
-			t.data_key t_data_key,
-			t.acronym t_acronym,
-			t.validation_description t_validation_description,
-			t.validation_data_key t_validation_data_key,
-			t.validation_version t_validation_version,
-			t.language t_language,
-			t.release_submission_version t_release_submission_version,
-			t.release_submission_change_log t_release_submission_change_log,
-			t.release_submission_user_id t_release_submission_user_id,
-			t.release_submission_date t_release_submission_date,
-			t.release_submission_validation_version t_release_submission_validation_version,
-			t.force_submit_enabling_condition t_force_submit_enabling_condition,
-			t.force_submit_expression t_force_submit_expression,
-			t.force_submit_message t_force_submit_message,
-			t.form_engine_id t_form_engine_id,
-			t.theme_color t_theme_color,
-			s.id s_id,
-			s.name s_name,
-			s.enabling_condition s_enabling_condition,
-			s.created_time s_created_time,
-			s.updated_time s_updated_time,
-			s.created_by s_created_by,
-			s.updated_by s_updated_by,
-			s.template_id s_template_id,
-			s.position s_position,
-			s.is_deleted s_is_deleted,
-			s.type s_type,
-			s.data_key s_data_key,
-			s.description s_description,
-			s.component_enable s_component_enable,
-			c.id c_id,
-			c.label c_label,
-			c.position c_position,
-			c.created_time c_created_time,
-			c.updated_time c_updated_time,
-			c.question_type_id c_question_type_id,
-			c.variable_id c_variable_id,
-			c.created_by c_created_by,
-			c.updated_by c_updated_by,
-			c.is_deleted c_is_deleted,
-			c.section_id c_section_id,
-			c.parent_id c_parent_id,
-			c.data_key c_data_key,
-			c.execute_validation_on_server c_execute_validation_on_server,
-			c.is_identifier c_is_identifier,
-			c.expression c_expression,
-			c.ds_table_name c_ds_table_name,
-			c.ds_value c_ds_value,
-			c.ds_desc c_ds_desc,
-			c.lookup_data_id c_lookup_data_id,
-			c.ds_version c_ds_version,
-			c.custom_data c_custom_data,
-			c.is_prelist c_is_prelist,
-			c.enable_on_cati c_enable_on_cati,
-			c.label_cati_en c_label_cati_en,
-			c.label_cati_ar c_label_cati_ar,
-			c.label_cati_jp c_label_cati_jp,
-			c.label_cati_id c_label_cati_id,
-			c.label_cati_md c_label_cati_md,
-			c.label_cati_kr c_label_cati_kr,
-			c.is_multilanguage c_is_multilanguage,
-			c.rows c_rows,
-			c.options c_options,
-			c.range c_range,
-			c.range_min c_range_min,
-			c.range_max c_range_max,
-			c.range_step c_range_step,
-			c.description c_description,
-			c.answer c_answer,
-			c.source_question c_source_question,
-			c.currency c_currency,
-			c.separator_format c_separator_format,
-			c.is_decimal c_is_decimal,
-			c.masking_type c_masking_type,
-			c.render c_render,
-			c.render_type c_render_type,
-			c.component_var c_component_var,
-			c.enable_condition c_enable_condition,
-			c.component_enable c_component_enable,
-			c.title_modal_delete c_title_modal_delete,
-			c.content_modal_delete c_content_modal_delete,
-			c.hint c_hint,
-			c.enable_remark c_enable_remark,
-			c.cols c_cols,
-			c.source_option c_source_option,
-			c.type_option c_type_option,
-			c.client c_client,
-			c.roster_type c_roster_type,
-			c.source_select c_source_select,
-			c.col_name c_col_name,
-			c.preset_master c_preset_master,
-			c.masking_format c_masking_format,
-			c.disable_input c_disable_input,
-			c.disable_initial c_disable_initial,
-			c.component_validation c_component_validation,
-			c.length_input_min c_length_input_min,
-			c.length_input_max c_length_input_max,
-			c.title_modal_confirmation c_title_modal_confirmation,
-			c.content_modal_confirmation c_content_modal_confirmation,
-			c.version c_version,
-			c.required c_required,
-			c.encrypted c_encrypted,
-			c.size_input_min c_size_input_min,
-			c.size_input_max c_size_input_max,
-			c.decimal_length c_decimal_length,
-			c.is_capital c_is_capital,
-			c.accept c_accept,
-			c.tabular c_tabular,
-			c.input_mode c_input_mode,
-			c.is_editable c_is_editable,
-			c.svg_icon c_svg_icon,
-			c.min_accuracy c_min_accuracy,
-			c.ds_full_desc c_ds_full_desc,
-			c.is_editable_list c_is_editable_list,
-			c.disable_paste c_disable_paste
-			FROM
-			designer.template t JOIN designer.[section] s ON t.id = s.template_id
-			JOIN designer.component c ON s.id = c.section_id
+			          t.id t_id,
+			          t.name t_name,
+			          s.id s_id,
+			          s.name s_name,
+			          c.id c_id,
+			          c.label c_label
+			        FROM
+			          designer.template t JOIN designer.[section] s ON t.id = s.template_id
+			          JOIN designer.component c ON s.id = c.section_id
+
+mappingId	mapping--704289520
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/agent-in-role/{id}> a gsim-sum:AgentInRole ; rdfs:label "Agent In Role - {user_id} - {role_id}"^^xsd:string . 
+source		SELECT
+			           'QuestionnaireDesigner' AS pkg_id, *
+			          FROM dbo.user_roles
+
+mappingId	mapping--1562192574
+target		colsys:rule/macro/{id} a gsim-sum:Rule ; gsim-sum:hasValue-IA {syntax}^^xsd:string ; rdfs:label "Macro Rule - {key}"^^xsd:string ; gsim-sum:hasName-IA "Macro Rule - {key}"^^xsd:string . 
+source		SELECT * FROM designer.macros
+
+mappingId	mapping-14220253
+target		colsys:rule/variable-statistic/{id} a gsim-sum:Rule ; :median-R {median}^^xsd:decimal ; :mean-R {mean}^^xsd:decimal ; rdfs:label "Variable Statistic Rule - {variable_name}"^^xsd:string ; :max-R {max}^^xsd:decimal ; gsim-sum:hasName-IA "Variable Statistic Rule - {variable_name}"^^xsd:string ; :min-R {min}^^xsd:decimal ; :modus-R {modus}^^xsd:decimal . 
+source		SELECT * FROM ve.variable_statistic
+
+mappingId	mapping-146606488
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/role/{id}> a gsim:Role ; rdfs:label "Role - {name}"^^xsd:string . 
+source		SELECT * FROM dbo.roles
+
+mappingId	mapping-1770697399
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/provenance/{p_id}> a cspa:Provenance . 
+source		SELECT
+			          'QuestionnaireDesigner' AS pkg_id,
+			          'provenance-1' AS p_id
+
+mappingId	mapping-1982680200
+target		colsys:rule/validation/{v_id} a gsim-sum:Rule ; gsim-sum:hasValue-IA {expression}^^xsd:string . 
+source		SELECT 
+			        v.id v_id,
+			        v.expression expression,
+			        v.type v_type,
+			        v.status v_status,
+			        v.error_message v_error_message,
+			        v.validation_combination_id v_validation_combination_id,
+			        vsp.validation_id vsp_validation_id,
+			        vsp.variable_id vsp_variable_id 
+			      FROM 
+			        ve.validation v JOIN ve.validation_self_parameter vsp ON v.id = vsp.validation_id
+
+mappingId	mapping-952618005
+target		colsys:category/history-type/{id} a gsim-sum:Category ; gsim-sum:hasName-IA "History Type - {name}"^^xsd:string . 
+source		SELECT * FROM designer.history_type
+
+mappingId	mapping-1203352067
+target		colsys:category/lookup-data/{id} a gsim-sum:Category ; gsim-sum:hasName-IA "Lookup Data Category - {name}"^^xsd:string . 
+source		SELECT * FROM designer.lookup_data_type
+
+mappingId	mapping-594242415
+target		colsys:data-structure-component/design-collection/table/{etab_id} a gsim-sum:DataStructureComponent ; gsim-sum:hasDescription-IA "Roster Level: {etab_roster_level}"^^xsd:string ; gsim-sum:hasName-IA "Data Structure Component - Design Collection - Table Name: {etab_name}"^^xsd:string . 
+source		SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      designer.extraction_template et  
+			      JOIN designer.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN designer.extraction_column ec ON etab.id = ec.extraction_table_id
+
+mappingId	mapping-101953389
+target		colsys:questionnaire/{id} a gsim:Questionnaire ; gsim-sum:hasId-IA {id}^^xsd:string ; :createdAt-IA {created_time}^^xsd:dateTime ; gsim-sum:hasName-IA "Questionnaire {name}"^^xsd:string ; rdfs:label "Questionnaire {name}"^^xsd:string ; gsim-sum:hasDescription-IA {description}^^xsd:string ; :updatedAt-IA {updated_time}^^xsd:dateTime ; :hasVersion-IA {version}^^xsd:string . 
+source		SELECT * FROM designer.template
+
+mappingId	mapping--1958635629
+target		colsys:variable/{id} a gsim-sum:Variable ; rdfs:label {label}^^xsd:string ; gsim-sum:hasName-IA {name}^^xsd:string ; gsim-sum:hasValue-IA {question_text}^^xsd:string . 
+source		SELECT * FROM ve.variable
+
+mappingId	mapping-33850312
+target		colsys:rule/validation/{id} a gsim-sum:Rule ; rdfs:label "Rule - {data_key}"^^xsd:string ; gsim-sum:hasName-IA "Rule - {data_key}"^^xsd:string ; gsim-sum:hasValue-IA {expression}^^xsd:string . 
+source		SELECT * FROM designer.validation
+
+mappingId	mapping--1272175265
+target		colsys:data-structure-component/design-collection/column/{ec_id} a gsim-sum:DataStructureComponent ; gsim-sum:hasName-IA "Data Structure Component - Design Collection - Column Name: {ec_name}"^^xsd:string ; gsim-sum:hasDescription-IA "Data Type: {ec_data_type}. From Template: {ec_from_template}. Is Primary Key: {ec_pk}."^^xsd:string . 
+source		SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      designer.extraction_template et  
+			      JOIN designer.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN designer.extraction_column ec ON etab.id = ec.extraction_table_id
+
+mappingId	mapping-1503491051
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/organization/{o_id}> a cspa:Organization ; cspa:organizationName "Statistics Indonesia (BPS)"^^xsd:string . 
+source		SELECT
+			          'QuestionnaireDesigner' AS pkg_id,
+			          'organization-1' AS o_id
+
+mappingId	mapping--1613293829
+target		colsys:statement/label-variable/{id} a gsim-sum:Statement ; gsim-sum:hasValue-IA {variable}^^xsd:string ; rdfs:label "Label of variable - {value}: {variable}"^^xsd:string ; gsim-sum:hasName-IA "Label of variable - {value}: {variable}"^^xsd:string . 
+source		SELECT * FROM designer.component_label_variable
+
+mappingId	mapping-627162015
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/business-function/{bf_id}> a cspa:BusinessFunction ; cspa:outcomes "Digital Questionnaire that support muiltimode data collection system (ICS)."^^xsd:string ; cspa:description "Questionnaire Designer system for survey data collection with multiple modes of data collection (CAPI, CATI, CAWI, Paper-based)"^^xsd:string . 
+source		SELECT
+			          'QuestionnaireDesigner' AS pkg_id,
+			          'business-function-1' AS bf_id
+
+mappingId	mapping--982980869
+target		colsys:variable/{variable_id} a gsim-sum:Variable . 
+source		SELECT * FROM designer.component_enabling_parameter
+
+mappingId	mapping--1690826670
+target		colsys:statement/ds-parent-condition/{id} a gsim-sum:Statement ; rdfs:label "Label of ds parent condition - {col_key}: {col_value}"^^xsd:string ; gsim-sum:hasName-IA "Label of ds parent condition - {col_key}: {col_value}"^^xsd:string ; gsim-sum:hasValue-IA {col_value}^^xsd:string . 
+source		SELECT * FROM designer.component_ds_parent_condition
+
+mappingId	mapping--262397395
+target		colsys:value-domain/variable/{id} a gsim-sum:ValueDomain ; rdfs:label {key}^^xsd:string ; gsim-sum:hasName-IA {key}^^xsd:string ; gsim-sum:hasValue-IA {value}^^xsd:string . 
+source		SELECT * FROM ve.variable_option
+
+mappingId	mapping-1795970536
+target		colsys:rule/validation-combination/{id} a gsim-sum:Rule ; gsim-sum:hasValue-IA {expression}^^xsd:string ; rdfs:label {vc_name}^^xsd:string ; gsim-sum:hasName-IA {vc_name}^^xsd:string . 
+source		SELECT 
+			        vc.id id,
+			        vc.name vc_name,
+			        vc.status vc_status,
+			        v.id v_id,
+			        v.expression expression,
+			        v.type v_type,
+			        v.status v_status,
+			        v.error_message v_error_message,
+			        vcp.validation_combination_id vcp_validation_combination_id,
+			        vcp.variable_id vcp_variable_id
+			      FROM 
+			        ve.validation_combination vc
+			        JOIN ve.validation v ON vc.id = v.validation_combination_id
+			        JOIN ve.validation_combination_parameter vcp ON vc.id = vcp.validation_combination_id
+
+mappingId	mapping-318600934
+target		colsys:process-execution-log/template-history/{id} a :ProcessExecutionLog ; gsim-sum:hasExecutionLog {description}^^xsd:string . 
+source		SELECT * FROM designer.history
+
+mappingId	mapping-1355037433
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/service-definition/{sd_id}> a cspa:ServiceDefinition . 
+source		SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        'service-definition-1' AS sd_id
+
+mappingId	mapping--1863692594
+target		colsys:value-domain/default-value/{component_id} a gsim-sum:ValueDomain ; :hasDefaultValue-VD {default_value}^^xsd:string ; rdfs:label {label}^^xsd:string ; gsim-sum:hasName-IA {label}^^xsd:string . 
+source		SELECT * FROM designer.component_default_value
+
+mappingId	mapping--211320638
+target		colsys:core-output/{survey_id}/{survey_periode_id}/design-collection a :CoreOutput . 
+source		SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+
+mappingId	mapping--1791702471
+target		colsys:individual/{id} a gsim:Individual ; rdfs:label "Individual - {username}"^^xsd:string ; gsim-sum:hasName-IA "Individual - {username}"^^xsd:string ; :updatedAt-IA {updated_at}^^xsd:dateTime ; :createdAt-IA {created_at}^^xsd:dateTime ; :email-I {email}^^xsd:string ; :fullname-I {fullname}^^xsd:string . 
+source		SELECT * FROM dbo.users
+
+mappingId	mapping-758143938
+target		colsys:rule/global-function/{id} a gsim-sum:Rule ; gsim-sum:hasValue-IA {expression}^^xsd:string ; rdfs:label "Global Function Rule - {data_key}"^^xsd:string ; gsim-sum:hasName-IA "Global Function Rule - {data_key}"^^xsd:string . 
+source		SELECT * FROM designer.global_function
+
+mappingId	mapping--880303259
+target		colsys:code-item/question-type/{id} a gsim-sum:CodeItem ; gsim-sum:hasValue-IA {id}^^xsd:string ; rdfs:label "Code Item - ({id}) {name}"^^xsd:string ; gsim-sum:hasName-IA "Code Item - ({id}) {name}"^^xsd:string . 
+source		SELECT * FROM designer.question_type
+
+mappingId	mapping--738201660
+target		colsys:agent-in-role/contributor/{id} a gsim:AgentInRole . 
+source		SELECT * FROM designer.contributor
+
+mappingId	mapping-667024732
+target		colsys:process-execution-log/{survey_id}/{survey_periode_id}/template-release a :ProcessExecutionLog ; gsim-sum:hasExecutionLog "Release Version: {tr_version}. Release Date: {tr_release_date}. Release Directory: {tr_release_dir}. Validation Version: {tr_validation_version}."^^xsd:string . 
+source		SELECT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at,
+			          tr.id tr_id,
+			          tr.version tr_version,
+			          tr.release_date tr_release_date,
+			          tr.release_dir tr_release_dir,
+			          tr.template_id tr_template_id,
+			          tr.validation_version tr_validation_version
+			      FROM 
+			        survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+			        JOIN designer.template_release tr ON st.template_id = tr.template_id
+
+mappingId	mapping--1307338596
+target		colsys:process-step/{survey_id}/{survey_periode_id}/design-collection a :ProcessStep ; :classifiedAs-PS igsbpm:3.1 ; :usePS-CSPA <https://bps.go.id/metadata/software/questionnaire-designer/form-engine> . 
+source		SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+
+mappingId	mapping--518572365
+target		colsys:identifiable-artefact/attachment/{id} a gsim-sum:IdentifiableArtefact ; gsim-sum:hasValue-IA {filepath}^^xsd:string ; rdfs:label "Attachment - {data_key} - file name: {filename}"^^xsd:string ; gsim-sum:hasName-IA "Attachment - {data_key} - file name: {filename}"^^xsd:string . 
+source		SELECT * FROM designer.attachment
+
+mappingId	mapping--1649184001
+target		colsys:code-item/{id} a gsim-sum:CodeItem ; gsim-sum:hasValue-IA {value}^^xsd:string ; rdfs:label {label}^^xsd:string ; gsim-sum:hasName-IA {label}^^xsd:string . 
+source		SELECT * FROM designer.component_option
+
+mappingId	mapping--1210844220
+target		colsys:question-block/{id} a gsim:QuestionBlock ; rdfs:label "Question Block - {name}"^^xsd:string ; gsim-sum:hasName-IA "Question Block - {name}"^^xsd:string . 
+source		SELECT * FROM designer.section
+
+mappingId	mapping--1030468075
+target		colsys:code-list/lookup-data/{id} a gsim-sum:CodeList ; gsim-sum:hasValue-IA {json_data}^^xsd:string ; rdfs:label "Code List - Lookup Data - {table_name}"^^xsd:string ; gsim-sum:hasName-IA "Code List - Lookup Data - {table_name}"^^xsd:string . 
+source		SELECT * FROM designer.lookup_data
+
+mappingId	mapping-784877237
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/service-implementation/{fe_id}/version/{fer_version}> a cspa:ServiceImplementationDescription ; cspa:version {fer_version}^^xsd:string ; rdfs:label "Form Engine - {fe_name} - Version {fer_version}"^^xsd:string . 
+source		SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        fe.id fe_id,
+			        fe.name fe_name,
+			        fe.description fe_description,
+			        fe.brand_name fe_brand_name,
+			        fe.file_name fe_file_name,
+			        fer.id fer_id,
+			        fer.form_engine_id fer_form_engine_id,
+			        fer.version fer_version,
+			        fer.base_path fer_base_path
+			      FROM
+			        designer.form_engine fe JOIN designer.form_engine_release fer ON fe.id = fer.form_engine_id
+
+mappingId	mapping-287328925
+target		colsys:role/access-level/{id} a gsim:Role ; gsim-sum:hasName-IA "Access Level Role - {name}"^^xsd:string ; rdfs:label "Access Level Role - {name}"^^xsd:string . 
+source		SELECT * FROM designer.access_level
+
+mappingId	mapping--2052298120
+target		colsys:question/{id} a gsim-sum:Question ; rdfs:label "Question - {label}"^^xsd:string ; gsim-sum:hasName-IA "Question - {label}"^^xsd:string . 
+source		SELECT * FROM designer.component
+
+mappingId	mapping-1954150597
+target		colsys:process-execution-log/{survey_id}/{survey_periode_id}/template-preview a :ProcessExecutionLog ; gsim-sum:hasExecutionLog "Preview Name: {tp_name}. Preview {tp_html}. Preview Template: {tp_template_id}. Preview Time: {tp_created_time}. Preview Update Time {tp_updated_time}."^^xsd:string . 
+source		SELECT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at,
+			          tp.id tp_id,
+			          tp.name tp_name,
+			          tp.html tp_html,
+			          tp.template_id tp_template_id,
+			          tp.created_time tp_created_time,
+			          tp.updated_time tp_updated_time
+			      FROM 
+			        survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+			        JOIN designer.template_preview tp ON st.template_id = tp.template_id
+
+mappingId	mapping--1545420529
+target		colsys:category/variable-group/{id} a gsim-sum:Category ; rdfs:label {name}^^xsd:string ; gsim-sum:hasName-IA {name}^^xsd:string . 
+source		SELECT * FROM ve.variable_group
+
+mappingId	mapping--24945946
+target		colsys:variable/{variable_id} a gsim-sum:Variable . 
+source		SELECT * FROM designer.section_enabling_parameter
+
+mappingId	mapping-796246914
+target		colsys:datastructure/design-collection/{et_id} a gsim-sum:DataStructure ; gsim-sum:hasName-IA "Data Structure - Design Collection - Template ID: {et_template_id} - Version: {et_template_version} - Validation Version: {et_validation_version}"^^xsd:string . 
+source		SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      designer.extraction_template et  
+			      JOIN designer.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN designer.extraction_column ec ON etab.id = ec.extraction_table_id
+
+mappingId	mapping-1920521352
+target		<{pkg_iri}> a cspa:Package ; cspa:description "Questionnaire Designer - Form Engine for survey data collection that capable to design and manage questionnaires effectively"^^xsd:string ; rdfs:label "Questionnaire Designer - Form Engine"^^xsd:string ; cspa:label "Questionnaire Designer - Form Engine"^^xsd:string . 
+source		SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        'https://bps.go.id/metadata/software/questionnaire-designer/form-engine' AS pkg_iri
+
+mappingId	mapping--1574434000
+target		colsys:process-execution-log/{survey_id}/{survey_periode_id}/design-collection a :ProcessExecutionLog . 
+source		SELECT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at,
+			          h.id h_id
+			      FROM 
+			        survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+			        JOIN designer.history h ON st.template_id = h.template_id
+
+mappingId	mapping--1999601792
+target		colsys:code-list/{id} a gsim-sum:CodeList ; rdfs:label {label}^^xsd:string ; gsim-sum:hasName-IA {label}^^xsd:string . 
+source		SELECT * FROM designer.component
+
+mappingId	tm-join--1496960379
+target		colsys:questionnaire/{CHILD_t_id} :hasQ-Qu colsys:question/{PARENT_id} . 
+source		SELECT CHILD.t_id AS CHILD_t_id, PARENT.id AS PARENT_id FROM (SELECT
+			          t.id t_id,
+			          t.name t_name,
+			          s.id s_id,
+			          s.name s_name,
+			          c.id c_id,
+			          c.label c_label
+			        FROM
+			          designer.template t JOIN designer.[section] s ON t.id = s.template_id
+			          JOIN designer.component c ON s.id = c.section_id) CHILD, (SELECT * FROM designer.component) PARENT WHERE CHILD.s_id = PARENT.section_id
+
+mappingId	tm-join--1096372310
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/agent-in-role/{CHILD_id}> :wasAssociatedWithAIR-A colsys:individual/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT
+			           'QuestionnaireDesigner' AS pkg_id, *
+			          FROM dbo.user_roles) CHILD, (SELECT * FROM dbo.users) PARENT WHERE CHILD.user_id = PARENT.id
+
+mappingId	tm-join-666192648
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/agent-in-role/{CHILD_id}> :fulfilsAIR-R <https://bps.go.id/metadata/software/questionnaire-designer/form-engine/role/{PARENT_id}> . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT
+			           'QuestionnaireDesigner' AS pkg_id, *
+			          FROM dbo.user_roles) CHILD, (SELECT * FROM dbo.roles) PARENT WHERE CHILD.role_id = PARENT.id
+
+mappingId	tm-join-1873668567
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/agent-in-role/{CHILD_id}> :isActivatedRoleOfCSPA-AIR <{PARENT_pkg_iri}> . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.pkg_iri AS PARENT_pkg_iri FROM (SELECT
+			           'QuestionnaireDesigner' AS pkg_id, *
+			          FROM dbo.user_roles) CHILD, (SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        'https://bps.go.id/metadata/software/questionnaire-designer/form-engine' AS pkg_iri) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join-1489385728
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/provenance/{CHILD_p_id}> cspa:builderOrganization <https://bps.go.id/metadata/software/questionnaire-designer/form-engine/organization/{PARENT_o_id}> . 
+source		SELECT CHILD.p_id AS CHILD_p_id, PARENT.o_id AS PARENT_o_id FROM (SELECT
+			          'QuestionnaireDesigner' AS pkg_id,
+			          'provenance-1' AS p_id) CHILD, (SELECT
+			          'QuestionnaireDesigner' AS pkg_id,
+			          'organization-1' AS o_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join-154452952
+target		colsys:rule/validation/{CHILD_v_id} :usedbyValidationVa-V colsys:variable/{PARENT_id} . 
+source		SELECT CHILD.v_id AS CHILD_v_id, PARENT.id AS PARENT_id FROM (SELECT 
+			        v.id v_id,
+			        v.expression expression,
+			        v.type v_type,
+			        v.status v_status,
+			        v.error_message v_error_message,
+			        v.validation_combination_id v_validation_combination_id,
+			        vsp.validation_id vsp_validation_id,
+			        vsp.variable_id vsp_variable_id 
+			      FROM 
+			        ve.validation v JOIN ve.validation_self_parameter vsp ON v.id = vsp.validation_id) CHILD, (SELECT * FROM ve.variable) PARENT WHERE CHILD.vsp_variable_id = PARENT.id
+
+mappingId	tm-join--353224020
+target		colsys:rule/validation/{CHILD_v_id} :combinedbyR-R colsys:rule/validation-combination/{PARENT_id} . 
+source		SELECT CHILD.v_id AS CHILD_v_id, PARENT.id AS PARENT_id FROM (SELECT 
+			        v.id v_id,
+			        v.expression expression,
+			        v.type v_type,
+			        v.status v_status,
+			        v.error_message v_error_message,
+			        v.validation_combination_id v_validation_combination_id,
+			        vsp.validation_id vsp_validation_id,
+			        vsp.variable_id vsp_variable_id 
+			      FROM 
+			        ve.validation v JOIN ve.validation_self_parameter vsp ON v.id = vsp.validation_id) CHILD, (SELECT 
+			        vc.id id,
+			        vc.name vc_name,
+			        vc.status vc_status,
+			        v.id v_id,
+			        v.expression expression,
+			        v.type v_type,
+			        v.status v_status,
+			        v.error_message v_error_message,
+			        vcp.validation_combination_id vcp_validation_combination_id,
+			        vcp.variable_id vcp_variable_id
+			      FROM 
+			        ve.validation_combination vc
+			        JOIN ve.validation v ON vc.id = v.validation_combination_id
+			        JOIN ve.validation_combination_parameter vcp ON vc.id = vcp.validation_combination_id) PARENT WHERE CHILD.v_validation_combination_id = PARENT.id
+
+mappingId	tm-join--160566798
+target		colsys:data-structure-component/design-collection/table/{CHILD_etab_id} :hasDSC-DSC colsys:data-structure-component/design-collection/column/{PARENT_ec_id} . 
+source		SELECT CHILD.etab_id AS CHILD_etab_id, PARENT.ec_id AS PARENT_ec_id FROM (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      designer.extraction_template et  
+			      JOIN designer.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN designer.extraction_column ec ON etab.id = ec.extraction_table_id) CHILD, (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      designer.extraction_template et  
+			      JOIN designer.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN designer.extraction_column ec ON etab.id = ec.extraction_table_id) PARENT WHERE CHILD.etab_id = PARENT.ec_extraction_table_id
+
+mappingId	tm-join--1812561952
+target		colsys:questionnaire/{CHILD_id} :useQ-R colsys:rule/macro/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.template) CHILD, (SELECT * FROM designer.macros) PARENT WHERE CHILD.id = PARENT.template_id
+
+mappingId	tm-join-2003615564
+target		colsys:questionnaire/{CHILD_id} :hasQ-QB colsys:question-block/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.template) CHILD, (SELECT * FROM designer.section) PARENT WHERE CHILD.id = PARENT.template_id
+
+mappingId	tm-join-1823336104
+target		colsys:variable/{CHILD_id} :groupByIA-Cat colsys:category/variable-group/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM ve.variable) CHILD, (SELECT * FROM ve.variable_group) PARENT WHERE CHILD.variable_group_id = PARENT.id
+
+mappingId	tm-join--1962416584
+target		colsys:statement/label-variable/{CHILD_id} :usedbyStatementQu-St colsys:question/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.component_label_variable) CHILD, (SELECT * FROM designer.component) PARENT WHERE CHILD.component_id = PARENT.id
+
+mappingId	tm-join-2039126006
+target		colsys:variable/{CHILD_variable_id} :usedbyV-Qu colsys:question/{PARENT_id} . 
+source		SELECT CHILD.variable_id AS CHILD_variable_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.component_enabling_parameter) CHILD, (SELECT * FROM designer.component) PARENT WHERE CHILD.component_id = PARENT.id
+
+mappingId	tm-join-1344304253
+target		colsys:statement/ds-parent-condition/{CHILD_id} :usedbyStatementQu-St colsys:question/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.component_ds_parent_condition) CHILD, (SELECT * FROM designer.component) PARENT WHERE CHILD.component_id = PARENT.id
+
+mappingId	tm-join-1422142700
+target		colsys:value-domain/variable/{CHILD_id} :usedbyVD-V colsys:variable/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM ve.variable_option) CHILD, (SELECT * FROM ve.variable) PARENT WHERE CHILD.variable_id = PARENT.id
+
+mappingId	tm-join--1954565460
+target		colsys:rule/validation-combination/{CHILD_id} :usedbyR-V colsys:variable/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT 
+			        vc.id id,
+			        vc.name vc_name,
+			        vc.status vc_status,
+			        v.id v_id,
+			        v.expression expression,
+			        v.type v_type,
+			        v.status v_status,
+			        v.error_message v_error_message,
+			        vcp.validation_combination_id vcp_validation_combination_id,
+			        vcp.variable_id vcp_variable_id
+			      FROM 
+			        ve.validation_combination vc
+			        JOIN ve.validation v ON vc.id = v.validation_combination_id
+			        JOIN ve.validation_combination_parameter vcp ON vc.id = vcp.validation_combination_id) CHILD, (SELECT * FROM ve.variable) PARENT WHERE CHILD.vcp_variable_id = PARENT.id
+
+mappingId	tm-join--2035930500
+target		colsys:process-execution-log/template-history/{CHILD_id} :historyOfPEL-Q colsys:questionnaire/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.history) CHILD, (SELECT * FROM designer.template) PARENT WHERE CHILD.template_id = PARENT.id
+
+mappingId	tm-join--557661182
+target		colsys:process-execution-log/template-history/{CHILD_id} :groupByPEL-Cat colsys:category/history-type/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.history) CHILD, (SELECT * FROM designer.history_type) PARENT WHERE CHILD.type = PARENT.id
+
+mappingId	tm-join-1973740444
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/service-definition/{CHILD_sd_id}> cspa:aimsAt <https://bps.go.id/metadata/software/questionnaire-designer/form-engine/business-function/{PARENT_bf_id}> . 
+source		SELECT CHILD.sd_id AS CHILD_sd_id, PARENT.bf_id AS PARENT_bf_id FROM (SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        'service-definition-1' AS sd_id) CHILD, (SELECT
+			          'QuestionnaireDesigner' AS pkg_id,
+			          'business-function-1' AS bf_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join--2097659328
+target		colsys:core-output/{CHILD_survey_id}/{CHILD_survey_periode_id}/design-collection :refersToCO-IA colsys:datastructure/design-collection/{PARENT_et_id} . 
+source		SELECT CHILD.survey_id AS CHILD_survey_id, CHILD.survey_periode_id AS CHILD_survey_periode_id, PARENT.et_id AS PARENT_et_id FROM (SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id) CHILD, (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      designer.extraction_template et  
+			      JOIN designer.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN designer.extraction_column ec ON etab.id = ec.extraction_table_id) PARENT WHERE CHILD.questionnaire_id = PARENT.et_template_id
+
+mappingId	tm-join--1257281678
+target		colsys:core-output/{CHILD_survey_id}/{CHILD_survey_periode_id}/design-collection :refersToCO-IA colsys:questionnaire/{PARENT_id} . 
+source		SELECT CHILD.survey_id AS CHILD_survey_id, CHILD.survey_periode_id AS CHILD_survey_periode_id, PARENT.id AS PARENT_id FROM (SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id) CHILD, (SELECT * FROM designer.template) PARENT WHERE CHILD.questionnaire_id = PARENT.id
+
+mappingId	tm-join-525296157
+target		colsys:agent-in-role/contributor/{CHILD_id} :fulfilsAIR-R colsys:role/access-level/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.contributor) CHILD, (SELECT * FROM designer.access_level) PARENT WHERE CHILD.access_id = PARENT.id
+
+mappingId	tm-join-774982241
+target		colsys:agent-in-role/contributor/{CHILD_id} :wasAssociatedWithAIR-A colsys:individual/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.contributor) CHILD, (SELECT * FROM dbo.users) PARENT WHERE CHILD.user_id = PARENT.id
+
+mappingId	tm-join--720867817
+target		colsys:agent-in-role/contributor/{CHILD_id} :contributeToAIR-Q colsys:questionnaire/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.contributor) CHILD, (SELECT * FROM designer.template) PARENT WHERE CHILD.template_id = PARENT.id
+
+mappingId	tm-join-1460871338
+target		colsys:process-step/{CHILD_survey_id}/{CHILD_survey_periode_id}/design-collection :createsPS-PO colsys:process-execution-log/{PARENT_survey_id}/{PARENT_survey_periode_id}/design-collection . 
+source		SELECT CHILD.survey_id AS CHILD_survey_id, CHILD.survey_periode_id AS CHILD_survey_periode_id, PARENT.survey_id AS PARENT_survey_id, PARENT.survey_periode_id AS PARENT_survey_periode_id FROM (SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id) CHILD, (SELECT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at,
+			          h.id h_id
+			      FROM 
+			        survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+			        JOIN designer.history h ON st.template_id = h.template_id) PARENT WHERE CHILD.survey_id = PARENT.survey_id
+
+mappingId	tm-join-1389072234
+target		colsys:process-step/{CHILD_survey_id}/{CHILD_survey_periode_id}/design-collection :createsPS-PO colsys:core-output/{PARENT_survey_id}/{PARENT_survey_periode_id}/design-collection . 
+source		SELECT CHILD.survey_id AS CHILD_survey_id, CHILD.survey_periode_id AS CHILD_survey_periode_id, PARENT.survey_id AS PARENT_survey_id, PARENT.survey_periode_id AS PARENT_survey_periode_id FROM (SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id) CHILD, (SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id) PARENT WHERE CHILD.survey_id = PARENT.survey_id
+
+mappingId	tm-join--1715227203
+target		colsys:process-step/{CHILD_survey_id}/{CHILD_survey_periode_id}/design-collection :createsPS-PO colsys:process-execution-log/{PARENT_survey_id}/{PARENT_survey_periode_id}/template-preview . 
+source		SELECT CHILD.survey_id AS CHILD_survey_id, CHILD.survey_periode_id AS CHILD_survey_periode_id, PARENT.survey_id AS PARENT_survey_id, PARENT.survey_periode_id AS PARENT_survey_periode_id FROM (SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id) CHILD, (SELECT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at,
+			          tp.id tp_id,
+			          tp.name tp_name,
+			          tp.html tp_html,
+			          tp.template_id tp_template_id,
+			          tp.created_time tp_created_time,
+			          tp.updated_time tp_updated_time
+			      FROM 
+			        survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+			        JOIN designer.template_preview tp ON st.template_id = tp.template_id) PARENT WHERE CHILD.survey_id = PARENT.survey_id
+
+mappingId	tm-join-76265793
+target		colsys:process-step/{CHILD_survey_id}/{CHILD_survey_periode_id}/design-collection :createsPS-PO colsys:process-execution-log/{PARENT_survey_id}/{PARENT_survey_periode_id}/template-release . 
+source		SELECT CHILD.survey_id AS CHILD_survey_id, CHILD.survey_periode_id AS CHILD_survey_periode_id, PARENT.survey_id AS PARENT_survey_id, PARENT.survey_periode_id AS PARENT_survey_periode_id FROM (SELECT DISTINCT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at
+			          FROM survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id) CHILD, (SELECT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at,
+			          tr.id tr_id,
+			          tr.version tr_version,
+			          tr.release_date tr_release_date,
+			          tr.release_dir tr_release_dir,
+			          tr.template_id tr_template_id,
+			          tr.validation_version tr_validation_version
+			      FROM 
+			        survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+			        JOIN designer.template_release tr ON st.template_id = tr.template_id) PARENT WHERE CHILD.survey_id = PARENT.survey_id
+
+mappingId	tm-join--1163204584
+target		colsys:question-block/{CHILD_id} :includesQB-Qu colsys:question/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.section) CHILD, (SELECT * FROM designer.component) PARENT WHERE CHILD.id = PARENT.section_id
+
+mappingId	tm-join--637568579
+target		colsys:code-list/lookup-data/{CHILD_id} :groupByIA-Cat colsys:category/lookup-data/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.lookup_data) CHILD, (SELECT * FROM designer.lookup_data_type) PARENT WHERE CHILD.lookup_data_type_id = PARENT.id
+
+mappingId	tm-join--736993268
+target		<https://bps.go.id/metadata/software/questionnaire-designer/form-engine/service-implementation/{CHILD_fe_id}/version/{CHILD_fer_version}> cspa:comesFrom <https://bps.go.id/metadata/software/questionnaire-designer/form-engine/provenance/{PARENT_p_id}> . 
+source		SELECT CHILD.fe_id AS CHILD_fe_id, CHILD.fer_version AS CHILD_fer_version, PARENT.p_id AS PARENT_p_id FROM (SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        fe.id fe_id,
+			        fe.name fe_name,
+			        fe.description fe_description,
+			        fe.brand_name fe_brand_name,
+			        fe.file_name fe_file_name,
+			        fer.id fer_id,
+			        fer.form_engine_id fer_form_engine_id,
+			        fer.version fer_version,
+			        fer.base_path fer_base_path
+			      FROM
+			        designer.form_engine fe JOIN designer.form_engine_release fer ON fe.id = fer.form_engine_id) CHILD, (SELECT
+			          'QuestionnaireDesigner' AS pkg_id,
+			          'provenance-1' AS p_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join-1777047618
+target		colsys:question/{CHILD_id} :usesQu-CL colsys:code-list/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.component) CHILD, (SELECT * FROM designer.component) PARENT WHERE CHILD.id = PARENT.id
+
+mappingId	tm-join--192518363
+target		colsys:question/{CHILD_id} :usesQu-R colsys:rule/validation/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.component) CHILD, (SELECT * FROM designer.validation) PARENT WHERE CHILD.id = PARENT.component_id
+
+mappingId	tm-join--51359574
+target		colsys:question/{CHILD_id} :questionTypeQu-CI colsys:code-item/question-type/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.component) CHILD, (SELECT * FROM designer.question_type) PARENT WHERE CHILD.question_type_id = PARENT.id
+
+mappingId	tm-join--54528467
+target		colsys:question/{CHILD_id} :usesQu-CL colsys:code-list/lookup-data/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.component) CHILD, (SELECT * FROM designer.lookup_data) PARENT WHERE CHILD.lookup_data_id = PARENT.id
+
+mappingId	tm-join--1429698771
+target		colsys:question/{CHILD_id} :hasValueDomainQu-VD colsys:value-domain/default-value/{PARENT_component_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.component_id AS PARENT_component_id FROM (SELECT * FROM designer.component) CHILD, (SELECT * FROM designer.component_default_value) PARENT WHERE CHILD.id = PARENT.component_id
+
+mappingId	tm-join-500695726
+target		colsys:variable/{CHILD_variable_id} :usedbyV-QB colsys:question-block/{PARENT_id} . 
+source		SELECT CHILD.variable_id AS CHILD_variable_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.section_enabling_parameter) CHILD, (SELECT * FROM designer.section) PARENT WHERE CHILD.section_id = PARENT.id
+
+mappingId	tm-join--1884262929
+target		colsys:datastructure/design-collection/{CHILD_et_id} :hasDS-DSC colsys:data-structure-component/design-collection/table/{PARENT_etab_id} . 
+source		SELECT CHILD.et_id AS CHILD_et_id, PARENT.etab_id AS PARENT_etab_id FROM (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      designer.extraction_template et  
+			      JOIN designer.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN designer.extraction_column ec ON etab.id = ec.extraction_table_id) CHILD, (SELECT
+			      et.id et_id,
+			      et.template_id et_template_id,
+			      et.template_version et_template_version,
+			      et.validation_version et_validation_version,
+			      et.created_at et_created_at,
+			      et.created_by et_created_by,
+			      et.is_active et_is_active,
+			      etab.id etab_id,
+			      etab.extraction_template_id etab_extraction_template_id,
+			      etab.name etab_name,
+			      etab.roster_level etab_roster_level,
+			      ec.id ec_id,
+			      ec.extraction_table_id ec_extraction_table_id,
+			      ec.name ec_name,
+			      ec.data_type ec_data_type,
+			      ec.from_template ec_from_template,
+			      ec.pk ec_pk,
+			      ec.label ec_label,
+			      ec.question_type_id ec_question_type_id,
+			      ec.position ec_position
+			    FROM
+			      designer.extraction_template et  
+			      JOIN designer.extraction_table etab ON et.id = etab.extraction_template_id 
+			      JOIN designer.extraction_column ec ON etab.id = ec.extraction_table_id) PARENT WHERE CHILD.et_id = PARENT.etab_extraction_template_id
+
+mappingId	tm-join-730767383
+target		<{CHILD_pkg_iri}> cspa:hasPackageDefinition <https://bps.go.id/metadata/software/questionnaire-designer/form-engine/service-definition/{PARENT_sd_id}> . 
+source		SELECT CHILD.pkg_iri AS CHILD_pkg_iri, PARENT.sd_id AS PARENT_sd_id FROM (SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        'https://bps.go.id/metadata/software/questionnaire-designer/form-engine' AS pkg_iri) CHILD, (SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        'service-definition-1' AS sd_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join--977818384
+target		<{CHILD_pkg_iri}> cspa:hasPackageImplementation <https://bps.go.id/metadata/software/questionnaire-designer/form-engine/service-implementation/{PARENT_fe_id}/version/{PARENT_fer_version}> . 
+source		SELECT CHILD.pkg_iri AS CHILD_pkg_iri, PARENT.fe_id AS PARENT_fe_id, PARENT.fer_version AS PARENT_fer_version FROM (SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        'https://bps.go.id/metadata/software/questionnaire-designer/form-engine' AS pkg_iri) CHILD, (SELECT
+			        'QuestionnaireDesigner' AS pkg_id,
+			        fe.id fe_id,
+			        fe.name fe_name,
+			        fe.description fe_description,
+			        fe.brand_name fe_brand_name,
+			        fe.file_name fe_file_name,
+			        fer.id fer_id,
+			        fer.form_engine_id fer_form_engine_id,
+			        fer.version fer_version,
+			        fer.base_path fer_base_path
+			      FROM
+			        designer.form_engine fe JOIN designer.form_engine_release fer ON fe.id = fer.form_engine_id) PARENT WHERE CHILD.pkg_id = PARENT.pkg_id
+
+mappingId	tm-join--1793348528
+target		colsys:process-execution-log/{CHILD_survey_id}/{CHILD_survey_periode_id}/design-collection :refinesPEL-PEL colsys:process-execution-log/template-history/{PARENT_id} . 
+source		SELECT CHILD.survey_id AS CHILD_survey_id, CHILD.survey_periode_id AS CHILD_survey_periode_id, PARENT.id AS PARENT_id FROM (SELECT
+			          st.survey_id survey_id,
+			          sp.id survey_periode_id,
+			          st.template_id questionnaire_id,
+			          st.survey_template_name questionnaire_name,
+			          st.template_version questionnaire_version,
+			          st.validation_version validation_version,
+			          st.created_at created_at,
+			          st.updated_at updated_at,
+			          h.id h_id
+			      FROM 
+			        survey.survey_templates st INNER JOIN survey.survey_periods sp ON st.survey_id = sp.survey_id
+			        JOIN designer.history h ON st.template_id = h.template_id) CHILD, (SELECT * FROM designer.history) PARENT WHERE CHILD.h_id = PARENT.id
+
+mappingId	tm-join--187578207
+target		colsys:code-list/{CHILD_id} :containsCL-CI colsys:code-item/{PARENT_id} . 
+source		SELECT CHILD.id AS CHILD_id, PARENT.id AS PARENT_id FROM (SELECT * FROM designer.component) CHILD, (SELECT * FROM designer.component_option) PARENT WHERE CHILD.id = PARENT.component_id
 ]]
 
