@@ -1,0 +1,9 @@
+langchain
+langchain-google-genai
+rdflib
+SPARQLWrapper
+google-generativeai
+langchain-community
+chromadb
+langchain-chroma
+langchain-core
