@@ -20,7 +20,6 @@
 @prefix gsbpm: <http://rdf.unece.org/models/gsbpm#> .
 @prefix icspa: <http://id.unece.org/models/cspa/services/> .
 @prefix id-ps: <https://www.bps.go.id/survey/population-census#> .
-@prefix colsys: <https://bps.go.id/metadata/collection-system/> .
 @prefix igamso: <http://id.unece.org/models/gamso/> .
 @prefix igsbpm: <http://id.unece.org/models/gsbpm/> .
 @prefix kshrts: <https://www.ksh.hu/survey/retail-trade-statistics#> .
@@ -28,7 +27,7 @@
 @base <https://w3id.org/sdp/core#> .
 
 <https://w3id.org/sdp/core#> rdf:type owl:Ontology ;
-                              owl:versionIRI <https://w3id.org/sdp/1.0> ;
+                              owl:versionIRI <https://w3id.org/sdp/1.1> ;
                               dc:creator """Sulthoni Ashiddiiqi - Institut Teknologi Bandung, Bandung, Indonesia
 Fajar J. Ekaputra - DPKM - WU Vienna, Austria
 Muhammad Zuhri Catur Candra - Institut Teknologi Bandung, Bandung, Indonesia""" ;
@@ -36,7 +35,7 @@ Muhammad Zuhri Catur Candra - Institut Teknologi Bandung, Bandung, Indonesia""" 
                               dc:title "Statistical Data Production (SDP) Ontology"@en ;
                               dct:issued "2024-09-02"^^xsd:date ;
                               dct:license <https://creativecommons.org/licenses/by/4.0/> ;
-                              owl:versionInfo "Version 1.0"@en .
+                              owl:versionInfo "Version 1.1"@en .
 
 #################################################################
 #    Annotation properties
@@ -60,32 +59,6 @@ dct:issued rdf:type owl:AnnotationProperty .
 
 ###  http://purl.org/dc/terms/license
 dct:license rdf:type owl:AnnotationProperty .
-
-
-###  http://rdf.unece.org/models/cspa#gsbpmSubProcess
-cspa:gsbpmSubProcess rdf:type owl:AnnotationProperty .
-
-
-###  http://rdf.unece.org/models/cspa#gsimInput
-cspa:gsimInput rdf:type owl:AnnotationProperty .
-
-
-###  http://rdf.unece.org/models/cspa#gsimOutput
-cspa:gsimOutput rdf:type owl:AnnotationProperty .
-
-
-###  http://rdf.unece.org/models/cspa#homepage
-cspa:homepage rdf:type owl:AnnotationProperty .
-
-
-###  http://rdf.unece.org/models/cspa#installationGuide
-cspa:installationGuide rdf:type owl:AnnotationProperty .
-
-
-###  http://rdf.unece.org/models/cspa#label
-cspa:label rdf:type owl:AnnotationProperty ;
-           rdfs:subPropertyOf rdfs:label ;
-           rdfs:range xsd:string .
 
 
 ###  http://www.w3.org/2004/02/skos/core#broader
@@ -238,30 +211,6 @@ gsim-sum:measuresV-UT rdf:type owl:ObjectProperty ;
                  rdfs:range :ProcessMethod .
 
 
-###  https://w3id.org/sdp/core#includesIQB-IQ
-:includesIQB-IQ rdf:type owl:ObjectProperty ;
-                rdfs:domain gsim-sum:InstanceQuestionBlock ;
-                rdfs:range gsim-sum:InstanceQuestion .
-
-
-###  https://w3id.org/sdp/core#includesQ-IQB
-:includesQ-IQB rdf:type owl:ObjectProperty ;
-               rdfs:domain gsim:Questionnaire ;
-               rdfs:range gsim-sum:InstanceQuestionBlock .
-
-
-###  https://w3id.org/sdp/core#includesQ-QB
-:includesQ-QB rdf:type owl:ObjectProperty ;
-              rdfs:domain gsim:Questionnaire ;
-              rdfs:range gsim:QuestionBlock .
-
-
-###  https://w3id.org/sdp/core#includesQB-QC
-:includesQB-QC rdf:type owl:ObjectProperty ;
-               rdfs:domain gsim:QuestionBlock ;
-               rdfs:range gsim-sum:QuestionnaireComponent .
-
-
 ###  https://w3id.org/sdp/core#includesSPC-BP
 :includesSPC-BP rdf:type owl:ObjectProperty ;
                 rdfs:domain :StatisticalProgramCycle ;
@@ -298,11 +247,6 @@ gsim-sum:measuresV-UT rdf:type owl:ObjectProperty ;
                 rdfs:range :ProcessStep .
 
 
-###  https://w3id.org/sdp/core#usePS-PKG
-:usePS-PKG rdf:type owl:ObjectProperty ;
-           rdfs:domain :ProcessStep .
-
-
 ###  https://w3id.org/sdp/core#usesSP-SPD
 :usesSP-SPD rdf:type owl:ObjectProperty ;
             rdfs:domain :StatisticalProgram ;
@@ -314,6 +258,343 @@ gsim-sum:measuresV-UT rdf:type owl:ObjectProperty ;
             rdfs:domain :StatisticalProgramDesign ;
             rdfs:range :ProcessDesign .
 
+
+### Additional for local ontology
+:wasAssociatedWithPS-A rdf:type owl:ObjectProperty ;
+                      rdfs:domain :ProcessStep ;
+                      rdfs:range gsim-sum:Agent .
+
+:wasAssociatedWithAIR-A rdf:type owl:ObjectProperty ;
+                      rdfs:domain gsim-sum:AgentInRole ;
+                      rdfs:range gsim-sum:Agent .
+
+:hasParentRole-R rdf:type owl:ObjectProperty ;
+                     rdfs:domain gsim:Role ;
+                     rdfs:range gsim:Role .
+
+:isAssociatedWithStatisticalProgramES-SP rdf:type owl:ObjectProperty ;
+                                rdfs:domain gsim-sum:StatisticalProgram ;
+                                rdfs:range gsim:ExchangeSpecification .
+
+:wasUsingCodeListSP-CL  rdf:type owl:ObjectProperty ;
+                     rdfs:domain gsim-sum:StatisticalProgram ;
+                     rdfs:range gsim-sum:CodeList .
+
+:hasSmallestRegionCodeAIR-C rdf:type owl:ObjectProperty ;
+                     rdfs:domain gsim-sum:AgentInRole ;
+                     rdfs:range gsim-sum:Code .
+
+:hasContextOfSP-SF rdf:type owl:ObjectProperty ;
+                     rdfs:domain gsim-sum:StatisticalProgram ;
+                     rdfs:range gsim-sum:SubjectField .
+
+:usePS-CSPA rdf:type owl:ObjectProperty ;
+            rdfs:domain gsim-sum:ProcessStep ;
+            rdfs:range cspa:PackageOrFunction .
+
+:isActivatedRoleOfCSPA-AIR rdf:type owl:ObjectProperty ;
+                     rdfs:domain cspa:PackageOrFunction ;
+                     rdfs:range gsim-sum:AgentInRole; .
+
+:fulfilsAIR-R rdf:type owl:ObjectProperty ;
+                     rdfs:domain gsim-sum:AgentInRole ;
+                     rdfs:range gsim:Role .       
+
+:hasDS-DSC rdf:type owl:ObjectProperty ;
+          rdfs:domain gsim-sum:DataStructure ;
+          rdfs:range gsim-sum:DataStructureComponent .     
+
+:hasDsS-DSC rdf:type owl:ObjectProperty ;
+          rdfs:domain gsim-sum:DataStructureComponent ;
+          rdfs:range gsim-sum:DataStructureComponent .          
+
+##############################################
+########### CSPA Object Properteis ############
+##############################################
+
+###  http://rdf.unece.org/models/cspa#aimsAt
+cspa:aimsAt rdf:type owl:ObjectProperty ;
+            rdfs:domain cspa:ServiceDefinition ;
+            rdfs:range cspa:BusinessFunction ;
+            rdfs:label "Link between a description level and Business function" .
+
+
+###  http://rdf.unece.org/models/cspa#assemblerOrganization
+cspa:assemblerOrganization rdf:type owl:ObjectProperty ;
+                           rdfs:subPropertyOf cspa:genericOrganization ;
+                           rdfs:label "Assembler organization" .
+
+
+###  http://rdf.unece.org/models/cspa#builderOrganization
+cspa:builderOrganization rdf:type owl:ObjectProperty ;
+                         rdfs:subPropertyOf cspa:genericOrganization ;
+                         rdfs:label "Builder organization" .
+
+
+###  http://rdf.unece.org/models/cspa#comesFrom
+cspa:comesFrom rdf:type owl:ObjectProperty ;
+               rdfs:domain cspa:DescriptionLevel ;
+               rdfs:range cspa:Provenance ;
+               rdfs:label "Link between a description level and a Provenance" .
+
+
+###  http://rdf.unece.org/models/cspa#configurerOrganization
+cspa:configurerOrganization rdf:type owl:ObjectProperty ;
+                            rdfs:subPropertyOf cspa:genericOrganization ;
+                            rdfs:label "Configurer organization" .
+
+
+###  http://rdf.unece.org/models/cspa#definitionDependsOn
+cspa:definitionDependsOn rdf:type owl:ObjectProperty ;
+                         rdfs:domain cspa:ServiceDefinition ;
+                         rdfs:range cspa:DefinitionDependency ;
+                         rdfs:label "Link between a service definition description level and a Dependency" .
+
+
+###  http://rdf.unece.org/models/cspa#definitionHasInput
+cspa:definitionHasInput rdf:type owl:ObjectProperty ;
+                        rdfs:domain cspa:FunctionDefinition ;
+                        rdfs:range cspa:DefinitionInput ;
+                        rdfs:label "Link between a service definition description level and an Input" .
+
+
+###  http://rdf.unece.org/models/cspa#definitionHasOuput
+cspa:definitionHasOuput rdf:type owl:ObjectProperty ;
+                        rdfs:domain cspa:FunctionDefinition ;
+                        rdfs:range cspa:DefinitionOutput ;
+                        rdfs:label "Link between a service definition description level and an Output" .
+
+
+###  http://rdf.unece.org/models/cspa#definitionIsInvokedBy
+cspa:definitionIsInvokedBy rdf:type owl:ObjectProperty ;
+                           rdfs:domain cspa:ServiceDefinition ;
+                           rdfs:range cspa:DefinitionInterface ;
+                           rdfs:label "Link between a service definition description level and an Interface" .
+
+
+###  http://rdf.unece.org/models/cspa#designerOrganization
+cspa:designerOrganization rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf cspa:genericOrganization ;
+                          rdfs:label "Designer organization" .
+
+
+###  http://rdf.unece.org/models/cspa#environmentProviderOrganization
+cspa:environmentProviderOrganization rdf:type owl:ObjectProperty ;
+                                     rdfs:subPropertyOf cspa:genericOrganization ;
+                                     rdfs:label "Environment provider organization" .
+
+
+###  http://rdf.unece.org/models/cspa#genericOrganization
+cspa:genericOrganization rdf:type owl:ObjectProperty ;
+                         rdfs:subPropertyOf owl:topObjectProperty ;
+                         rdfs:domain cspa:Provenance ;
+                         rdfs:range cspa:Organization ;
+                         rdfs:label "Generic Organization" .
+
+
+###  http://rdf.unece.org/models/cspa#gsbpmSubProcess
+cspa:gsbpmSubProcess rdf:type owl:ObjectProperty ;
+                     rdfs:domain cspa:BusinessFunction ;
+                     rdfs:range gsbpm:SubProcess .
+
+
+###  http://rdf.unece.org/models/cspa#gsimInput
+cspa:gsimInput rdf:type owl:ObjectProperty ;
+               rdfs:domain cspa:DefinitionInput ;
+               rdfs:range gsim-sum:IdentifiableArtefact .
+
+
+###  http://rdf.unece.org/models/cspa#gsimOutput
+cspa:gsimOutput rdf:type owl:ObjectProperty ;
+                rdfs:domain cspa:DefinitionOutput ;
+                rdfs:range gsim-sum:IdentifiableArtefact .
+
+
+###  http://rdf.unece.org/models/cspa#hasDependencyIdentifier
+cspa:hasDependencyIdentifier rdf:type owl:ObjectProperty ;
+                             rdfs:domain cspa:Dependency ;
+                             rdfs:range cspa:DependencyIdentifier ;
+                             rdfs:label "Link between a dependency and its identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#hasFunctionDefinition
+cspa:hasFunctionDefinition rdf:type owl:ObjectProperty ;
+                           rdfs:domain cspa:Function ;
+                           rdfs:range cspa:FunctionDefinition ;
+                           rdfs:comment "Link between a CSPA function and its definition" ;
+                           rdfs:label "Definition of a CSPA function" .
+
+
+###  http://rdf.unece.org/models/cspa#hasFunctionImplementation
+cspa:hasFunctionImplementation rdf:type owl:ObjectProperty ;
+                               rdfs:domain cspa:Function ;
+                               rdfs:range cspa:FunctionImplementation ;
+                               rdfs:comment "Link between a CSPA function and its implementation description" ;
+                               rdfs:label "Implementation description of a CSPA function" .
+
+
+###  http://rdf.unece.org/models/cspa#hasFunctionSpecification
+cspa:hasFunctionSpecification rdf:type owl:ObjectProperty ;
+                              rdfs:domain cspa:Function ;
+                              rdfs:range cspa:FunctionSpecification ;
+                              rdfs:comment "Link between a CSPA function and its specification" ;
+                              rdfs:label "Specification of a CSPA function" .
+
+
+###  http://rdf.unece.org/models/cspa#hasInputIdentifier
+cspa:hasInputIdentifier rdf:type owl:ObjectProperty ;
+                        rdfs:domain cspa:Input ;
+                        rdfs:range cspa:InputIdentifier ;
+                        rdfs:label "Link between an input and its identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#hasInterfaceIdentifier
+cspa:hasInterfaceIdentifier rdf:type owl:ObjectProperty ;
+                            rdfs:domain cspa:Interface ;
+                            rdfs:range cspa:InterfaceIdentifier ;
+                            rdfs:label "Link between an interface and its identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#hasOutputIdentifier
+cspa:hasOutputIdentifier rdf:type owl:ObjectProperty ;
+                         rdfs:domain cspa:Output ;
+                         rdfs:range cspa:OutputIdentifier ;
+                         rdfs:label "Link between an output and its identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#hasPackage
+cspa:hasPackage rdf:type owl:ObjectProperty ;
+                rdfs:domain cspa:PackageOrFunction ;
+                rdfs:range cspa:Package ;
+                rdfs:comment "A CSPA package or a CSPA function may be a member of a CSPA package." ;
+                rdfs:label "CSPA package or CSPA function is a member of a CSPA package" .
+
+
+###  http://rdf.unece.org/models/cspa#hasPackageDefinition
+cspa:hasPackageDefinition rdf:type owl:ObjectProperty ;
+                          rdfs:domain cspa:Package ;
+                          rdfs:range cspa:PackageDefinition ;
+                          rdfs:comment "Link between a CSPA package and its definition." ;
+                          rdfs:label "Definition of a CSPA package" .
+
+
+###  http://rdf.unece.org/models/cspa#hasPackageImplementation
+cspa:hasPackageImplementation rdf:type owl:ObjectProperty ;
+                              rdfs:domain cspa:Package ;
+                              rdfs:range cspa:PackageImplementation ;
+                              rdfs:comment "Link between a CSPA package and its implementation" ;
+                              rdfs:label "Implementation of a CSPA package" .
+
+
+###  http://rdf.unece.org/models/cspa#hasPackageSpecification
+cspa:hasPackageSpecification rdf:type owl:ObjectProperty ;
+                             rdfs:domain cspa:Package ;
+                             rdfs:range cspa:PackageSpecification ;
+                             rdfs:comment "Link between a CSPA package and its specification" ;
+                             rdfs:label "Specification of a CSPA package" .
+
+
+###  http://rdf.unece.org/models/cspa#homepage
+cspa:homepage rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf owl:topObjectProperty ;
+              rdfs:domain cspa:Documentation ;
+              rdfs:range cspa:Document .
+
+
+###  http://rdf.unece.org/models/cspa#implementationDependsOn
+cspa:implementationDependsOn rdf:type owl:ObjectProperty ;
+                             rdfs:domain cspa:ImplementationInterface ,
+                                         cspa:ServiceImplementation ;
+                             rdfs:range cspa:ImplementationDependency ;
+                             rdfs:label "Link between a implementation description level and a Dependency" .
+
+
+###  http://rdf.unece.org/models/cspa#implementationHasInput
+cspa:implementationHasInput rdf:type owl:ObjectProperty ;
+                            rdfs:domain cspa:FunctionImplementation ;
+                            rdfs:range cspa:ImplementationInput ;
+                            rdfs:label "Link between a implementation description level and an Input" .
+
+
+###  http://rdf.unece.org/models/cspa#implementationHasOutput
+cspa:implementationHasOutput rdf:type owl:ObjectProperty ;
+                             rdfs:domain cspa:FunctionImplementation ;
+                             rdfs:range cspa:ImplementationOutput ;
+                             rdfs:label "Link between a implementation description level and an Output" .
+
+
+###  http://rdf.unece.org/models/cspa#implementationIsInvokedBy
+cspa:implementationIsInvokedBy rdf:type owl:ObjectProperty ;
+                               rdfs:domain cspa:ServiceImplementation ;
+                               rdfs:range cspa:ImplementationInterface ;
+                               rdfs:label "Link between a implementation description level and an Interface" .
+
+
+###  http://rdf.unece.org/models/cspa#installationGuide
+cspa:installationGuide rdf:type owl:ObjectProperty ;
+                       rdfs:domain cspa:Documentation ;
+                       rdfs:range cspa:Document .
+
+
+###  http://rdf.unece.org/models/cspa#investorOrganization
+cspa:investorOrganization rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf cspa:genericOrganization ;
+                          rdfs:label "Investor organization" .
+
+
+###  http://rdf.unece.org/models/cspa#isDocumentedBy
+cspa:isDocumentedBy rdf:type owl:ObjectProperty ;
+                    rdfs:domain cspa:DescriptionLevel ;
+                    rdfs:range cspa:Documentation ;
+                    rdfs:label "Link between a description level and a Documentation" .
+
+
+###  http://rdf.unece.org/models/cspa#limObject
+cspa:limObject rdf:type owl:ObjectProperty ;
+               rdfs:domain cspa:SpecificationInput ,
+                           cspa:SpecificationOutput ;
+               rdfs:range cspa:LIMClass ;
+               rdfs:label "CSPA LIM object" .
+
+
+###  http://rdf.unece.org/models/cspa#serviceProviderOrganization
+cspa:serviceProviderOrganization rdf:type owl:ObjectProperty ;
+                                 rdfs:subPropertyOf cspa:genericOrganization ;
+                                 rdfs:label "Service provider organization" .
+
+
+###  http://rdf.unece.org/models/cspa#specificationDependsOn
+cspa:specificationDependsOn rdf:type owl:ObjectProperty ;
+                            rdfs:domain cspa:ServiceSpecification ;
+                            rdfs:range cspa:SpecificationDependency ;
+                            rdfs:label "Link between a specification description level and a Dependency" .
+
+
+###  http://rdf.unece.org/models/cspa#specificationHasInput
+cspa:specificationHasInput rdf:type owl:ObjectProperty ;
+                           rdfs:domain cspa:FunctionSpecification ;
+                           rdfs:range cspa:SpecificationInput ;
+                           rdfs:label "Link between a specification description level and an Input" .
+
+
+###  http://rdf.unece.org/models/cspa#specificationHasOuput
+cspa:specificationHasOuput rdf:type owl:ObjectProperty ;
+                           rdfs:domain cspa:FunctionSpecification ;
+                           rdfs:range cspa:SpecificationOutput ;
+                           rdfs:label "Link between a specification description level and Output" .
+
+
+###  http://rdf.unece.org/models/cspa#specificationIsInvokedBy
+cspa:specificationIsInvokedBy rdf:type owl:ObjectProperty ;
+                              rdfs:domain cspa:ServiceSpecification ;
+                              rdfs:range cspa:SpecificationInterface ;
+                              rdfs:label "Link between a specification description level and an Interface" .
+
+
+###  http://rdf.unece.org/models/cspa#userOrganization
+cspa:userOrganization rdf:type owl:ObjectProperty ;
+                      rdfs:subPropertyOf cspa:genericOrganization ;
+                      rdfs:label "User organization" .
 
 #################################################################
 #    Data properties
@@ -397,12 +678,6 @@ gsim-sum:hasDescription-IA rdf:type owl:DatatypeProperty ,
                            rdfs:domain gsim-sum:IdentifiableArtefact ;
                            rdfs:range xsd:string ;
                            rdfs:comment "The general description of the scope, function, and goals"@en .
-
-
-###  https://w3id.org/italia/onto/gsim-sum#hasExecutionLog
-gsim-sum:hasExecutionLog rdf:type owl:DatatypeProperty ;
-                         rdfs:domain gsim:ProcessExecutionLog ;
-                         rdfs:range xsd:string .
 
 
 ###  https://w3id.org/italia/onto/gsim-sum#hasHistory-SP
@@ -517,7 +792,7 @@ gsim-sum:hasSubjectMatterDomain-SP rdf:type owl:DatatypeProperty ,
 gsim-sum:hasSystemExectableIndicator-R rdf:type owl:DatatypeProperty ,
                                                 owl:FunctionalProperty ;
                                        rdfs:domain gsim-sum:Rule ;
-                                       rdfs:range xsd:boolean ;
+                                       rdfs:range xsd:string ;
                                        rdfs:comment "Whether the rule is formatted to be executed by a system, or is only documentary"@en .
 
 
@@ -563,12 +838,6 @@ gsim-sum:hasValue-IA rdf:type owl:DatatypeProperty ;
                 rdfs:range xsd:string .
 
 
-###  https://w3id.org/sdp/core#createdAt-IA
-:createdAt-IA rdf:type owl:DatatypeProperty ;
-              rdfs:domain gsim-sum:IdentifiableArtefact ;
-              rdfs:range xsd:date .
-
-
 ###  https://w3id.org/sdp/core#gsbpmProcessType
 :gsbpmProcessType rdf:type owl:DatatypeProperty ;
                   rdfs:domain :ProcessStep ;
@@ -591,12 +860,6 @@ gsim-sum:hasValue-IA rdf:type owl:DatatypeProperty ;
 :hasStartTime-PS rdf:type owl:DatatypeProperty ;
                  rdfs:domain :ProcessStep ;
                  rdfs:range xsd:dateTime .
-
-
-###  https://w3id.org/sdp/core#hasVersion-IA
-:hasVersion-IA rdf:type owl:DatatypeProperty ;
-               rdfs:domain gsim-sum:IdentifiableArtefact ;
-               rdfs:range xsd:string .
 
 
 ###  https://w3id.org/sdp/core#parameterInputType
@@ -623,19 +886,124 @@ gsim-sum:hasValue-IA rdf:type owl:DatatypeProperty ;
                          rdfs:range xsd:string .
 
 
-###  https://w3id.org/sdp/core#updatedAt-IA
-:updatedAt-IA rdf:type owl:DatatypeProperty ;
-              rdfs:domain gsim-sum:IdentifiableArtefact ;
-              rdfs:range xsd:date .
+### Additional for local ontology
+:createdAt-IA rdf:type owl:DatatypeProperty ;
+                rdfs:domain gsim-sum:IdentifiableArtefact ;
+                rdfs:range xsd:dateTime .
 
+:updatedAt-IA rdf:type owl:DatatypeProperty ;
+                rdfs:domain gsim-sum:IdentifiableArtefact ;
+                rdfs:range xsd:dateTime .
+
+:hasListed-R rdf:type owl:DatatypeProperty ;
+                rdfs:domain gsim:Register ;
+                rdfs:range xsd:integer .
+
+:hasSampled-R rdf:type owl:DatatypeProperty ;
+                rdfs:domain gsim:Register ;
+                rdfs:range xsd:integer .
+
+:fullname-I rdf:type owl:DatatypeProperty ;
+                rdfs:domain gsim:Individual ;
+                rdfs:range xsd:string .
+
+:email-I rdf:type owl:DatatypeProperty ;
+                rdfs:domain gsim:Individual ;
+                rdfs:range xsd:string .
+
+:hasTokenCode-I rdf:type owl:DatatypeProperty ;
+                rdfs:domain gsim:Individual ;
+                rdfs:range xsd:string .
+
+:hasOrder-PaI rdf:type owl:DatatypeProperty ;
+                rdfs:domain :ParameterInput ;
+                rdfs:range xsd:integer .
+
+:hasOrder-DSC rdf:type owl:DatatypeProperty ;
+                rdfs:domain gsim-sum:DataStructureComponent ;
+                rdfs:range xsd:integer .
+
+#############################################
+########### CSPA Data Properties ############
+#############################################
+
+###  http://rdf.unece.org/models/cspa#additionalInformation
+cspa:additionalInformation rdf:type owl:DatatypeProperty ;
+                           rdfs:domain cspa:Documentation ;
+                           rdfs:range xsd:string ;
+                           rdfs:comment "Information which does not fit elsewhere." ;
+                           rdfs:label "Additional information" .
+
+
+###  http://rdf.unece.org/models/cspa#dataByReferenceProtocol
+cspa:dataByReferenceProtocol rdf:type owl:DatatypeProperty ;
+                             rdfs:domain cspa:ImplementationInput ;
+                             rdfs:range xsd:string ;
+                             rdfs:label "Data by reference Protocol" .
+
+
+###  http://rdf.unece.org/models/cspa#description
+cspa:description rdf:type owl:DatatypeProperty ;
+                 rdfs:domain cspa:DescriptionLevel ,
+                             cspa:PackageOrFunction ,
+                             cspa:PropertyTopic ;
+                 rdfs:range xsd:string ;
+                 rdfs:label "Description" .
+
+
+###  http://rdf.unece.org/models/cspa#label
+cspa:label rdf:type owl:DatatypeProperty ;
+           rdfs:domain cspa:Dependency ,
+                       cspa:DescriptionLevel ,
+                       cspa:Identifier ,
+                       cspa:Input ,
+                       cspa:Interface ,
+                       cspa:Output ,
+                       cspa:PackageOrFunction .
+
+
+###  http://rdf.unece.org/models/cspa#methods
+cspa:methods rdf:type owl:DatatypeProperty ;
+             rdfs:domain cspa:Documentation ;
+             rdfs:range xsd:string ;
+             rdfs:comment "Any method used by the service to achieve its goal." ;
+             rdfs:label "Methods" .
+
+
+###  http://rdf.unece.org/models/cspa#organizationName
+cspa:organizationName rdf:type owl:DatatypeProperty ;
+                      rdfs:subPropertyOf owl:topDataProperty ;
+                      rdfs:domain cspa:Organization ;
+                      rdfs:range xsd:string ;
+                      rdfs:label "Organization name" .
+
+
+###  http://rdf.unece.org/models/cspa#outcomes
+cspa:outcomes rdf:type owl:DatatypeProperty ;
+              rdfs:domain cspa:BusinessFunction ;
+              rdfs:range xsd:string ;
+              rdfs:comment "Outcomes of the service." ;
+              rdfs:label "Outcomes" .
+
+
+###  http://rdf.unece.org/models/cspa#restrictions
+cspa:restrictions rdf:type owl:DatatypeProperty ;
+                  rdfs:domain cspa:BusinessFunction ;
+                  rdfs:range xsd:string ;
+                  rdfs:comment "Restrictions of the service." ;
+                  rdfs:label "Restrisctions" .
+
+
+###  http://rdf.unece.org/models/cspa#version
+cspa:version rdf:type owl:DatatypeProperty ;
+             rdfs:domain cspa:DescriptionLevel ,
+                         cspa:PackageOrFunction ;
+             rdfs:range xsd:string ;
+             rdfs:label "Version" .
 
 #################################################################
 #    Classes
 #################################################################
-
-###  http://rdf.unece.org/models/cspa#package
-cspa:package rdf:type owl:Class .
-
 
 ###  http://rdf.unece.org/models/gamso#CapabilityDevelopmentActivity
 gamso:CapabilityDevelopmentActivity rdf:type owl:Class ;
@@ -1761,28 +2129,337 @@ Here are 3 examples - 1. Sex of person 2. Number of employees 3. Value of endowm
                           rdfs:subClassOf prov:Entity ,
                                           gsim-sum:StatisticalProgramDesign .
 
+###################################
+######### CSPA CLASSES ############
+###################################
+
+###  http://rdf.unece.org/models/cspa#BusinessFunction
+cspa:BusinessFunction rdf:type owl:Class ;
+                      rdfs:subClassOf cspa:PropertyTopic ,
+                                      gsim-sum:BusinessFunction ;
+                      rdfs:comment "Documents the intented goal of a CSPA service. Useful when someone scroll through many packages to find a relevant one." ;
+                      rdfs:label "Business function of a CSPA service" .
+
+
+###  http://rdf.unece.org/models/cspa#DefinitionDependency
+cspa:DefinitionDependency rdf:type owl:Class ;
+                          rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                          rdfs:label "Dependency at the definition description level" .
+
+
+###  http://rdf.unece.org/models/cspa#DefinitionInput
+cspa:DefinitionInput rdf:type owl:Class ;
+                     rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                     rdfs:label "Input at the definition description level" .
+
+
+###  http://rdf.unece.org/models/cspa#DefinitionInterface
+cspa:DefinitionInterface rdf:type owl:Class ;
+                         rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                         rdfs:label "Interface at the definition description level" .
+
+
+###  http://rdf.unece.org/models/cspa#DefinitionOutput
+cspa:DefinitionOutput rdf:type owl:Class ;
+                      rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                      rdfs:label "Output at the definition description level" .
+
+
+###  http://rdf.unece.org/models/cspa#Dependency
+cspa:Dependency rdf:type owl:Class ;
+                rdfs:subClassOf cspa:PropertyTopic ;
+            #     owl:disjointUnionOf ( cspa:DefinitionDependency
+            #                           cspa:ImplementationDependency
+            #                           cspa:SpecificationDependency
+            #                         ) ;
+                rdfs:comment "A dependency is something needed to run a CSPA service such as an operating system or a database. One instance of the class describe one dependency: there should be as many instances as different dependecies. It can be linked to a description level or to an interface." ;
+                rdfs:label "Dependency of a CSPA service" .
+
+
+###  http://rdf.unece.org/models/cspa#DependencyIdentifier
+cspa:DependencyIdentifier rdf:type owl:Class ;
+                          rdfs:subClassOf cspa:Identifier ;
+                          rdfs:comment "Used to identify one dependency described multiple times at different description levels." ;
+                          rdfs:label "Dependency identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#DescriptionLevel
+cspa:DescriptionLevel rdf:type owl:Class ;
+                      rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                  #     owl:disjointUnionOf ( cspa:ServiceDefinition
+                  #                           cspa:ServiceImplementationDescription
+                  #                           cspa:ServiceSpecification
+                  #                         ) ;
+                      rdfs:comment "CSPA offers 3 levels of description: service definition which is the most conceptual, service specification and service implementation description (which is the most physical description level)." ;
+                      rdfs:label "CSPA 3 levels of description" .
+
+
+###  http://rdf.unece.org/models/cspa#Document
+cspa:Document rdf:type owl:Class ;
+              rdfs:subClassOf cspa:StatisticalProductionArchitecture .
+
+
+###  http://rdf.unece.org/models/cspa#Documentation
+cspa:Documentation rdf:type owl:Class ;
+                   rdfs:subClassOf cspa:PropertyTopic ;
+                   rdfs:comment "Any kind of information which does not fit elsewhere can be put here." ;
+                   rdfs:label "Documentation of a CSPA service" .
+
+
+###  http://rdf.unece.org/models/cspa#Function
+cspa:Function rdf:type owl:Class ;
+              rdfs:subClassOf cspa:PackageOrFunction ;
+              rdfs:comment "CSPA function or atomic service" ;
+              rdfs:label "CSPA Function" .
+
+
+###  http://rdf.unece.org/models/cspa#FunctionDefinition
+cspa:FunctionDefinition rdf:type owl:Class ;
+                        rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                        rdfs:comment "Function description at conceptual level." ;
+                        rdfs:label "CSPA function definition" .
+
+
+###  http://rdf.unece.org/models/cspa#FunctionImplementation
+cspa:FunctionImplementation rdf:type owl:Class ;
+                            rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                            rdfs:comment "Function description at physical implementation level." ;
+                            rdfs:label "CSPA function implementation" .
+
+
+###  http://rdf.unece.org/models/cspa#FunctionSpecification
+cspa:FunctionSpecification rdf:type owl:Class ;
+                           rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                           rdfs:comment "Function description at logical level." ;
+                           rdfs:label "CSPA function specification" .
+
+
+###  http://rdf.unece.org/models/cspa#Identifier
+cspa:Identifier rdf:type owl:Class ;
+                rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                rdfs:comment "Used to identify one object described multiple times at different description levels." ;
+                rdfs:label "CSPA Identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#ImplementationDependency
+cspa:ImplementationDependency rdf:type owl:Class ;
+                              rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                              rdfs:label "Dependency at the implementation description level" .
+
+
+###  http://rdf.unece.org/models/cspa#ImplementationInput
+cspa:ImplementationInput rdf:type owl:Class ;
+                         rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                         rdfs:label "Input at the implementation description level" .
+
+
+###  http://rdf.unece.org/models/cspa#ImplementationInterface
+cspa:ImplementationInterface rdf:type owl:Class ;
+                             rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                             rdfs:label "Interface at the implementation description level" .
+
+
+###  http://rdf.unece.org/models/cspa#ImplementationOutput
+cspa:ImplementationOutput rdf:type owl:Class ;
+                          rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                          rdfs:label "Output at the implementation description level" .
+
+
+###  http://rdf.unece.org/models/cspa#Input
+cspa:Input rdf:type owl:Class ;
+           rdfs:subClassOf cspa:PropertyTopic ;
+      #      owl:disjointUnionOf ( cspa:DefinitionInput
+      #                            cspa:ImplementationInput
+      #                            cspa:SpecificationInput
+      #                          ) ;
+           rdfs:comment "One instance of the classs describe one input: there should be as many instances as different inputs." ;
+           rdfs:label "Input of a CSPA function" .
+
+
+###  http://rdf.unece.org/models/cspa#InputIdentifier
+cspa:InputIdentifier rdf:type owl:Class ;
+                     rdfs:subClassOf cspa:Identifier ;
+                     rdfs:comment "Used to identify one input described multiple times at different description levels." ;
+                     rdfs:label "Input identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#Interface
+cspa:Interface rdf:type owl:Class ;
+               rdfs:subClassOf cspa:PropertyTopic ;
+            #    owl:disjointUnionOf ( cspa:DefinitionInterface
+            #                          cspa:ImplementationInterface
+            #                          cspa:SpecificationInterface
+            #                        ) ;
+               rdfs:comment "An interface is a way to call a CSPA service for instance a REST web API." ;
+               rdfs:label "Interface of a CSPA service" .
+
+
+###  http://rdf.unece.org/models/cspa#InterfaceIdentifier
+cspa:InterfaceIdentifier rdf:type owl:Class ;
+                         rdfs:subClassOf cspa:Identifier ;
+                         rdfs:comment "Used to identify one interface described multiple times at different description levels." ;
+                         rdfs:label "Interface identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#LIMClass
+cspa:LIMClass rdf:type owl:Class ;
+              rdfs:subClassOf cspa:StatisticalProductionArchitecture .
+
+
+###  http://rdf.unece.org/models/cspa#Organization
+cspa:Organization rdf:type owl:Class ;
+                  rdfs:subClassOf cspa:StatisticalProductionArchitecture ,
+                                  prov:Organization ;
+                  rdfs:label "Organization" .
+
+
+###  http://rdf.unece.org/models/cspa#Output
+cspa:Output rdf:type owl:Class ;
+            rdfs:subClassOf cspa:PropertyTopic ;
+            # owl:disjointUnionOf ( cspa:DefinitionOutput
+            #                       cspa:ImplementationOutput
+            #                       cspa:SpecificationOutput
+            #                     ) ;
+            rdfs:comment "One instance of the classs describe one input: there should be as many instances as different inputs." ;
+            rdfs:label "Output of a CSPA function" .
+
+
+###  http://rdf.unece.org/models/cspa#OutputIdentifier
+cspa:OutputIdentifier rdf:type owl:Class ;
+                      rdfs:subClassOf cspa:Identifier ;
+                      rdfs:comment "Used to identify one output described multiple times at different description levels." ;
+                      rdfs:label "Output identifier" .
+
+
+###  http://rdf.unece.org/models/cspa#Package
+cspa:Package rdf:type owl:Class ;
+             rdfs:subClassOf cspa:PackageOrFunction ;
+             rdfs:comment "CSPA bundle of functions or other packages" ;
+             rdfs:label "CSPA Package" .
+
+
+###  http://rdf.unece.org/models/cspa#PackageDefinition
+cspa:PackageDefinition rdf:type owl:Class ;
+                       rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                       rdfs:comment "Package description at conceptual level." ;
+                       rdfs:label "CSPA package definition" .
+
+
+###  http://rdf.unece.org/models/cspa#PackageImplementation
+cspa:PackageImplementation rdf:type owl:Class ;
+                           rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                           rdfs:comment "Package description at physical implementation level." ;
+                           rdfs:label "CSPA package implementation" .
+
+
+###  http://rdf.unece.org/models/cspa#PackageOrFunction
+cspa:PackageOrFunction rdf:type owl:Class ;
+                       rdfs:subClassOf cspa:StatisticalProductionArchitecture .
+                  #      owl:disjointUnionOf ( cspa:Function
+                  #                            cspa:Package
+                  #                          ) .
+
+
+###  http://rdf.unece.org/models/cspa#PackageSpecification
+cspa:PackageSpecification rdf:type owl:Class ;
+                          rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                          rdfs:comment "Package description at logical level." ;
+                          rdfs:label "CSPA package specification" .
+
+
+###  http://rdf.unece.org/models/cspa#PropertyTopic
+cspa:PropertyTopic rdf:type owl:Class ;
+                   rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                  #  owl:disjointUnionOf ( cspa:BusinessFunction
+                  #                        cspa:Dependency
+                  #                        cspa:Documentation
+                  #                        cspa:Input
+                  #                        cspa:Interface
+                  #                        cspa:Output
+                  #                        cspa:Provenance
+                  #                      ) ;
+                   rdfs:comment "The properties used to describe CSPA function and packages are numerous and designed to be extended. To ease the finding of relevant information, properties are grouped by topics. One topic (such as Input or Output) can be sevaral time in a description level." ;
+                   rdfs:label "Properties about CSPA function or package grouped by topic." .
+
+
+###  http://rdf.unece.org/models/cspa#Provenance
+cspa:Provenance rdf:type owl:Class ;
+                rdfs:subClassOf cspa:PropertyTopic ,
+                                prov:Entity ;
+                rdfs:comment "The provenance of a CSPA service says who did what in the building of a CSPA package or function." ;
+                rdfs:label "Provenance of a CSPA service" .
+
+
+###  http://rdf.unece.org/models/cspa#ServiceDefinition
+cspa:ServiceDefinition rdf:type owl:Class ;
+                       rdfs:subClassOf cspa:DescriptionLevel ;
+                  #      owl:disjointUnionOf ( cspa:FunctionDefinition
+                  #                            cspa:PackageDefinition
+                  #                          ) ;
+                       rdfs:comment "Function or package description at conceptual level." ;
+                       rdfs:label "CSPA package or function definition" .
+
+
+###  http://rdf.unece.org/models/cspa#ServiceImplementation
+cspa:ServiceImplementation rdf:type owl:Class ;
+                           rdfs:subClassOf cspa:StatisticalProductionArchitecture .
+
+
+###  http://rdf.unece.org/models/cspa#ServiceImplementationDescription
+cspa:ServiceImplementationDescription rdf:type owl:Class ;
+                                      rdfs:subClassOf cspa:DescriptionLevel ;
+                                    #   owl:disjointUnionOf ( cspa:FunctionImplementation
+                                    #                         cspa:PackageImplementation
+                                    #                       ) ;
+                                      rdfs:comment "Function or package description at physical level." ;
+                                      rdfs:label "CSPA package or function implementation description" .
+
+
+###  http://rdf.unece.org/models/cspa#ServiceSpecification
+cspa:ServiceSpecification rdf:type owl:Class ;
+                          rdfs:subClassOf cspa:DescriptionLevel ;
+                        #   owl:disjointUnionOf ( cspa:FunctionSpecification
+                        #                         cspa:PackageSpecification
+                        #                       ) ;
+                          rdfs:comment "Function or package description at logical level." ;
+                          rdfs:label "CSPA package or function specification" .
+
+
+###  http://rdf.unece.org/models/cspa#SpecificationDependency
+cspa:SpecificationDependency rdf:type owl:Class ;
+                             rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                             rdfs:label "Dependency at the specification description level" .
+
+
+###  http://rdf.unece.org/models/cspa#SpecificationInput
+cspa:SpecificationInput rdf:type owl:Class ;
+                        rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                        rdfs:label "Input at the specification description level" .
+
+
+###  http://rdf.unece.org/models/cspa#SpecificationInterface
+cspa:SpecificationInterface rdf:type owl:Class ;
+                            rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                            rdfs:label "Interface at the specification description level" .
+
+
+###  http://rdf.unece.org/models/cspa#SpecificationOutput
+cspa:SpecificationOutput rdf:type owl:Class ;
+                         rdfs:subClassOf cspa:StatisticalProductionArchitecture ;
+                         rdfs:label "Output at the specification description level" .
+
+
+###  http://rdf.unece.org/models/cspa#StatisticalProductionArchitecture
+cspa:StatisticalProductionArchitecture rdf:type owl:Class .
+
+
+###  http://rdf.unece.org/models/cspa#package
+cspa:package rdf:type owl:Class .
+
 
 #################################################################
 #    Individuals
 #################################################################
-
-###  http://id.unece.org/models/cspa/services/SampleSelectionService
-icspa:SampleSelectionService rdf:type owl:NamedIndividual ,
-                                      cspa:package ;
-                             cspa:label "Sample Selection service" .
-
-
-###  http://id.unece.org/models/cspa/services/SampleSelectionServiceServiceDefinition
-icspa:SampleSelectionServiceServiceDefinition rdf:type owl:NamedIndividual .
-
-
-###  http://id.unece.org/models/cspa/services/SampleSelectionServiceServiceImplementation
-icspa:SampleSelectionServiceServiceImplementation rdf:type owl:NamedIndividual .
-
-
-###  http://id.unece.org/models/cspa/services/SampleSelectionServiceServiceSpecification
-icspa:SampleSelectionServiceServiceSpecification rdf:type owl:NamedIndividual .
-
 
 ###  http://id.unece.org/models/gamso/CapabilityDevelopmentActivity
 igamso:CapabilityDevelopmentActivity rdf:type owl:NamedIndividual ,
@@ -2811,33 +3488,5 @@ This phase is made up of three sub-processes, which are generally sequential, fr
                                        skos:prefLabel "Agree an action plan"@en .
 
 
-[ cspa:label "JDemetra+"
-] .
-
-[ cspa:label "Stateless service"
- ] .
-
-[ cspa:gsbpmSubProcess "4.1 Create Frame and Select Sample " ;
-   cspa:gsimInput """1.	Population Frame (UnitDataSet plus its UnitDataStructure)
-                2.	Referential Input:
-                1.	Identification of Statistical Program
-                2.	Complete description of Survey Group (Id, Complete Base Stratification with levelled classifications)
-                3.	Method to be used (panel, non-panel)
-                4.	Rotation Fraction for panel
-                5.	Definition of sub-strata with mapping
-                6.	Set of quota 
-                """ ;
-   cspa:gsimOutput "A sample (Unit DataSet plus its UnitDataStructure), where each Unit selected from the Population Frame has a Measure Component (Variable) that identifies the (Base or Sub) Stratum the Unit belongs to plus an Attribute Component (Variable) that indicates the Inclusion Weight."
- ] .
-
-[ cspa:label "REST API"
- ] .
-
-[ cspa:label "Java 7 application"
- ] .
-
-[ cspa:homepage "http://default-environment-iefnmepgh8.elasticbeanstalk.com/static/default.htm" ;
-   cspa:installationGuide "The service, once packaged with Maven, is a WAR that could be deployed on compatible container (see above)."
- ] .
 
 ###  Generated by the OWL API (version 4.5.26.2023-07-17T20:34:13Z) https://github.com/owlcs/owlapi

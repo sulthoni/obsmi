@@ -1,0 +1,538 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
+@prefix sdp: <https://w3id.org/sdp/core#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix gsim: <http://rdf.unece.org/models/gsim#> .
+@prefix gsim-sum: <https://w3id.org/italia/onto/gsim-sum#> .
+@prefix sdmx: <http://purl.org/linked-data/sdmx/2009/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+######################
+### AGENCY MAPPING ###
+######################
+sdmx:AgencyMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:AgencySchemes/str:AgencyScheme/str:Agency" .
+
+sdmx:AgencyMapping
+    rml:logicalSource sdmx:AgencyMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/agency/{@urn}" ;
+        rr:class gsim:Organisations ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasName-IA ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:comment ;
+        rr:objectMap [ rml:reference "com:Description/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hadDescription-IA ;
+        rr:objectMap [ rml:reference "com:Description/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:hasContactName-O ;
+        rr:objectMap [ rml:reference "str:Contact/com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:hasContactEmail-O ;
+        rr:objectMap [ rml:reference "str:Contact/str:Email/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:hasContactURI-O ;
+        rr:objectMap [ rml:reference "str:Contact/str:URI/text()" ] ;
+    ] .
+
+#############################
+### DATA PROVIDER MAPPING ###
+#############################
+sdmx:DataProviderMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:DataProviderSchemes/str:DataProviderScheme/str:DataProvider" .
+
+sdmx:DataProviderMapping
+    rml:logicalSource sdmx:DataProviderMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/dataprovider/{@urn}" ;
+        rr:class gsim:InformationProvider ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasName-IA ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] .
+
+#############################
+### DATA FLOW MAPPING ###
+#############################
+sdmx:DataFlowMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:Dataflows/str:Dataflow" .
+
+sdmx:DataFlowMapping
+    rml:logicalSource sdmx:DataFlowMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/dataflow/{@urn}" ;
+        rr:class gsim:ExchangeSpecification ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasName-IA ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:comment ;
+        rr:objectMap [ rml:reference "com:Description/text()" ] ;
+    ] ;
+
+    ## add relation to data structure definition
+    rr:predicateObjectMap [
+        rr:predicate sdp:usesDataStructureES-DS ;
+        rr:objectMap [
+            rr:parentTriplesMap sdmx:DataStructureMapping ;
+            rr:joinCondition [
+                rr:child "str:Structure" ;
+                rr:parent "@urn" ;
+            ]
+        ]
+    ] ;
+
+    ## add relation to Provision Agreement if needed .
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hadDescription-IA ;
+        rr:objectMap [ rml:reference "com:Description/text()" ] ;
+    ] .
+
+#############################
+### DATA STRUCTURE MAPPING ###
+#############################
+sdmx:DataStructureMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:DataStructures/str:DataStructure" .
+
+sdmx:DataStructureMapping
+    rml:logicalSource sdmx:DataStructureMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/datastructure/{@urn}" ;
+        rr:class gsim-sum:DataStructure ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasName-IA ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] .
+    
+
+#############################
+###   DIMENSION MAPPING   ###
+#############################
+sdmx:DimensionMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:DataStructures/str:DataStructure/str:DataStructureComponents/str:DimensionList/*" .
+
+sdmx:DimensionMapping
+    rml:logicalSource sdmx:DimensionMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/dimension/{@urn}" ;
+        rr:class gsim-sum:IdentifierComponent ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:hasTextType-DSC ;
+        rr:objectMap [ 
+            rml:reference "str:LocalRepresentation/str:EnumerationFormat/@textType" ;
+            rr:datatype xsd:string
+        ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:minLength-DSC ;
+        rr:objectMap [ 
+            rml:reference "str:LocalRepresentation/str:EnumerationFormat/@minLength" ;
+            rr:datatype xsd:integer
+        ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:maxLength-DSC ;
+        rr:objectMap [ 
+            rml:reference "str:LocalRepresentation/str:EnumerationFormat/@maxLength" ;
+            rr:datatype xsd:integer
+        ] ;
+    ] ;
+
+    # LINK TO CONCEPTUAL DOMAIN
+    rr:predicateObjectMap [
+        rr:predicate sdp:usesConceptualDomainDSC-CD ;
+        rr:objectMap [ 
+            rr:parentTriplesMap sdmx:ConceptualDomainMapping ;
+            rr:joinCondition [
+                rr:child "str:ConceptIdentity" ;
+                rr:parent "@urn" ;
+        ] ;
+    ]] ;
+
+    # LINK TO CODELIST
+    rr:predicateObjectMap [
+        rr:predicate sdp:takesValueFromDSC-CL ;
+        rr:objectMap [ 
+            rr:parentTriplesMap sdmx:CodeListMapping ;
+            rr:joinCondition [
+                rr:child "str:LocalRepresentation/str:Enumeration" ;
+                rr:parent "@urn" ;
+        ] ;
+    ]] ;
+    
+    ## LINK TO DATA STRUCTURE
+    rr:predicateObjectMap [
+        rr:predicate sdp:usedByDSC-DS ;
+        rr:objectMap [
+            rr:parentTriplesMap sdmx:DataStructureMapping ;
+            rr:joinCondition [
+                rr:child "../../../@urn" ;
+                rr:parent "@urn" ;
+            ]
+        ]
+    ] .
+    
+
+#############################
+###   ATTRIBUTE MAPPING   ###
+#############################
+sdmx:AttributeMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:DataStructures/str:DataStructure/str:DataStructureComponents/str:AttributeList/str:Attribute" .
+
+sdmx:AttributeMapping
+    rml:logicalSource sdmx:AttributeMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/attribute/{@urn}" ;
+        rr:class gsim-sum:AttributeComponent ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:usage-DSC ;
+        rr:objectMap [ 
+            rml:reference "@usage" ;
+            rr:datatype xsd:string
+        ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:hasTextType-DSC ;
+        rr:objectMap [ 
+            rml:reference "str:LocalRepresentation/str:EnumerationFormat/@textType" ;
+            rr:datatype xsd:string
+        ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:minLength-DSC ;
+        rr:objectMap [ 
+            rml:reference "str:LocalRepresentation/str:EnumerationFormat/@minLength" ;
+            rr:datatype xsd:integer
+        ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:maxLength-DSC ;
+        rr:objectMap [ 
+            rml:reference "str:LocalRepresentation/str:EnumerationFormat/@maxLength" ;
+            rr:datatype xsd:integer
+        ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:usesConceptualDomainDSC-CD ;
+        rr:objectMap [ 
+            rr:parentTriplesMap sdmx:ConceptualDomainMapping ;
+            rr:joinCondition [
+                rr:child "str:ConceptIdentity" ;
+                rr:parent "@urn" ;
+        ] ;
+    ]] ;
+
+    # LINK TO CODELIST
+    rr:predicateObjectMap [
+        rr:predicate sdp:takesValueFromDSC-CL ;
+        rr:objectMap [ 
+            rr:parentTriplesMap sdmx:CodeListMapping ;
+            rr:joinCondition [
+                rr:child "str:LocalRepresentation/str:Enumeration" ;
+                rr:parent "@urn" ;
+        ] ;
+    ]] ;
+    
+    ## LINK TO DATA STRUCTURE
+    rr:predicateObjectMap [
+        rr:predicate sdp:usedByDSC-DS ;
+        rr:objectMap [
+            rr:parentTriplesMap sdmx:DataStructureMapping ;
+            rr:joinCondition [
+                rr:child "../../../@urn" ;
+                rr:parent "@urn" ;
+            ]
+        ]
+    ] .
+
+#############################
+###   MEASURE MAPPING   ###
+#############################
+sdmx:MeasureMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:DataStructures/str:DataStructure/str:DataStructureComponents/str:MeasureList/str:Measure" .
+
+sdmx:MeasureMapping
+    rml:logicalSource sdmx:MeasureMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/measure/{@urn}" ;
+        rr:class gsim-sum:MeasureComponent ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:usage-DSC ;
+        rr:objectMap [ 
+            rml:reference "@usage" ;
+            rr:datatype xsd:string
+        ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:hasTextType-DSC ;
+        rr:objectMap [ 
+            rml:reference "str:LocalRepresentation/str:TextFormat/@textType" ;
+            rr:datatype xsd:string
+        ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate sdp:usesConceptualDomainDSC-CD ;
+        rr:objectMap [ 
+            rr:parentTriplesMap sdmx:ConceptualDomainMapping ;
+            rr:joinCondition [
+                rr:child "str:ConceptIdentity" ;
+                rr:parent "@urn" ;
+        ] ;
+    ]] ;
+
+    
+    ## LINK TO DATA STRUCTURE
+    rr:predicateObjectMap [
+        rr:predicate sdp:usedByDSC-DS ;
+        rr:objectMap [
+            rr:parentTriplesMap sdmx:DataStructureMapping ;
+            rr:joinCondition [
+                rr:child "../../../@urn" ;
+                rr:parent "@urn" ;
+            ]
+        ]
+    ] .
+
+#################################
+### CONCEPTUAL DOMAIN MAPPING ###
+#################################
+sdmx:ConceptualDomainMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:ConceptSchemes/str:ConceptScheme/str:Concept" .
+
+sdmx:ConceptualDomainMapping
+    rml:logicalSource sdmx:ConceptualDomainMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/concept/{@urn}" ;
+        rr:class gsim-sum:ConceptualDomain ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@id" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasName-IA ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] .
+
+########################
+### CODELIST MAPPING ###
+########################
+sdmx:CodeListMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:Codelists/str:Codelist" .
+
+sdmx:CodeListMapping
+    rml:logicalSource sdmx:CodeListMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/codelist/{@id}" ;
+        rr:class gsim-sum:CodeList ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasName-IA ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:comment ;
+        rr:objectMap [ rml:reference "com:Description/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hadDescription-IA ;
+        rr:objectMap [ rml:reference "com:Description/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+    rr:predicate sdp:containsCL-CI;
+    rr:objectMap [
+        rr:parentTriplesMap sdmx:CodeItemMapping ;
+        rr:joinCondition [
+            rr:child "@id" ;
+            rr:parent "../@id" ;
+        ]
+    ] ].
+
+#########################
+### CODE ITEM MAPPING ###
+#########################
+sdmx:CodeItemMappingSource
+    rml:source "SDMX All Structures.xml" ;
+    rml:referenceFormulation ql:XPath ;
+    rml:iterator "//message:Structures/str:Codelists/str:Codelist/str:Code" .
+
+sdmx:CodeItemMapping
+    rml:logicalSource sdmx:CodeItemMappingSource ;
+
+    rr:subjectMap [
+        rr:template "http://sdmx.org/code/{@urn}" ;
+        rr:class gsim-sum:CodeItem ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasId-IA ;
+        rr:objectMap [ rml:reference "@urn" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasName-IA ;
+        rr:objectMap [ rml:reference "com:Name/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:comment ;
+        rr:objectMap [ rml:reference "com:Description/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hadDescription-IA ;
+        rr:objectMap [ rml:reference "com:Description/text()" ] ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate gsim-sum:hasValue-IA ;
+        rr:objectMap [ rml:reference "@id" ] ;
+    ] .
