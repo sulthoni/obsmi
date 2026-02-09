@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:11-jre-jammy
 
 # Set environment variables
 ENV FUSEKI_VERSION=4.10.0
@@ -6,9 +6,9 @@ ENV FUSEKI_HOME=/opt/fuseki
 ENV FUSEKI_BASE=/fuseki-base
 ENV JAVA_OPTIONS="-Xmx2g -Xms1g"
 
-# Install wget and other utilities
+# Install wget, curl and other utilities
 RUN apt-get update && \
-    apt-get install -y wget && \
+    apt-get install -y wget curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Download and install Fuseki
@@ -29,6 +29,7 @@ RUN mkdir -p ${FUSEKI_BASE}/databases/tdb2-dataset
 
 # Copy configuration files
 COPY config/*.ttl ${FUSEKI_BASE}/configuration/
+COPY config/shiro.ini ${FUSEKI_BASE}/shiro.ini
 
 # Set working directory
 WORKDIR ${FUSEKI_HOME}
